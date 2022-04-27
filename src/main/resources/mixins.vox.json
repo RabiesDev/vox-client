@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "compatibilityLevel": "JAVA_8",
+  "package": "dev.rabies.vox.mixins",
+  "refmap": "mixins.vox.refmap.json",
+  "client": [
+    "MixinMinecraft"
+  ]
+}

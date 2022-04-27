@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "vox",
+    "name": "Vox",
+    "description": "Minedo crafto",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "rabies"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
