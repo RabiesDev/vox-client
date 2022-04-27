@@ -4,6 +4,7 @@
   "package": "dev.rabies.vox.mixins",
   "refmap": "mixins.vox.refmap.json",
   "client": [
+    "MixinEntityPlayerSP",
     "MixinMinecraft"
   ]
 }
