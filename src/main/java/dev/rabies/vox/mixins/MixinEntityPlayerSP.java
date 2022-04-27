@@ -25,9 +25,8 @@ public class MixinEntityPlayerSP {
 
     @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
     public void sendChatMessage(String message, CallbackInfo ci) {
-        if (message.startsWith(":")) return;
+        if (!message.startsWith(":")) return;
         // TODO: Command
-
         ci.cancel();
     }
 }
