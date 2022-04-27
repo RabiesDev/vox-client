@@ -37,9 +37,10 @@ public class AutoClickerCheat extends Cheat {
 
     private void legitAttack() {
         int attackKey = mc.gameSettings.keyBindAttack.getKeyCode();
+        Mouse.poll(); // ?
         KeyBinding.setKeyBindState(attackKey, true);
         KeyBinding.onTick(attackKey);
-        Mouse.poll(); // ?
+        KeyBinding.setKeyBindState(attackKey, false);
     }
     
     private void updateDelay() {
