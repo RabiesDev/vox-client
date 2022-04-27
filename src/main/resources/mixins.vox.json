@@ -5,6 +5,7 @@
   "refmap": "mixins.vox.refmap.json",
   "client": [
     "MixinEntityPlayerSP",
+    "MixinGuiInGame",
     "MixinMinecraft"
   ]
 }

@@ -7,6 +7,10 @@ public class VoxEvent extends Event {
 
     @Getter private final VoxEventTiming timing;
 
+    public VoxEvent() {
+        this.timing = VoxEventTiming.PRE;
+    }
+
     public VoxEvent(VoxEventTiming timing) {
         this.timing = timing;
     }
