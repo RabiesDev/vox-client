@@ -1,6 +1,7 @@
 package dev.rabies.vox.mixins;
 
 import dev.rabies.vox.events.UpdateEvent;
+import dev.rabies.vox.events.VoxEventTiming;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -13,8 +14,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinEntityPlayerSP {
 
     @Inject(method = "onUpdateWalkingPlayer", at = @At("HEAD"))
-    public void onUpdateWalkingPlayer(CallbackInfo ci) {
-        MinecraftForge.EVENT_BUS.post(new UpdateEvent());
+    public void onPreUpdateWalkingPlayer(CallbackInfo ci) {
+        MinecraftForge.EVENT_BUS.post(new UpdateEvent(VoxEventTiming.PRE));
+    }
+
+    @Inject(method = "onUpdateWalkingPlayer", at = @At("RETURN"))
+    public void onPostUpdateWalkingPlayer(CallbackInfo ci) {
+        MinecraftForge.EVENT_BUS.post(new UpdateEvent(VoxEventTiming.POST));
     }
 
     @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)

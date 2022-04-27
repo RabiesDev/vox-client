@@ -6,6 +6,6 @@ import org.lwjgl.input.Keyboard;
 public class AutoClickerCheat extends Cheat {
 
     public AutoClickerCheat() {
-        super("AutoClicker", KeyBind.fromKey(Keyboard.KEY_M));
+        super("AutoClicker");
     }
 }

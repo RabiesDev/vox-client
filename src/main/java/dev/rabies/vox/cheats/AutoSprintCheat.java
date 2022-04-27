@@ -12,14 +12,15 @@ public class AutoSprintCheat extends Cheat {
 
     @SubscribeEvent
     public void onUpdate(UpdateEvent event) {
+        if (event.isPost()) return;
         if (!canSprint()) return;
-        player.setSprinting(true);
+        mc.player.setSprinting(true);
     }
 
     private boolean canSprint() {
         if (!MoveUtil.isMoving()) return false;
-        if (player.isSprinting() || player.isSneaking()) return false;
-        if (player.isCreative()) return true;
-        return player.getFoodStats().getFoodLevel() > 6;
+        if (mc.player.isSprinting() || mc.player.isSneaking()) return false;
+        if (mc.player.isCreative()) return true;
+        return mc.player.getFoodStats().getFoodLevel() > 6;
     }
 }

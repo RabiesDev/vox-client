@@ -1,6 +1,7 @@
 package dev.rabies.vox.events;
 
-import net.minecraftforge.fml.common.eventhandler.Event;
-
-public class UpdateEvent extends Event {
+public class UpdateEvent extends VoxEvent {
+    public UpdateEvent(VoxEventTiming eventType) {
+        super(eventType);
+    }
 }

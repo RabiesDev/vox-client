@@ -6,6 +6,6 @@ import org.lwjgl.input.Keyboard;
 public class DebugCheat extends Cheat {
 
     public DebugCheat() {
-        super("Debug", new KeyBind(Keyboard.KEY_B, KeyBind.BindType.HOLD));
+        super("Debug");
     }
 }
