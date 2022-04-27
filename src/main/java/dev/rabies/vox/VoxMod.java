@@ -28,7 +28,7 @@ public class VoxMod {
         initializer.postInitialize(event);
     }
 
-    public static Initializer get() {
-        return initializer;
+    public static VoxInitializer get() {
+        return (VoxInitializer) initializer;
     }
 }

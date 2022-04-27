@@ -5,6 +5,11 @@
 *.ipr
 *.iws
 
+.classpath
+.project
+.settings/
+bin/
+
 # IntelliJ
 out/
 # mpeltonen/sbt-idea plugin
