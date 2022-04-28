@@ -3,52 +3,61 @@ package dev.rabies.vox.cheats;
 import dev.rabies.vox.cheats.setting.KeyBind;
 import dev.rabies.vox.events.UpdateEvent;
 import dev.rabies.vox.utils.ChatUtils;
+import dev.rabies.vox.utils.PlayerUtils;
 import dev.rabies.vox.utils.TimerUtil;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.RandomUtils;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 public class AutoClickerCheat extends Cheat {
 
     private final TimerUtil timerUtil = new TimerUtil();
+    private boolean attacked;
     private float nextDelay;
 
     public AutoClickerCheat() {
         super("AutoClicker", KeyBind.fromKey(Keyboard.KEY_R));
     }
+    
+    @Override
+    public void onEnable() {
+    	updateDelay();
+    	attacked = false;
+    }
 
     @SubscribeEvent
     public void onUpdate(UpdateEvent event) {
-        // TODO: 色々出来るようにします
         if (mc.isGamePaused()) return;
         if (!mc.inGameHasFocus) return;
         if (!mc.gameSettings.keyBindAttack.isKeyDown()) {
-        	nextDelay = 400;
-        	timerUtil.reset();
+        	if (nextDelay != -1F) {
+        		nextDelay = 320;
+            	timerUtil.reset();
+        	}
+        	
+        	nextDelay = -1F;
         	return;
         }
         
-        // TODO: TimingCheck
-        if (event.isPost()) return;
-        updateDelay();
-        
-        if (!timerUtil.delay(nextDelay)) return;
-        legitAttack();
-        timerUtil.reset();
-    }
+        if (event.isPost() && attacked) {
+        	if (mc.player.ticksExisted % 3 != 0) return;
+        	PlayerUtils.holdState(false);
+        	attacked = false;
+        	return;
+        }
 
-    private void legitAttack() {
-        int attackKey = mc.gameSettings.keyBindAttack.getKeyCode();
-        Mouse.poll(); // ?
-        KeyBinding.onTick(attackKey);
+    	if (!timerUtil.delay(nextDelay)) return;
+        PlayerUtils.holdState(true);
+        PlayerUtils.legitAttack();
+        attacked = true;
+        updateDelay();
     }
     
     private void updateDelay() {
-        float middleCps = 7; // TODO
+        float middleCps = 9; // TODO
         float minCps = middleCps - 2;
         float maxCps = middleCps + 2;
     	nextDelay = 1000.0F / RandomUtils.nextFloat(minCps, maxCps);
+    	timerUtil.reset();
     }
 }
