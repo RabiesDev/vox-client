@@ -11,7 +11,7 @@ public class UIHook {
     @SubscribeEvent
     public void onRender2d(Render2DEvent event) {
         renderWatermark(event);
-        renderChestInfo(event);
+        renderCheatInfo(event);
     }
 
     private void renderWatermark(Render2DEvent event) {
@@ -25,7 +25,7 @@ public class UIHook {
         );
     }
 
-    private void renderChestInfo(Render2DEvent event) {
+    private void renderCheatInfo(Render2DEvent event) {
         // TODO:
     }
 }
