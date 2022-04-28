@@ -13,17 +13,19 @@ public class Cheat implements ICheat {
 
     @Getter private final String name;
     @Getter private final KeyBind bind;
+    @Getter private final Category category;
     @Getter private boolean enabled;
 
     @Getter
     private final LinkedList<Setting<?>> settings;
 
-    public Cheat(String name) {
-        this(name, KeyBind.none());
+    public Cheat(String name, Category category) {
+        this(name, category, KeyBind.none());
     }
 
-    public Cheat(String name, KeyBind bind) {
+    public Cheat(String name, Category category, KeyBind bind) {
         this.name = name;
+        this.category = category;
         this.bind = bind;
         this.settings = new LinkedList<>();
     }

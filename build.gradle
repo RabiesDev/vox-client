@@ -70,12 +70,13 @@ dependencies {
 mixin {
     add sourceSets.main, 'mixins.vox.refmap.json'
     config 'mixins.vox.json'
-
     debug.export = true
 }
 
 reobf {
-    shadowJar { }
+    shadowJar {
+        duplicatesStrategy DuplicatesStrategy.EXCLUDE
+    }
 }
 
 jar {

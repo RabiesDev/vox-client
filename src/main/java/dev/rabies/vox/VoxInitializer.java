@@ -1,20 +1,24 @@
 package dev.rabies.vox;
 
-import dev.rabies.vox.cheats.AutoClickerCheat;
-import dev.rabies.vox.cheats.AutoSprintCheat;
-import dev.rabies.vox.cheats.Cheat;
-import dev.rabies.vox.cheats.DebugCheat;
+import dev.rabies.vox.cheats.*;
+import dev.rabies.vox.cheats.cheats.AutoClickerCheat;
+import dev.rabies.vox.cheats.cheats.AutoSprintCheat;
+import dev.rabies.vox.cheats.cheats.DebugCheat;
+import dev.rabies.vox.cheats.cheats.HudCheat;
 import dev.rabies.vox.commands.BindCommand;
 import dev.rabies.vox.commands.Command;
 import dev.rabies.vox.commands.HelpCommand;
 import dev.rabies.vox.commands.ToggleCommand;
-import dev.rabies.vox.render.UIHook;
+import dev.rabies.vox.render.RenderHook;
 import lombok.Getter;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class VoxInitializer implements Initializer {
 
@@ -32,23 +36,33 @@ public class VoxInitializer implements Initializer {
     @Override
     public void postInitialize(FMLPostInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
-        MinecraftForge.EVENT_BUS.register(new UIHook());
+        MinecraftForge.EVENT_BUS.register(new RenderHook());
     }
 
     private void registerCheats() {
-        cheats.add(new DebugCheat());
-        cheats.add(new AutoSprintCheat());
-        cheats.add(new AutoClickerCheat());
+        Collections.addAll(cheats,
+                new DebugCheat(),
+                new HudCheat(),
+                new AutoSprintCheat(),
+                new AutoClickerCheat()
+        );
     }
 
     private void registerCommands() {
-        commands.add(new HelpCommand());
-        commands.add(new ToggleCommand());
-        commands.add(new BindCommand());
+        Collections.addAll(commands,
+                new HelpCommand(),
+                new ToggleCommand(),
+                new BindCommand()
+        );
     }
 
     public Cheat getCheatByName(String name) {
         return cheats.stream().filter(it -> it.getName().equalsIgnoreCase(name))
                 .findFirst().orElse(null);
+    }
+
+    public List<Cheat> getCheatsByCategory(Category category) {
+        return cheats.stream().filter(it -> it.getCategory() == category)
+                .collect(Collectors.toList());
     }
 }

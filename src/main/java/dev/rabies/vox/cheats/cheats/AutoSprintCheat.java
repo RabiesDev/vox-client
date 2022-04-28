@@ -1,5 +1,7 @@
-package dev.rabies.vox.cheats;
+package dev.rabies.vox.cheats.cheats;
 
+import dev.rabies.vox.cheats.Category;
+import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.events.UpdateEvent;
 import dev.rabies.vox.utils.PlayerUtils;
@@ -10,7 +12,7 @@ public class AutoSprintCheat extends Cheat {
     private final BoolSetting omni = registerBoolSetting("All direction", true);
 
     public AutoSprintCheat() {
-        super("AutoSprint");
+        super("AutoSprint", Category.LEGIT);
     }
 
     @SubscribeEvent

@@ -1,5 +1,7 @@
-package dev.rabies.vox.cheats;
+package dev.rabies.vox.cheats.cheats;
 
+import dev.rabies.vox.cheats.Category;
+import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.KeyBind;
 import dev.rabies.vox.events.UpdateEvent;
 import dev.rabies.vox.utils.PlayerUtils;
@@ -15,7 +17,7 @@ public class AutoClickerCheat extends Cheat {
     private float nextDelay;
 
     public AutoClickerCheat() {
-        super("AutoClicker", KeyBind.fromKey(Keyboard.KEY_R));
+        super("AutoClicker", Category.LEGIT, KeyBind.fromKey(Keyboard.KEY_R));
     }
     
     @Override
