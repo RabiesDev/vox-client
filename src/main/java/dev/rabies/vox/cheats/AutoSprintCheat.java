@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class AutoSprintCheat extends Cheat {
 
-    private final BoolSetting omni = new BoolSetting("All direction", true);
+    private final BoolSetting omni = registerBoolSetting("All direction", true);
 
     public AutoSprintCheat() {
         super("AutoSprint");
