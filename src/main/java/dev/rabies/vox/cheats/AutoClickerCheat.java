@@ -2,7 +2,6 @@ package dev.rabies.vox.cheats;
 
 import dev.rabies.vox.cheats.setting.KeyBind;
 import dev.rabies.vox.events.UpdateEvent;
-import dev.rabies.vox.utils.ChatUtils;
 import dev.rabies.vox.utils.PlayerUtils;
 import dev.rabies.vox.utils.TimerUtil;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

@@ -44,6 +44,7 @@ public class PlayerUtils {
     public static void legitAttack() {
         // bruh no im retadedo
         KeyBinding attackKey = Minecraft.getMinecraft().gameSettings.keyBindAttack;
+        KeyBinding.setKeyBindState(attackKey.getKeyCode(), true);
         KeyBinding.onTick(attackKey.getKeyCode());
         KeyBinding.resetKeyBindingArrayAndHash();
     }

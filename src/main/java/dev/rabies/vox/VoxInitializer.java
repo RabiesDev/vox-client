@@ -4,6 +4,7 @@ import dev.rabies.vox.cheats.AutoClickerCheat;
 import dev.rabies.vox.cheats.AutoSprintCheat;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.DebugCheat;
+import dev.rabies.vox.commands.BindCommand;
 import dev.rabies.vox.commands.Command;
 import dev.rabies.vox.commands.HelpCommand;
 import dev.rabies.vox.commands.ToggleCommand;
@@ -43,6 +44,7 @@ public class VoxInitializer implements Initializer {
     private void registerCommands() {
         commands.add(new HelpCommand());
         commands.add(new ToggleCommand());
+        commands.add(new BindCommand());
     }
 
     public Cheat getCheatByName(String name) {

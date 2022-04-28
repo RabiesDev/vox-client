@@ -5,8 +5,10 @@ import lombok.Setter;
 
 public class KeyBind {
 
-    @Getter @Setter private int keyCode;
-    @Getter @Setter private BindType type;
+    @Getter @Setter
+    private int keyCode;
+    @Getter @Setter
+    private BindType type;
 
     public static KeyBind none() {
         return new KeyBind(-1, BindType.TOGGLE);
@@ -21,8 +23,25 @@ public class KeyBind {
         this.type = type;
     }
 
+    public void update(int keyCode, String type) {
+        this.keyCode = keyCode;
+        this.type = BindType.getByString(type);
+    }
+
     public enum BindType {
         TOGGLE,
-        HOLD
+        HOLD;
+
+        static BindType getByString(String name) {
+            switch (name.toLowerCase().trim()) {
+                case "toggle":
+                case "t":
+                    return TOGGLE;
+                case "hold":
+                case "h":
+                    return HOLD;
+            }
+            return TOGGLE;
+        }
     }
 }
