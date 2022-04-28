@@ -2,6 +2,7 @@ package dev.rabies.vox.cheats;
 
 import dev.rabies.vox.cheats.setting.KeyBind;
 import dev.rabies.vox.events.UpdateEvent;
+import dev.rabies.vox.utils.ChatUtils;
 import dev.rabies.vox.utils.TimerUtil;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -23,10 +24,13 @@ public class AutoClickerCheat extends Cheat {
         // TODO: 色々出来るようにします
         if (mc.isGamePaused()) return;
         if (!mc.inGameHasFocus) return;
-        if (!mc.gameSettings.keyBindAttack.isKeyDown()) return;
+        if (!mc.gameSettings.keyBindAttack.isKeyDown()) {
+        	nextDelay = 400;
+        	timerUtil.reset();
+        	return;
+        }
         
         // TODO: TimingCheck
-        // pre attack
         if (event.isPost()) return;
         updateDelay();
         
@@ -38,13 +42,11 @@ public class AutoClickerCheat extends Cheat {
     private void legitAttack() {
         int attackKey = mc.gameSettings.keyBindAttack.getKeyCode();
         Mouse.poll(); // ?
-        KeyBinding.setKeyBindState(attackKey, true);
         KeyBinding.onTick(attackKey);
-        KeyBinding.setKeyBindState(attackKey, false);
     }
     
     private void updateDelay() {
-        float middleCps = 6; // TODO
+        float middleCps = 7; // TODO
         float minCps = middleCps - 2;
         float maxCps = middleCps + 2;
     	nextDelay = 1000.0F / RandomUtils.nextFloat(minCps, maxCps);
