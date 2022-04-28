@@ -49,7 +49,8 @@ public class RenderHook {
         if (!hudCheat.isEnabled()) return;
         boolean state = Keyboard.getEventKeyState();
         int key = Keyboard.getEventKey();
-        widgets.forEach(it -> it.onInputKey(key ,state));
+        widgets.stream().filter(Widget::isVisible)
+                .forEach(it -> it.onInputKey(key ,state));
     }
 
     public static Widget getWidgetByName(String name) {
