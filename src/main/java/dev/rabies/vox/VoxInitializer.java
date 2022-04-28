@@ -5,6 +5,7 @@ import dev.rabies.vox.cheats.AutoSprintCheat;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.DebugCheat;
 import dev.rabies.vox.commands.Command;
+import dev.rabies.vox.commands.HelpCommand;
 import dev.rabies.vox.render.UIHook;
 import lombok.Getter;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,6 +40,7 @@ public class VoxInitializer implements Initializer {
     }
 
     private void registerCommands() {
+        commands.add(new HelpCommand());
     }
 
     public Cheat getCheatByName(String name) {
