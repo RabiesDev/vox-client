@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinGuiInGame {
 
     @Inject(method = "renderHotbar", at = @At("HEAD"))
-    public void renderHotbar(ScaledResolution sr, float partialTicks, CallbackInfo ci) {
+    public void renderHotBar(ScaledResolution sr, float partialTicks, CallbackInfo ci) {
         MinecraftForge.EVENT_BUS.post(new Render2DEvent(sr));
     }
 }

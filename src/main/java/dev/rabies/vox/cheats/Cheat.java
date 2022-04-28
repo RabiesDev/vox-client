@@ -43,8 +43,6 @@ public class Cheat implements ICheat {
     @Override
     public void toggle() {
         enabled = !enabled;
-
-        // TODO: event
         if (enabled) {
             onEnable();
             MinecraftForge.EVENT_BUS.register(this);
