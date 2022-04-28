@@ -6,6 +6,7 @@ import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.DebugCheat;
 import dev.rabies.vox.commands.Command;
 import dev.rabies.vox.commands.HelpCommand;
+import dev.rabies.vox.commands.ToggleCommand;
 import dev.rabies.vox.render.UIHook;
 import lombok.Getter;
 import net.minecraftforge.common.MinecraftForge;
@@ -41,10 +42,11 @@ public class VoxInitializer implements Initializer {
 
     private void registerCommands() {
         commands.add(new HelpCommand());
+        commands.add(new ToggleCommand());
     }
 
     public Cheat getCheatByName(String name) {
-        return cheats.stream().filter(it -> it.getName().equals(name))
+        return cheats.stream().filter(it -> it.getName().equalsIgnoreCase(name))
                 .findFirst().orElse(null);
     }
 }

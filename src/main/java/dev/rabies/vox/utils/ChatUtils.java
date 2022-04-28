@@ -14,6 +14,13 @@ public class ChatUtils {
         );
     }
 
+    public static void error(Object content) {
+        Minecraft.getMinecraft().ingameGUI.addChatMessage(
+                ChatType.SYSTEM,
+                new TextComponentString(Constants.PREFIX.concat("\247c" + content.toString()))
+        );
+    }
+
     public static void send(Object content) {
         Minecraft.getMinecraft().player.sendChatMessage(content.toString());
     }

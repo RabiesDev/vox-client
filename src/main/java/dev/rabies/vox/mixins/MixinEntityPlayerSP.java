@@ -39,8 +39,8 @@ public class MixinEntityPlayerSP {
                             Arrays.stream(it.getAliases()).anyMatch(s -> s.equalsIgnoreCase(first));
                 }).findFirst().orElse(null);
         if (command == null) {
-            ChatUtils.info("No command found");
-            ChatUtils.info("Try running :help");
+            ChatUtils.error("No command found");
+            ChatUtils.error("Try running :help");
         } else {
             command.execute(Arrays.copyOfRange(commandSplit, 1, commandSplit.length));
         }
