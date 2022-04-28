@@ -1,6 +1,7 @@
 package dev.rabies.vox.cheats.setting;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.function.Supplier;
 
@@ -8,7 +9,8 @@ public class Setting<V> {
 
     @Getter protected final String label;
     protected final Supplier<Boolean> dependency;
-    @Getter protected V value;
+    @Getter @Setter
+    protected V value;
 
 //    public Setting(final String label, V value) {
 //        this(label, value, () -> true);

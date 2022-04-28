@@ -30,6 +30,11 @@ public class Cheat implements ICheat {
         this.settings = new LinkedList<>();
     }
 
+    public Setting<?> getSettingByName(String name) {
+        return settings.stream().filter(it -> it.getLabel().equalsIgnoreCase(name))
+                .findFirst().orElse(null);
+    }
+
     protected BoolSetting registerBoolSetting(String name, Boolean state) {
         return registerBoolSetting(name, state, () -> true);
     }
