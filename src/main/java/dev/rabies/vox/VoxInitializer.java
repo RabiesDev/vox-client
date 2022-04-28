@@ -9,11 +9,13 @@ import dev.rabies.vox.commands.BindCommand;
 import dev.rabies.vox.commands.Command;
 import dev.rabies.vox.commands.HelpCommand;
 import dev.rabies.vox.commands.ToggleCommand;
+import dev.rabies.vox.config.ConfigManager;
 import dev.rabies.vox.render.RenderHook;
 import lombok.Getter;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +28,8 @@ public class VoxInitializer implements Initializer {
     private final ArrayList<Cheat> cheats = new ArrayList<>();
     @Getter
     private final ArrayList<Command> commands = new ArrayList<>();
+    @Getter
+    private ConfigManager configManager;
 
     @Override
     public void initialize(FMLInitializationEvent event) {
@@ -35,6 +39,7 @@ public class VoxInitializer implements Initializer {
 
     @Override
     public void postInitialize(FMLPostInitializationEvent event) {
+        configManager = new ConfigManager();
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         MinecraftForge.EVENT_BUS.register(new RenderHook());
     }

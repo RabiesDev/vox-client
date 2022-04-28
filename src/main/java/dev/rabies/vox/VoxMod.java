@@ -1,9 +1,13 @@
 package dev.rabies.vox;
 
+import dev.rabies.vox.utils.ModFile;
+import lombok.Getter;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+import java.io.File;
 
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION)
 public class VoxMod {
@@ -11,7 +15,9 @@ public class VoxMod {
     @Mod.Instance(Constants.MOD_ID)
     public static VoxMod INSTANCE;
 
-    public static Initializer initializer = new VoxInitializer();
+    private static final Initializer initializer = new VoxInitializer();
+    @Getter
+    private static final ModFile modFolder = new ModFile(new File(Constants.MOD_NAME), true);
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
