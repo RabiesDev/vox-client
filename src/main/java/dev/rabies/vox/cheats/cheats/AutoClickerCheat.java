@@ -56,7 +56,7 @@ public class AutoClickerCheat extends Cheat {
         }
         
         if (event.isPost() && attacked) {
-        	if (mc.player.ticksExisted % 3 != 0) return;
+        	if (mc.player.ticksExisted % RandomUtils.nextInt(2, 3) != 0) return;
         	PlayerUtils.holdState(false);
         	attacked = false;
         	return;
