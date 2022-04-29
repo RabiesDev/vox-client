@@ -25,8 +25,12 @@ public class ClientEvents {
         			break;
         		
         		case HOLD:
-        			// TODO: オンオフチェックを入れる
-        			cheat.toggle();
+					// ~^-^~
+					if (state && !cheat.isEnabled()) {
+						cheat.toggle();
+					} else if (!state && cheat.isEnabled()) {
+						cheat.toggle();
+					}
         			break;
         	}
         }
