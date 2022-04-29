@@ -4,6 +4,7 @@ import com.google.gson.*;
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
+import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.cheats.setting.Setting;
 import dev.rabies.vox.utils.ChatUtils;
 import dev.rabies.vox.utils.ModFile;
@@ -68,6 +69,9 @@ public class ConfigManager {
                 if (setting instanceof BoolSetting) {
                     Setting<Boolean> boolSetting = (Setting<Boolean>) setting;
                     boolSetting.setValue(settingEntry.getValue().getAsBoolean());
+                } else if (setting instanceof NumberSetting) {
+                    Setting<Double> numberSetting = (Setting<Double>) setting;
+                    numberSetting.setValue(settingEntry.getValue().getAsDouble());
                 }
             }
         }
@@ -87,6 +91,9 @@ public class ConfigManager {
                 if (setting instanceof BoolSetting) {
                     Setting<Boolean> boolSetting = (Setting<Boolean>) setting;
                     settingsObject.addProperty(setting.getLabel(), boolSetting.getValue());
+                } else if (setting instanceof NumberSetting) {
+                    Setting<Double> numberSetting = (Setting<Double>) setting;
+                    settingsObject.addProperty(setting.getLabel(), numberSetting.getValue());
                 }
             }
 
