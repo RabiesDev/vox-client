@@ -5,8 +5,10 @@ import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.cheats.setting.Setting;
+import dev.rabies.vox.utils.ChatUtils;
 import dev.rabies.vox.utils.ModFile;
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo;
@@ -33,7 +35,11 @@ public class ConfigManager {
         Config config = configs.stream().filter(it -> it.getName().equalsIgnoreCase(name))
                 .findFirst().orElse(null);
         if (config == null) {
-            System.out.println("No config found");
+            if (Minecraft.getMinecraft().world == null) {
+                System.out.println("No config found");
+            } else {
+                ChatUtils.error("No config found");
+            }
             return;
         }
 
@@ -95,19 +101,30 @@ public class ConfigManager {
             jsonObject.add(cheat.getName(), cheatObject);
         }
 
+        String result = "";
         try {
             FileUtils.writeStringToFile(newConfig, gson.toJson(jsonObject), StandardCharsets.UTF_8);
+            configs.add(new Config(name, author, jsonObject));
+            result = "Config saved";
         } catch (IOException e) {
             e.printStackTrace();
+            result = e.getMessage();
         }
-        configs.add(new Config(name, author, jsonObject));
+        
+        if (Minecraft.getMinecraft().world != null) {
+            ChatUtils.info(result);
+        }
     }
 
     public void reloadConfigs() {
         File folder = configFolder.getFile();
         File[] configFiles = folder.listFiles(it -> !it.isDirectory() && FilenameUtils.getExtension(it.getName()).equals("json"));
         if (configFiles == null) {
-            System.out.println("No config found");
+            if (Minecraft.getMinecraft().world == null) {
+                System.out.println("No config found");
+            } else {
+                ChatUtils.error("No config found");
+            }
             return;
         }
 
@@ -122,6 +139,10 @@ public class ConfigManager {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        if (Minecraft.getMinecraft().world != null) {
+            ChatUtils.info("Config has been reloaded");
         }
     }
 }

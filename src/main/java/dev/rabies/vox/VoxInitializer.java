@@ -2,10 +2,7 @@ package dev.rabies.vox;
 
 import dev.rabies.vox.cheats.*;
 import dev.rabies.vox.cheats.cheats.*;
-import dev.rabies.vox.commands.BindCommand;
-import dev.rabies.vox.commands.Command;
-import dev.rabies.vox.commands.HelpCommand;
-import dev.rabies.vox.commands.ToggleCommand;
+import dev.rabies.vox.commands.*;
 import dev.rabies.vox.config.ConfigManager;
 import dev.rabies.vox.render.RenderHook;
 import lombok.Getter;
@@ -58,7 +55,8 @@ public class VoxInitializer implements Initializer {
         Collections.addAll(commands,
                 new HelpCommand(),
                 new ToggleCommand(),
-                new BindCommand()
+                new BindCommand(),
+                new ConfigCommand()
         );
     }
 

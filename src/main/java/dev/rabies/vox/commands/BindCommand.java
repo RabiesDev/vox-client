@@ -14,7 +14,7 @@ public class BindCommand extends Command {
     @Override
     public void execute(String[] args) {
         if (args == null || args.length <= 0) {
-            ChatUtils.info(" - Usage");
+            ChatUtils.info("\2477 - Usage");
             ChatUtils.info(" :bind \2477<\247eCheat\2477> \2477<\247eKeyCode\2477>");
             ChatUtils.info(" :bind \2477<\247eCheat\2477> \2477<\247eKeyCode\2477> \2477<\247eType\2477>");
             return;

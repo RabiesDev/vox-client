@@ -13,7 +13,7 @@ public class ToggleCommand extends Command {
     @Override
     public void execute(String[] args) {
         if (args == null || args.length <= 0) {
-            ChatUtils.info(" - Usage");
+            ChatUtils.info("\2477 - Usage");
             ChatUtils.info(" :toggle \2477<\247eCheat\2477>");
             return;
         }
