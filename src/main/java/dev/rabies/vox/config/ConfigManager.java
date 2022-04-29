@@ -1,8 +1,6 @@
 package dev.rabies.vox.config;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
@@ -59,14 +57,12 @@ public class ConfigManager {
 
             JsonObject settingsObject = cheatObject.getAsJsonObject("settings");
             for (Map.Entry<String, JsonElement> settingEntry : settingsObject.entrySet()) {
-                JsonObject settingObject = settingEntry.getValue().getAsJsonObject();
                 Setting<?> setting = cheat.getSettingByName(settingEntry.getKey());
                 if (setting == null) continue;
-                // TODO:
-//                if (setting instanceof BoolSetting) {
-//                    Setting<Boolean> boolSetting = (Setting<Boolean>) setting;
-//                    boolSetting.setValue();
-//                }
+                if (setting instanceof BoolSetting) {
+                    Setting<Boolean> boolSetting = (Setting<Boolean>) setting;
+                    boolSetting.setValue(settingEntry.getValue().getAsBoolean());
+                }
             }
         }
     }
@@ -74,7 +70,11 @@ public class ConfigManager {
     public void saveConfig(String name, String author) {
         File newConfig = new File(configFolder.getFile(), String.format("%s.json", name));
         if (newConfig.exists()) return;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("name", name);
+        jsonObject.addProperty("author", author);
+
         for (Cheat cheat : VoxMod.get().getCheats()) {
             JsonObject settingsObject = new JsonObject();
             for (Setting<?> setting : cheat.getSettings()) {
@@ -96,7 +96,7 @@ public class ConfigManager {
         }
 
         try {
-            FileUtils.writeStringToFile(newConfig, jsonObject.toString(), StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(newConfig, gson.toJson(jsonObject), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }

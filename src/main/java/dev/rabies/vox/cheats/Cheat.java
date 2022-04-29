@@ -2,8 +2,10 @@ package dev.rabies.vox.cheats;
 
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.cheats.setting.KeyBind;
+import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.cheats.setting.Setting;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.LinkedList;
@@ -15,6 +17,8 @@ public class Cheat implements ICheat {
     @Getter private final KeyBind bind;
     @Getter private final Category category;
     @Getter private boolean enabled;
+    @Getter @Setter
+    private Object suffix;
 
     @Getter
     private final LinkedList<Setting<?>> settings;
@@ -41,6 +45,19 @@ public class Cheat implements ICheat {
 
     protected BoolSetting registerBoolSetting(String name, Boolean state, Supplier<Boolean> dependency) {
         BoolSetting setting = new BoolSetting(name, state, dependency);
+        settings.add(setting);
+        return setting;
+    }
+
+    protected NumberSetting registerNumberSetting(String name, double value,
+                                                  double minValue, double maxValue, double increment) {
+        return registerNumberSetting(name, value, minValue, maxValue, increment, () -> true);
+    }
+
+    protected NumberSetting registerNumberSetting(String name, double value,
+                                                  double minValue, double maxValue, double increment,
+                                                  Supplier<Boolean> dependency) {
+        NumberSetting setting = new NumberSetting(name, value, minValue, maxValue, increment, dependency);
         settings.add(setting);
         return setting;
     }

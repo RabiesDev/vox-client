@@ -26,12 +26,22 @@ public class CheatInfoWidget extends Widget {
         FontRenderer font = Minecraft.getMinecraft().fontRenderer;
         List<Cheat> sorted = VoxMod.get().getCheats().stream()
                 .filter(Cheat::isEnabled)
-                .sorted(Comparator.comparingDouble(module -> -font.getStringWidth(module.getName())))
-                .collect(Collectors.toList());
+                .sorted(Comparator.comparingDouble(it -> {
+                    String label = it.getName();
+                    if (it.getSuffix() != null && it.getSuffix().toString().length() > 0) {
+                        label += " \2477" + it.getSuffix().toString();
+                    }
+                    return -font.getStringWidth(label);
+                })).collect(Collectors.toList());
 
-        int offsetY = RenderHook.getWidgetByName("tabgui").isVisible() ? 65 : font.FONT_HEIGHT + 2;
+        int offsetY = RenderHook.getWidgetByName("tabgui").isVisible() ? 62 : font.FONT_HEIGHT + 2;
         for (Cheat cheat : sorted) {
-            font.drawStringWithShadow(cheat.getName(), 4, offsetY, -1);
+            String label = cheat.getName();
+            if (cheat.getSuffix() != null && cheat.getSuffix().toString().length() > 0) {
+                label += " \2477" + cheat.getSuffix().toString();
+            }
+
+            font.drawStringWithShadow(label, 4, offsetY, -1);
             offsetY += font.FONT_HEIGHT;
         }
     }

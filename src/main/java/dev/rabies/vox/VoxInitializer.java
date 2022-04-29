@@ -1,10 +1,7 @@
 package dev.rabies.vox;
 
 import dev.rabies.vox.cheats.*;
-import dev.rabies.vox.cheats.cheats.AutoClickerCheat;
-import dev.rabies.vox.cheats.cheats.AutoSprintCheat;
-import dev.rabies.vox.cheats.cheats.DebugCheat;
-import dev.rabies.vox.cheats.cheats.HudCheat;
+import dev.rabies.vox.cheats.cheats.*;
 import dev.rabies.vox.commands.BindCommand;
 import dev.rabies.vox.commands.Command;
 import dev.rabies.vox.commands.HelpCommand;
@@ -15,7 +12,6 @@ import lombok.Getter;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,8 +36,12 @@ public class VoxInitializer implements Initializer {
     @Override
     public void postInitialize(FMLPostInitializationEvent event) {
         configManager = new ConfigManager();
+        configManager.loadConfig("default");
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         MinecraftForge.EVENT_BUS.register(new RenderHook());
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            configManager.saveConfig("default", Constants.MOD_NAME);
+        }));
     }
 
     private void registerCheats() {
@@ -49,7 +49,8 @@ public class VoxInitializer implements Initializer {
                 new DebugCheat(),
                 new HudCheat(),
                 new AutoSprintCheat(),
-                new AutoClickerCheat()
+                new AutoClickerCheat(),
+                new InvPlusCheat()
         );
     }
 

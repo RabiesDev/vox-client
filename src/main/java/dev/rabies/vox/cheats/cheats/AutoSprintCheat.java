@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class AutoSprintCheat extends Cheat {
 
-    private final BoolSetting omni = registerBoolSetting("All direction", true);
+    private final BoolSetting omniSetting = registerBoolSetting("All direction", true);
 
     public AutoSprintCheat() {
         super("AutoSprint", Category.LEGIT);
@@ -25,7 +25,7 @@ public class AutoSprintCheat extends Cheat {
     private boolean canSprint() {
         if (!PlayerUtils.isMoving()) return false;
         if (mc.player.isSprinting() || mc.player.isSneaking()) return false;
-        if (!omni.getValue() && !mc.gameSettings.keyBindForward.isKeyDown()) return false;
+        if (!omniSetting.getValue() && !mc.gameSettings.keyBindForward.isKeyDown()) return false;
         if (mc.player.isCreative()) return true;
         return mc.player.getFoodStats().getFoodLevel() > 6;
     }

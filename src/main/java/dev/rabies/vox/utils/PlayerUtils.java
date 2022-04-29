@@ -1,7 +1,5 @@
 package dev.rabies.vox.utils;
 
-import org.lwjgl.input.Mouse;
-
 import net.minecraft.block.BlockAir;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -45,7 +43,7 @@ public class PlayerUtils {
         // bruh no im retadedo
         KeyBinding attackKey = Minecraft.getMinecraft().gameSettings.keyBindAttack;
         KeyBinding.setKeyBindState(attackKey.getKeyCode(), true);
-        KeyBinding.onTick(attackKey.getKeyCode());
+//        KeyBinding.onTick(attackKey.getKeyCode());
         KeyBinding.resetKeyBindingArrayAndHash();
     }
 

@@ -62,7 +62,7 @@ public class TabGuiWidget extends Widget implements TabActionListener {
 
         GlStateManager.translate(4, 15, 0);
         DrawUtils.drawRect(0, 0, width, height, bg);
-        GlStateManager.glLineWidth(1.5F);
+        GlStateManager.glLineWidth(1.2F);
         DrawUtils.drawRect(GL11.GL_LINE_LOOP, 0, 0, width, height, theme);
 
         int subOffset = offset - 1;

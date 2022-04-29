@@ -8,6 +8,6 @@ import org.lwjgl.input.Keyboard;
 public class DebugCheat extends Cheat {
 
     public DebugCheat() {
-        super("Debug", Category.RAGE);
+        super("Debug", Category.OTHER);
     }
 }

@@ -49,7 +49,7 @@ public class CategoryTab {
 
         GlStateManager.translate(parentOffsetX, parentOffsetY, 0);
         DrawUtils.drawRect(0, 0, width, height, bg);
-        GlStateManager.glLineWidth(1.5F);
+        GlStateManager.glLineWidth(1.2F);
         DrawUtils.drawRect(GL11.GL_LINE_LOOP, 0, 0, width, height, theme);
 
         int subOffset = offset - 1;
