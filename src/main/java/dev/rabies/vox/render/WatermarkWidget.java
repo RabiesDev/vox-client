@@ -22,7 +22,7 @@ public class WatermarkWidget extends Widget {
         FontRenderer font = Minecraft.getMinecraft().fontRenderer;
         font.drawStringWithShadow(
                 Constants.MOD_NAME,
-                4, 4,
+                5, 5,
                 new Color(120, 255, 70).getRGB()
         );
     }

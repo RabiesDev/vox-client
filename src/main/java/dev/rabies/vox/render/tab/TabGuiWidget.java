@@ -60,7 +60,7 @@ public class TabGuiWidget extends Widget implements TabActionListener {
         int theme = new Color(110, 255, 60).getRGB();
         int theme_bg = new Color(110, 255, 60, 200).getRGB();
 
-        GlStateManager.translate(4, 15, 0);
+        GlStateManager.translate(5, 16, 0);
         DrawUtils.drawRect(0, 0, width, height, bg);
         GlStateManager.glLineWidth(1.2F);
         DrawUtils.drawRect(GL11.GL_LINE_LOOP, 0, 0, width, height, theme);
@@ -71,12 +71,11 @@ public class TabGuiWidget extends Widget implements TabActionListener {
             CategoryTab tab = categoryTabs.get(i);
             Color col = new Color(255, 255, 255).darker();
             if (selectedIndex == i) {
-//                DrawUtils.drawRect(0, offsetY - subOffset + 1, width, offsetY + font.FONT_HEIGHT + offset - 1, theme_bg);
                 col = col.brighter().brighter();
 
                 if (selectedCheatIndex != -1) {
                 	col = new Color(110, 255, 60);
-                    tab.renderCheatsTab(width + 2, offsetY - 2, selectedCheatIndex);
+                    tab.renderCheatsTab(width + 2, offsetY - 3, selectedCheatIndex);
                 }
             }
 
@@ -85,7 +84,7 @@ public class TabGuiWidget extends Widget implements TabActionListener {
             offsetY += subOffset;
         }
 
-        GlStateManager.translate(-4, -15, 0);
+        GlStateManager.translate(-5, -16, 0);
     }
 
     @Override
@@ -127,14 +126,14 @@ public class TabGuiWidget extends Widget implements TabActionListener {
 
             case Keyboard.KEY_RIGHT:
             case Keyboard.KEY_RETURN: // enter
+            	CategoryTab tab = categoryTabs.get(selectedIndex);
                 if (selectedCheatIndex != -1) {
-                    categoryTabs.get(selectedIndex)
-                            .getCheatTabs()
-                            .get(selectedCheatIndex)
+                	tab.getCheatTabs().get(selectedCheatIndex)
                             .onInputKey(keyCode, true);
                     return;
                 }
                 
+                if (tab.getCheatTabs().isEmpty()) return;
                 selectedCheatIndex = 0;
                 break;
 

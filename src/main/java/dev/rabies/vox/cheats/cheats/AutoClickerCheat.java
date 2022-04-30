@@ -12,10 +12,15 @@ import dev.rabies.vox.utils.TimerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.RandomUtils;
 import org.lwjgl.input.Keyboard;
@@ -86,6 +91,8 @@ public class AutoClickerCheat extends Cheat {
 
         if (!leftTimerUtil.delay(leftClickNextDelay)) return;
         leftClickNextDelay = getNextDelay(leftCpsSetting.getValue().floatValue());
+        leftTimerUtil.reset();
+
         PlayerUtils.holdState(0, true);
         PlayerUtils.legitAttack();
         attacked = true;
@@ -100,8 +107,48 @@ public class AutoClickerCheat extends Cheat {
 
         if (rightTimerUtil.delay(rightClickNextDelay)) return;
         rightClickNextDelay = getNextDelay(rightCpsSetting.getValue().floatValue());
+        rightTimerUtil.reset();
+
         PlayerUtils.holdState(1, true);
-        mc.rightClickMouse();
+        if (mc.playerController.getIsHittingBlock()) return;
+        if (mc.player.isRowingBoat()) return;
+        for (EnumHand enumhand : EnumHand.values()) {
+            ItemStack itemstack = mc.player.getHeldItem(enumhand);
+            if (mc.objectMouseOver != null) {
+                switch (mc.objectMouseOver.typeOfHit) {
+                    case ENTITY:
+                        if (mc.playerController.interactWithEntity(mc.player, mc.objectMouseOver.entityHit,
+                                mc.objectMouseOver, enumhand) == EnumActionResult.SUCCESS)return;
+                        if (mc.playerController.interactWithEntity(mc.player, mc.objectMouseOver.entityHit,
+                                enumhand) == EnumActionResult.SUCCESS) return;
+                        break;
+
+                    case BLOCK:
+                        BlockPos blockpos = mc.objectMouseOver.getBlockPos();
+                        if (mc.world.getBlockState(blockpos).getMaterial() != Material.AIR) {
+                            int i = itemstack.getCount();
+                            EnumActionResult enumactionresult = mc.playerController.processRightClickBlock(
+                                    mc.player, mc.world, blockpos, mc.objectMouseOver.sideHit,
+                                    mc.objectMouseOver.hitVec, enumhand);
+
+                            if (enumactionresult == EnumActionResult.SUCCESS) {
+                                mc.player.swingArm(enumhand);
+                                if (!itemstack.isEmpty() && (itemstack.getCount() != i || mc.playerController.isInCreativeMode())) {
+                                    mc.entityRenderer.itemRenderer.resetEquippedProgress(enumhand);
+                                }
+                                return;
+                            }
+                        }
+                }
+            }
+
+            if (itemstack.isEmpty() && (mc.objectMouseOver == null || mc.objectMouseOver.typeOfHit == RayTraceResult.Type.MISS))
+                ForgeHooks.onEmptyClick(mc.player, enumhand);
+            if (!itemstack.isEmpty() && mc.playerController.processRightClick(mc.player, mc.world, enumhand) == EnumActionResult.SUCCESS) {
+                mc.entityRenderer.itemRenderer.resetEquippedProgress(enumhand);
+                return;
+            }
+        }
     }
     
     private float getNextDelay(float middleCps) {
@@ -109,7 +156,7 @@ public class AutoClickerCheat extends Cheat {
         float maxCps = middleCps + 2;
         float cps = RandomUtils.nextFloat(minCps, maxCps);
         setSuffix((int) cps);
-        return cps;
+        return 850.0F / cps;
     }
 
     public boolean canClick(boolean left) {

@@ -62,7 +62,6 @@ public class CategoryTab {
             }
             
             if (selectedIndex == i) {
-//                DrawUtils.drawRect(0, offsetY - subOffset + 1, width, offsetY + font.FONT_HEIGHT + offset - 1, theme_bg);
                 col = col.brighter();
             }
 

@@ -22,10 +22,8 @@ public class ModFile {
     public void check() {
         if (exists()) return;
         try {
-            if (directory)
-                file.mkdir();
-            else
-                file.createNewFile();
+            if (directory) file.mkdir();
+            else file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }

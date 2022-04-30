@@ -28,7 +28,8 @@ public class CheatInfoWidget extends Widget {
                 .filter(Cheat::isEnabled)
                 .sorted(Comparator.comparingDouble(it -> {
                     String label = it.getName();
-                    if (it.getSuffix() != null && it.getSuffix().toString().length() > 0) {
+                    if (it.getSuffix() != null && it.getSuffix().toString().length() > 0 &&
+                            VoxMod.get().isDebugMode()) {
                         label += " \2477" + it.getSuffix().toString();
                     }
                     return -font.getStringWidth(label);
@@ -37,11 +38,12 @@ public class CheatInfoWidget extends Widget {
         int offsetY = RenderHook.getWidgetByName("tabgui").isVisible() ? 62 : font.FONT_HEIGHT + 2;
         for (Cheat cheat : sorted) {
             String label = cheat.getName();
-            if (cheat.getSuffix() != null && cheat.getSuffix().toString().length() > 0) {
+            if (cheat.getSuffix() != null && cheat.getSuffix().toString().length() > 0 &&
+                    VoxMod.get().isDebugMode()) {
                 label += " \2477" + cheat.getSuffix().toString();
             }
 
-            font.drawStringWithShadow(label, 4, offsetY, -1);
+            font.drawStringWithShadow(label, 5, offsetY, -1);
             offsetY += font.FONT_HEIGHT;
             offsetY += 2;
         }
