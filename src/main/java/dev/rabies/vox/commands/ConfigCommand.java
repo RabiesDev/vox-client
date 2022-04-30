@@ -19,8 +19,8 @@ public class ConfigCommand extends Command {
             return;
         }
 
-        if (args.length >= 2) {
-            String first = args[0];
+        String first = args[0];
+        if (args.length > 1) {
             String configName = args[1];
             ConfigManager cfm = VoxMod.get().getConfigManager();
 
@@ -30,17 +30,11 @@ public class ConfigCommand extends Command {
                     break;
 
                 case "save":
-                    cfm.saveConfig(configName, mc.getSession().getUsername());
-                    break;
-
-                default:
-                    printConfigList();
-                    break;
+                    cfm.saveConfig(configName, mc.getSession().getUsername(), false);
             }
-            return;
+        } else if (first.equalsIgnoreCase("list")) {
+            printConfigList();
         }
-
-        printConfigList();
     }
 
     private void printConfigList() {
