@@ -22,75 +22,100 @@ import org.lwjgl.input.Keyboard;
 
 public class AutoClickerCheat extends Cheat {
 
-    private final NumberSetting cpsSetting = registerNumberSetting("Cps", 7, 1, 30, 1);
-    private final BoolSetting renderSetting = registerBoolSetting("Show info", true);
+    private final BoolSetting leftClickSetting = registerBoolSetting("Left click", true);
+    private final NumberSetting leftCpsSetting = registerNumberSetting("Left Cps", 7, 1, 30, 1,
+            leftClickSetting::getValue);
 
-    private final TimerUtil timerUtil = new TimerUtil();
+    private final BoolSetting rightClickSetting = registerBoolSetting("Right click", true);
+    private final NumberSetting rightCpsSetting = registerNumberSetting("Right Cps", 7, 1, 30, 1,
+            rightClickSetting::getValue);
+
+    private final BoolSetting renderSetting = registerBoolSetting("Show info", true,
+            leftClickSetting::getValue);
+
+    private final TimerUtil leftTimerUtil = new TimerUtil();
+    private final TimerUtil rightTimerUtil = new TimerUtil();
+    private float leftClickNextDelay;
+    private float rightClickNextDelay;
+
     private boolean attackable;
     private boolean attacked;
-    private float nextDelay;
     private int breakTick;
 
     public AutoClickerCheat() {
         super("Auto Clicker", Category.LEGIT, KeyBind.fromKey(Keyboard.KEY_R));
     }
-    
-    @Override
-    public void onEnable() {
-    	updateDelay();
-    	attacked = false;
-    }
 
     @SubscribeEvent
     public void onUpdate(UpdateEvent event) {
-        attackable = canClick();
-        if (!attackable) return;
-        if (!mc.gameSettings.keyBindAttack.isKeyDown()) {
-        	nextDelay = 350;
-        	timerUtil.reset();
-        	return;
-        }
-        
-        if (event.isPost() && attacked) {
-        	if (mc.player.ticksExisted % RandomUtils.nextInt(2, 3) != 0) return;
-        	PlayerUtils.holdState(false);
-        	attacked = false;
-        	return;
+        if (mc.gameSettings.keyBindAttack.isKeyDown()) {
+            doLeftClick(event);
+        } else {
+            leftClickNextDelay = 350;
+            leftTimerUtil.reset();
         }
 
-    	if (!timerUtil.delay(nextDelay)) return;
-        PlayerUtils.holdState(true);
-        PlayerUtils.legitAttack();
-        attacked = true;
-        updateDelay();
+        if (mc.gameSettings.keyBindUseItem.isKeyDown()) {
+            doRightClick(event);
+        } else {
+            rightClickNextDelay /= 2;
+            rightTimerUtil.reset();
+        }
     }
 
     @SubscribeEvent
     public void onRender2d(Render2DEvent event) {
-        if (!renderSetting.getValue()) return;
+        if (!(renderSetting.getValue() && renderSetting.isAvailable())) return;
         ScaledResolution resolution = event.getResolution();
         FontRenderer font = mc.fontRenderer;
-
-        String label1 = attackable ? "\247aAttackable" : "\247cNonAttackable";
-        int x = (resolution.getScaledWidth() / 2) - font.getStringWidth(label1) / 2;
+        String label = attackable ? "\247aAttackable" : "\247cNonAttackable";
+        int x = (resolution.getScaledWidth() / 2) - font.getStringWidth(label) / 2;
         int y = resolution.getScaledHeight() / 2 + font.FONT_HEIGHT;
-        font.drawStringWithShadow(label1, x, y, -1);
+        font.drawStringWithShadow(label, x, y, -1);
+    }
+
+    private void doLeftClick(UpdateEvent event) {
+        attackable = canClick(true);
+        if (!attackable) return;
+        if (event.isPost() && attacked) {
+            if (mc.player.ticksExisted % RandomUtils.nextInt(2, 3) != 0) return;
+            PlayerUtils.holdState(0, false);
+            attacked = false;
+            return;
+        }
+
+        if (!leftTimerUtil.delay(leftClickNextDelay)) return;
+        leftClickNextDelay = getNextDelay(leftCpsSetting.getValue().floatValue());
+        PlayerUtils.holdState(0, true);
+        PlayerUtils.legitAttack();
+        attacked = true;
+    }
+
+    private void doRightClick(UpdateEvent event) {
+        if (!canClick(false)) return;
+        if (event.isPost() && attacked) {
+            if (mc.player.ticksExisted % RandomUtils.nextInt(2, 3) != 0) return;
+            PlayerUtils.holdState(1, false);
+        }
+
+        if (rightTimerUtil.delay(rightClickNextDelay)) return;
+        rightClickNextDelay = getNextDelay(rightCpsSetting.getValue().floatValue());
+        PlayerUtils.holdState(1, true);
+        mc.rightClickMouse();
     }
     
-    private void updateDelay() {
-        float middleCps = cpsSetting.getValue().floatValue();
+    private float getNextDelay(float middleCps) {
         float minCps = middleCps - 2;
         float maxCps = middleCps + 2;
         float cps = RandomUtils.nextFloat(minCps, maxCps);
-    	nextDelay = 800.0F / cps;
-    	timerUtil.reset();
         setSuffix((int) cps);
+        return cps;
     }
 
-    public boolean canClick() {
+    public boolean canClick(boolean left) {
         if (mc.isGamePaused()) return false;
         if (!mc.inGameHasFocus) return false;
-        if (mc.objectMouseOver != null) {
+        if (mc.objectMouseOver != null && left) {
             RayTraceResult result = mc.objectMouseOver;
             if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
                 BlockPos blockPos = result.getBlockPos();

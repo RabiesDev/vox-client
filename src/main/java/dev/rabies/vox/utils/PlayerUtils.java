@@ -64,9 +64,10 @@ public class PlayerUtils {
         mc.player.swingArm(EnumHand.MAIN_HAND);
     }
 
-    public static void holdState(boolean state) {
+    // 0 -> left, 1 -> right, 2 -> middle?
+    public static void holdState(int button, boolean state) {
         MouseEvent mouseEvent = new MouseEvent();
-        ObfuscationReflectionHelper.setPrivateValue(MouseEvent.class, mouseEvent, 1, "button");
+        ObfuscationReflectionHelper.setPrivateValue(MouseEvent.class, mouseEvent, button, "button");
         ObfuscationReflectionHelper.setPrivateValue(MouseEvent.class, mouseEvent, state, "buttonstate");
         MinecraftForge.EVENT_BUS.post(mouseEvent);
     }
