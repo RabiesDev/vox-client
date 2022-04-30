@@ -9,14 +9,14 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class WTap extends Cheat {
+public class WTapCheat extends Cheat {
 
-    public static WTap INSTANCE;
+    public static WTapCheat INSTANCE;
     @Getter
     private boolean tap;
     private int tick;
 
-    public WTap() {
+    public WTapCheat() {
         super("WTap", Category.RAGE);
         INSTANCE = this;
     }
