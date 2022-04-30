@@ -1,4 +1,5 @@
 {
+  "verbose": false,
   "required": true,
   "compatibilityLevel": "JAVA_8",
   "package": "dev.rabies.vox.mixins",
@@ -7,9 +8,7 @@
     "MixinEntityPlayerSP",
     "MixinGuiInGame",
     "MixinKeyBinding",
-    "MixinMinecraft"
-  ],
-  "mixins": [
+    "MixinMinecraft",
     "MixinNetworkManager"
   ]
 }

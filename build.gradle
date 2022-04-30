@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '4.0.4'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -50,6 +50,10 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+configurations {
+    include
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -59,24 +63,29 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
-    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    include 'org.apache.commons:commons-lang3:3.12.0'
 
-    implementation 'org.spongepowered:mixin:0.7.11-SNAPSHOT'
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    include('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+        exclude module: 'gson'
+        exclude module: 'guava'
+        exclude module: 'commons-io'
+        exclude module: 'launchwrapper'
+        exclude module: 'log4j-core'
+    }
+    annotationProcessor('org.spongepowered:mixin:0.8.5:processor') {
+        exclude module: 'gson'
+    }
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    implementation configurations.include
 }
 
 processResources {
-//    inputs.property 'version', project.version
-//    from(sourceSets.main.resources.srcDirs) {
-//        include 'mcmod.info'
-//        expand 'version': project.version
-//    }
-//    from(sourceSets.main.resources.srcDirs) {
-//        exclude 'mcmod.info'
-//    }
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
@@ -86,11 +95,11 @@ mixin {
     debug.export = true
 }
 
-reobf {
-    shadowJar {
-        duplicatesStrategy DuplicatesStrategy.EXCLUDE
-    }
-}
+//reobf {
+//    shadowJar {
+//        duplicatesStrategy DuplicatesStrategy.EXCLUDE
+//    }
+//}
 
 jar {
     manifest.attributes(
@@ -103,6 +112,12 @@ jar {
             'FMLCorePlugin': 'dev.rabies.vox.VoxMixinLoader',
             'ForceLoadAsMod': 'true'
     )
+
+    from {
+        configurations.include.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
 }
 
 jar.finalizedBy('reobfJar')

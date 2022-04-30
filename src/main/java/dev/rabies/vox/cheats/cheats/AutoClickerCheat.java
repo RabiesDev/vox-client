@@ -54,14 +54,14 @@ public class AutoClickerCheat extends Cheat {
     @SubscribeEvent
     public void onUpdate(UpdateEvent event) {
         if (mc.gameSettings.keyBindAttack.isKeyDown()) {
-            doLeftClick(event);
+            doLeftClick();
         } else {
             leftClickNextDelay = 350;
             leftTimerUtil.reset();
         }
 
         if (mc.gameSettings.keyBindUseItem.isKeyDown()) {
-            doRightClick(event);
+            doRightClick();
         } else {
             rightClickNextDelay /= 2;
             rightTimerUtil.reset();
@@ -79,11 +79,11 @@ public class AutoClickerCheat extends Cheat {
         font.drawStringWithShadow(label, x, y, -1);
     }
 
-    private void doLeftClick(UpdateEvent event) {
+    private void doLeftClick() {
         attackable = canClick(true);
         if (!attackable) return;
-        if (event.isPost() && attacked) {
-            if (mc.player.ticksExisted % RandomUtils.nextInt(2, 3) != 0) return;
+        if (attacked) {
+            if (mc.player.ticksExisted % RandomUtils.nextInt(1, 3) != 0) return;
             PlayerUtils.holdState(0, false);
             attacked = false;
             return;
@@ -98,10 +98,10 @@ public class AutoClickerCheat extends Cheat {
         attacked = true;
     }
 
-    private void doRightClick(UpdateEvent event) {
+    private void doRightClick() {
         if (!canClick(false)) return;
-        if (event.isPost() && attacked) {
-            if (mc.player.ticksExisted % RandomUtils.nextInt(2, 3) != 0) return;
+        if (attacked) {
+            if (mc.player.ticksExisted % RandomUtils.nextInt(1, 3) != 0) return;
             PlayerUtils.holdState(1, false);
         }
 
@@ -154,7 +154,8 @@ public class AutoClickerCheat extends Cheat {
     private float getNextDelay(float middleCps) {
         float minCps = middleCps - 2;
         float maxCps = middleCps + 2;
-        float cps = Math.min(RandomUtils.nextFloat(minCps, maxCps), 1);
+        float cps = RandomUtils.nextFloat(minCps, maxCps);
+        if (cps < 1) cps = 1;
         setSuffix((int) cps);
         return 850.0F / cps;
     }

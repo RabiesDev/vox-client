@@ -6,6 +6,7 @@ import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.cheats.setting.Setting;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.network.Packet;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.LinkedList;
@@ -60,6 +61,10 @@ public class Cheat implements ICheat {
         NumberSetting setting = new NumberSetting(name, value, minValue, maxValue, increment, dependency);
         settings.add(setting);
         return setting;
+    }
+
+    protected void sendPacket(Packet<?> packetIn) {
+        mc.player.connection.sendPacket(packetIn);
     }
 
     @Override

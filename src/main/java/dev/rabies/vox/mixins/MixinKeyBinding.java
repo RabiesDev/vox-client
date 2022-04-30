@@ -10,7 +10,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(KeyBinding.class)
 public class MixinKeyBinding {
 
-    @Shadow private boolean pressed;
+    @Shadow
+    private boolean pressed;
 
     @Inject(method = "isKeyDown", at = @At("HEAD"), cancellable = true)
     public void isKeyDown(CallbackInfoReturnable<Boolean> cir) {
