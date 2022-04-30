@@ -28,6 +28,7 @@ java {
 
 minecraft {
     mappings channel: 'stable', version: '39-1.12'
+    accessTransformer = file('src/main/resources/vox_at.cfg')
 
     runs {
         client {
@@ -67,6 +68,18 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
+processResources {
+//    inputs.property 'version', project.version
+//    from(sourceSets.main.resources.srcDirs) {
+//        include 'mcmod.info'
+//        expand 'version': project.version
+//    }
+//    from(sourceSets.main.resources.srcDirs) {
+//        exclude 'mcmod.info'
+//    }
+    rename '(.+_at.cfg)', 'META-INF/$1'
+}
+
 mixin {
     add sourceSets.main, 'mixins.vox.refmap.json'
     config 'mixins.vox.json'
@@ -83,6 +96,7 @@ jar {
     manifest.attributes(
             'Manifest-Version': 1.0,
             'MixinConfigs': 'mixins.vox.json',
+            'FMLAT': 'vox_at.cfg',
             'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
             'TweakOrder': 0,
             'FMLCorePluginContainsFMLMod': 'true',

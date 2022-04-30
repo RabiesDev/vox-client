@@ -8,5 +8,8 @@
     "MixinGuiInGame",
     "MixinKeyBinding",
     "MixinMinecraft"
+  ],
+  "mixins": [
+    "MixinNetworkManager"
   ]
 }

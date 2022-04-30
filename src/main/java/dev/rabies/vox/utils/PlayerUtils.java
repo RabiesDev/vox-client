@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.MouseEvent;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
@@ -40,15 +41,30 @@ public class PlayerUtils {
     }
 
     public static void legitAttack() {
-        // bruh no im retadedo
-        KeyBinding attackKey = Minecraft.getMinecraft().gameSettings.keyBindAttack;
-        KeyBinding.setKeyBindState(attackKey.getKeyCode(), true);
-        KeyBinding.onTick(attackKey.getKeyCode());
-        KeyBinding.resetKeyBindingArrayAndHash();
+    	Minecraft mc = Minecraft.getMinecraft();
+    	if (mc.objectMouseOver == null) return;
+    	if (mc.player.isRowingBoat()) return;
+    	switch (mc.objectMouseOver.typeOfHit) {
+            case ENTITY:
+            	mc.playerController.attackEntity(mc.player, mc.objectMouseOver.entityHit);
+                break;
+                
+            case BLOCK:
+                BlockPos blockpos = mc.objectMouseOver.getBlockPos();
+                if (!mc.world.isAirBlock(blockpos)) {
+                	mc.playerController.clickBlock(blockpos, mc.objectMouseOver.sideHit);
+                    break;
+                }
+
+            case MISS:
+                mc.player.resetCooldown();
+                ForgeHooks.onEmptyLeftClick(mc.player);
+        }
+    	
+        mc.player.swingArm(EnumHand.MAIN_HAND);
     }
 
     public static void holdState(boolean state) {
-        // ok raven moment 🤨
         MouseEvent mouseEvent = new MouseEvent();
         ObfuscationReflectionHelper.setPrivateValue(MouseEvent.class, mouseEvent, 1, "button");
         ObfuscationReflectionHelper.setPrivateValue(MouseEvent.class, mouseEvent, state, "buttonstate");

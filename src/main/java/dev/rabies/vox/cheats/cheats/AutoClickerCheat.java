@@ -12,6 +12,7 @@ import dev.rabies.vox.utils.TimerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.math.BlockPos;
@@ -46,12 +47,8 @@ public class AutoClickerCheat extends Cheat {
         attackable = canClick();
         if (!attackable) return;
         if (!mc.gameSettings.keyBindAttack.isKeyDown()) {
-        	if (nextDelay != -1F) {
-        		nextDelay = 320;
-            	timerUtil.reset();
-        	}
-        	
-        	nextDelay = -1F;
+        	nextDelay = 350;
+        	timerUtil.reset();
         	return;
         }
         
@@ -86,7 +83,7 @@ public class AutoClickerCheat extends Cheat {
         float minCps = middleCps - 2;
         float maxCps = middleCps + 2;
         float cps = RandomUtils.nextFloat(minCps, maxCps);
-    	nextDelay = 1000.0F / cps;
+    	nextDelay = 800.0F / cps;
     	timerUtil.reset();
         setSuffix((int) cps);
     }
