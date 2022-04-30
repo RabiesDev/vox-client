@@ -154,7 +154,7 @@ public class AutoClickerCheat extends Cheat {
     private float getNextDelay(float middleCps) {
         float minCps = middleCps - 2;
         float maxCps = middleCps + 2;
-        float cps = RandomUtils.nextFloat(minCps, maxCps);
+        float cps = Math.min(RandomUtils.nextFloat(minCps, maxCps), 1);
         setSuffix((int) cps);
         return 850.0F / cps;
     }
