@@ -8,6 +8,7 @@ import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.events.Render2DEvent;
 import dev.rabies.vox.events.UpdateEvent;
 import dev.rabies.vox.utils.PlayerUtils;
+import dev.rabies.vox.utils.ServerUtil;
 import dev.rabies.vox.utils.TimerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -15,6 +16,8 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -71,6 +74,7 @@ public class AutoClickerCheat extends Cheat {
     @SubscribeEvent
     public void onRender2d(Render2DEvent event) {
         if (!(renderSetting.getValue() && renderSetting.isAvailable())) return;
+        if (mc.gameSettings.thirdPersonView != 0) return;
         ScaledResolution resolution = event.getResolution();
         FontRenderer font = mc.fontRenderer;
         String label = attackable ? "\247aAttackable" : "\247cNonAttackable";
@@ -178,6 +182,13 @@ public class AutoClickerCheat extends Cheat {
                 }
             } else {
                 breakTick = 0;
+
+                if (result.typeOfHit == RayTraceResult.Type.ENTITY) {
+                    Entity entity = result.entityHit;
+                    if (!(entity instanceof EntityPlayer)) return true;
+                    if (entity == mc.player) return false;
+                    return !ServerUtil.isTeams((EntityPlayer) entity);
+                }
             }
         }
         return true;

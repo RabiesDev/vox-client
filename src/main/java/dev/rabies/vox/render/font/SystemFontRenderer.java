@@ -19,22 +19,17 @@ public class SystemFontRenderer extends SystemFont {
         setUpColorCodes();
     }
 
-    public void drawCenteredString(String text, double x, double y, int color) {
-        drawString(text, x - (this.getStringWidth(text) / 2F), y, new Color(color), false);
+    public void drawCenteredStringWithShadow(String text, double x, double y, int color) {
+        drawStringWithShadow(text, x - (this.getStringWidth(text) / 2F), y, color);
     }
 
-    public void drawCenteredStringWithShadow(String text, float x, float y, int color) {
-        drawStringWithShadow(text, x - (this.getStringWidth(text) / 2F), y, color);
+    public void drawCenteredString(String text, double x, double y, int color) {
+        drawString(text, x - (this.getStringWidth(text) / 2F), y, new Color(color), false);
     }
 
     public final void drawStringWithShadow(String text, double x, double y, int color) {
         drawString(text, x + 0.5F, y + 0.5F, new Color(color), true);
         drawString(text, x, y, new Color(color), false);
-    }
-
-    public final int drawString(String text, int x, int y, int color) {
-        drawString(text, x, y, new Color(color), false);
-        return 0;
     }
 
     public final void drawString(String text, double x, double y, int color) {
