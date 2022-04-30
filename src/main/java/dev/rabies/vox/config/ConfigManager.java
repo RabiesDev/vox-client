@@ -78,7 +78,12 @@ public class ConfigManager {
 
     public void saveConfig(String name, String author, boolean overwrite) {
         File newConfig = new File(configFolder.getFile(), String.format("%s.json", name));
-        if (newConfig.exists() && !overwrite) return;
+        if (newConfig.exists() && !overwrite) {
+            if (Minecraft.getMinecraft().world == null) return;
+            ChatUtils.error("Config already exists");
+            return;
+        }
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("name", name);
