@@ -7,6 +7,7 @@ import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.events.Render2DEvent;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.utils.DrawUtils;
+import dev.rabies.vox.utils.ServerUtil;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -130,7 +131,7 @@ public class ESPCheat extends Cheat {
                         livingBase.getName(),
                         (posX + endPosX) / 2,
                         posY - ((hpFont.getHeight() + 3) + tagFont.getHeight()),
-                        new Color(220, 220, 220).getRGB());
+                        ServerUtil.getTeamColor(livingBase).getRGB());
             }
         }
 

@@ -1,11 +1,17 @@
 package dev.rabies.vox.utils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.legacydev.reloc.joptsimple.internal.Strings;
+
+import java.awt.*;
 
 public class ServerUtil {
 
@@ -15,6 +21,18 @@ public class ServerUtil {
             return Minecraft.getMinecraft().isSingleplayer() ? "SinglePlayer" : "Unknown";
         }
         return serverData.serverIP;
+    }
+
+    public static Color getTeamColor(Entity entityIn) {
+        Color color = Color.WHITE;
+        ScorePlayerTeam scoreplayerteam = (ScorePlayerTeam) entityIn.getTeam();
+        if (scoreplayerteam != null) {
+            String s = FontRenderer.getFormatFromString(scoreplayerteam.getPrefix());
+            if (!Strings.isNullOrEmpty(s) && s.length() >= 2) {
+                color = new Color(Minecraft.getMinecraft().fontRenderer.getColorCode(s.charAt(1)));
+            }
+        }
+        return color;
     }
 
     public static boolean isTeams(EntityPlayer otherEntity) {

@@ -27,6 +27,7 @@ public class AutoSprintCheat extends Cheat {
         if (mc.player.isSprinting() || mc.player.isSneaking()) return false;
         if (!omniSetting.getValue() && !mc.gameSettings.keyBindForward.isKeyDown()) return false;
         if (mc.player.isCreative()) return true;
+        if (WTap.INSTANCE.isTap()) return false;
         return mc.player.getFoodStats().getFoodLevel() > 6;
     }
 }

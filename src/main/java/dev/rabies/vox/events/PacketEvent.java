@@ -13,4 +13,12 @@ public class PacketEvent extends VoxEvent {
         super(timing);
         this.packet = packetIn;
     }
+
+    public boolean isOut() {
+        return getTiming() == VoxEventTiming.PRE;
+    }
+
+    public boolean isIn() {
+        return getTiming() == VoxEventTiming.POST;
+    }
 }
