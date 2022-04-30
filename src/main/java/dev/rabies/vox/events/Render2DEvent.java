@@ -9,4 +9,5 @@ import net.minecraft.client.gui.ScaledResolution;
 public class Render2DEvent extends VoxEvent {
 
     private final ScaledResolution resolution;
+    private final float partialTicks;
 }

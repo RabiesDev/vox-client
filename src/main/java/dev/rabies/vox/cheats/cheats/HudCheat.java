@@ -5,6 +5,6 @@ import dev.rabies.vox.cheats.Cheat;
 
 public class HudCheat extends Cheat {
     public HudCheat() {
-        super("Hud", Category.OTHER);
+        super("HUD", Category.OTHER);
     }
 }

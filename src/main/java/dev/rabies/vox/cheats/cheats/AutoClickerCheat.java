@@ -12,7 +12,6 @@ import dev.rabies.vox.utils.TimerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.math.BlockPos;
@@ -33,7 +32,7 @@ public class AutoClickerCheat extends Cheat {
     private int breakTick;
 
     public AutoClickerCheat() {
-        super("AutoClicker", Category.LEGIT, KeyBind.fromKey(Keyboard.KEY_R));
+        super("Auto Clicker", Category.LEGIT, KeyBind.fromKey(Keyboard.KEY_R));
     }
     
     @Override

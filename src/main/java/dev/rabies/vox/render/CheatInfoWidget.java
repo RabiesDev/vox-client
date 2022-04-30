@@ -43,6 +43,7 @@ public class CheatInfoWidget extends Widget {
 
             font.drawStringWithShadow(label, 4, offsetY, -1);
             offsetY += font.FONT_HEIGHT;
+            offsetY += 2;
         }
     }
 

@@ -12,7 +12,7 @@ public class AutoSprintCheat extends Cheat {
     private final BoolSetting omniSetting = registerBoolSetting("All direction", true);
 
     public AutoSprintCheat() {
-        super("AutoSprint", Category.LEGIT);
+        super("Auto Sprint", Category.LEGIT);
     }
 
     @SubscribeEvent
