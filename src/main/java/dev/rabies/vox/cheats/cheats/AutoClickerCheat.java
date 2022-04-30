@@ -1,5 +1,6 @@
 package dev.rabies.vox.cheats.cheats;
 
+import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
@@ -7,6 +8,7 @@ import dev.rabies.vox.cheats.setting.KeyBind;
 import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.events.Render2DEvent;
 import dev.rabies.vox.events.UpdateEvent;
+import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.utils.PlayerUtils;
 import dev.rabies.vox.utils.ServerUtil;
 import dev.rabies.vox.utils.TimerUtil;
@@ -40,6 +42,7 @@ public class AutoClickerCheat extends Cheat {
 
     private final BoolSetting renderSetting = registerBoolSetting("Show info", true,
             leftClickSetting::getValue);
+    private final SystemFontRenderer infoFont = VoxMod.get().newSystemFont("Mukta-Bold", 16);
 
     private final TimerUtil leftTimerUtil = new TimerUtil();
     private final TimerUtil rightTimerUtil = new TimerUtil();
@@ -56,6 +59,7 @@ public class AutoClickerCheat extends Cheat {
 
     @SubscribeEvent
     public void onUpdate(UpdateEvent event) {
+    	attackable = canClick(true);
         if (mc.gameSettings.keyBindAttack.isKeyDown()) {
             doLeftClick();
         } else {
@@ -76,15 +80,12 @@ public class AutoClickerCheat extends Cheat {
         if (!(renderSetting.getValue() && renderSetting.isAvailable())) return;
         if (mc.gameSettings.thirdPersonView != 0) return;
         ScaledResolution resolution = event.getResolution();
-        FontRenderer font = mc.fontRenderer;
         String label = attackable ? "\247aAttackable" : "\247cNonAttackable";
-        int x = (resolution.getScaledWidth() / 2) - font.getStringWidth(label) / 2;
-        int y = resolution.getScaledHeight() / 2 + font.FONT_HEIGHT;
-        font.drawStringWithShadow(label, x, y, -1);
+        double y = (resolution.getScaledHeight() / 2.0) + infoFont.getHeight() + 2.0;
+        infoFont.drawCenteredStringWithShadow(label, resolution.getScaledWidth() / 2.0, y, -1);
     }
 
     private void doLeftClick() {
-        attackable = canClick(true);
         if (!attackable) return;
         if (attacked) {
             if (mc.player.ticksExisted % RandomUtils.nextInt(1, 3) != 0) return;

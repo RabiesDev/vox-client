@@ -7,7 +7,6 @@ import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.events.Render2DEvent;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.utils.DrawUtils;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -27,7 +26,7 @@ public class ESPCheat extends Cheat {
 
     private final BoolSetting invisSetting = registerBoolSetting("Invisible entity", true);
 
-    private final SystemFontRenderer tagFont = VoxMod.get().newSystemFont("Mukta-SemiBold", 13);
+    private final SystemFontRenderer tagFont = VoxMod.get().newSystemFont("Mukta-Bold", 13);
     private final SystemFontRenderer hpFont = VoxMod.get().newSystemFont("Mukta-SemiBold", 11);
     private final Frustum frustum = new Frustum();
 
