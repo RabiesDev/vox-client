@@ -63,7 +63,8 @@ public class VoxInitializer implements Initializer {
                 new AutoClickerCheat(),
                 new InvPlusCheat(),
                 new ESPCheat(),
-                new WTapCheat()
+                new WTapCheat(),
+                new AutoToolCheat()
         );
     }
 

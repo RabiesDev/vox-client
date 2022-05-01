@@ -17,7 +17,7 @@ public class WTapCheat extends Cheat {
     private int tick;
 
     public WTapCheat() {
-        super("WTap", Category.RAGE);
+        super("WTap", Category.LEGIT);
         INSTANCE = this;
     }
 
