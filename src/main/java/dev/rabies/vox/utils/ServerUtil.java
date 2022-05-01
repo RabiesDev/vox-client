@@ -1,5 +1,6 @@
 package dev.rabies.vox.utils;
 
+import joptsimple.internal.Strings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.multiplayer.ServerData;
@@ -9,7 +10,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.legacydev.reloc.joptsimple.internal.Strings;
 
 import java.awt.*;
 
