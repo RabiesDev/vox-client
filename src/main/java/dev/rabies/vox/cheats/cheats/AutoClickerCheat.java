@@ -66,7 +66,7 @@ public class AutoClickerCheat extends Cheat {
             if (mc.gameSettings.keyBindAttack.isKeyDown()) {
                 doLeftClick();
             } else {
-                leftClickNextDelay = 350;
+                leftClickNextDelay = 320;
                 leftTimerUtil.reset();
             }
         }
@@ -75,7 +75,7 @@ public class AutoClickerCheat extends Cheat {
             if (mc.gameSettings.keyBindUseItem.isKeyDown()) {
                 doRightClick();
             } else {
-                rightClickNextDelay /= 2;
+                rightClickNextDelay = RandomUtils.nextFloat(70, 150);
                 rightTimerUtil.reset();
             }
         }
@@ -168,7 +168,7 @@ public class AutoClickerCheat extends Cheat {
         float cps = RandomUtils.nextFloat(minCps, maxCps);
         if (cps < 1) cps = 1;
         setSuffix((int) cps);
-        return 850.0F / cps;
+        return 820.0F / cps;
     }
 
     public boolean canClick(boolean left) {
