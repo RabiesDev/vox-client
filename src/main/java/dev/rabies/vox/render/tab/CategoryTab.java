@@ -1,10 +1,10 @@
 package dev.rabies.vox.render.tab;
 
+import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
+import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.utils.DrawUtils;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
@@ -14,6 +14,7 @@ import java.util.List;
 
 public class CategoryTab {
 
+    private final SystemFontRenderer labelFont = VoxMod.get().newSystemFont("Mukta-Regular", 20);
     @Getter
     private final List<CheatTab> cheatTabs = new ArrayList<>();
     @Getter
@@ -30,22 +31,19 @@ public class CategoryTab {
         cheatTabs.add(tab);
     }
 
-    public void renderCheatsTab(int parentOffsetX, int parentOffsetY, int selectedIndex) {
-        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
-
-        int offset = 5;
-        int height = (font.FONT_HEIGHT + offset) * cheatTabs.size();
-        int width = 0;
+    public void renderCheatsTab(double parentOffsetX, double parentOffsetY, int selectedIndex) {
+        int offset = 6;
+        double height = ((labelFont.getHeight() / 1.3) + offset - 1) * cheatTabs.size();
+        double width = 0;
         for (CheatTab tab : cheatTabs) {
-            if (font.getStringWidth(tab.getLabel()) > width) {
-                width = font.getStringWidth(tab.getLabel());
+            if (labelFont.getStringWidth(tab.getLabel()) > width) {
+                width = labelFont.getStringWidth(tab.getLabel());
             }
         }
-        width += offset * 1.5;
+        width += offset * 3;
 
         int bg = new Color(20, 20, 20, 200).getRGB();
         int theme = new Color(110, 255, 60).getRGB();
-        int theme_bg = new Color(110, 255, 60, 200).getRGB();
 
         GlStateManager.translate(parentOffsetX, parentOffsetY, 0);
         DrawUtils.drawRect(0, 0, width, height, bg);
@@ -65,8 +63,8 @@ public class CategoryTab {
                 col = col.brighter();
             }
 
-            font.drawStringWithShadow(tab.getLabel(), subOffset, offsetY + 1, col.getRGB());
-            offsetY += font.FONT_HEIGHT;
+            labelFont.drawStringWithShadow(tab.getLabel(), subOffset, offsetY - 2, col.getRGB());
+            offsetY += labelFont.getHeight() / 1.3;
             offsetY += subOffset;
         }
 

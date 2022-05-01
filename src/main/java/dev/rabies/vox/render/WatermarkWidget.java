@@ -1,13 +1,16 @@
 package dev.rabies.vox.render;
 
 import dev.rabies.vox.Constants;
+import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.events.Render2DEvent;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
+import dev.rabies.vox.render.font.SystemFontRenderer;
 
 import java.awt.*;
 
 public class WatermarkWidget extends Widget {
+
+    private final SystemFontRenderer watermarkFont = VoxMod.get().newSystemFont("Mukta-Bold", 28);
+
     public WatermarkWidget() {
         super("Watermark");
     }
@@ -19,12 +22,7 @@ public class WatermarkWidget extends Widget {
 
     @Override
     public void draw(Render2DEvent event) {
-        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
-        font.drawStringWithShadow(
-                Constants.MOD_NAME,
-                5, 5,
-                new Color(120, 255, 70).getRGB()
-        );
+        watermarkFont.drawStringWithShadow(Constants.MOD_NAME, 5, 0, new Color(120, 255, 70).getRGB());
     }
 
     @Override

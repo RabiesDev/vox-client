@@ -28,7 +28,7 @@ public class SystemFontRenderer extends SystemFont {
     }
 
     public final void drawStringWithShadow(String text, double x, double y, int color) {
-        drawString(text, x + 0.5F, y + 0.5F, new Color(color), true);
+        drawString(text, x + 0.6F, y + 0.6F, new Color(color), true);
         drawString(text, x, y, new Color(color), false);
     }
 

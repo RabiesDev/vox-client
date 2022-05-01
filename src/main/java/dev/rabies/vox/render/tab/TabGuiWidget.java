@@ -4,10 +4,9 @@ import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.events.Render2DEvent;
 import dev.rabies.vox.render.Widget;
+import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.utils.DrawUtils;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -19,6 +18,8 @@ import java.util.List;
 
 public class TabGuiWidget extends Widget implements TabActionListener {
 
+    private final SystemFontRenderer labelFont = VoxMod.get().newSystemFont("Mukta-Regular", 20);
+    @Getter
     private final List<CategoryTab> categoryTabs = new ArrayList<>();
     @Getter
     private int selectedIndex;
@@ -44,23 +45,20 @@ public class TabGuiWidget extends Widget implements TabActionListener {
 
     @Override
     public void draw(Render2DEvent event) {
-        FontRenderer font = Minecraft.getMinecraft().fontRenderer;
-        
-        int offset = 5;
-        int height = (font.FONT_HEIGHT + offset) * categoryTabs.size();
-        int width = 0;
+        int offset = 6;
+        double height = ((labelFont.getHeight() / 1.3) + offset - 1) * categoryTabs.size();
+        double width = 0;
         for (CategoryTab tab : categoryTabs) {
-            if (font.getStringWidth(tab.getLabel()) > width) {
-                width = font.getStringWidth(tab.getLabel());
+            if (labelFont.getStringWidth(tab.getLabel()) > width) {
+                width = labelFont.getStringWidth(tab.getLabel());
             }
         }
-        width += offset * 1.5;
+        width += offset * 3;
 
         int bg = new Color(20, 20, 20, 200).getRGB();
         int theme = new Color(110, 255, 60).getRGB();
-        int theme_bg = new Color(110, 255, 60, 200).getRGB();
 
-        GlStateManager.translate(5, 16, 0);
+        GlStateManager.translate(5, 20, 0);
         DrawUtils.drawRect(0, 0, width, height, bg);
         GlStateManager.glLineWidth(1.2F);
         DrawUtils.drawRect(GL11.GL_LINE_LOOP, 0, 0, width, height, theme);
@@ -75,16 +73,16 @@ public class TabGuiWidget extends Widget implements TabActionListener {
 
                 if (selectedCheatIndex != -1) {
                 	col = new Color(110, 255, 60);
-                    tab.renderCheatsTab(width + 2, offsetY - 3, selectedCheatIndex);
+                    tab.renderCheatsTab(width + 3, offsetY - 4, selectedCheatIndex);
                 }
             }
 
-            font.drawStringWithShadow(tab.getLabel(), subOffset, offsetY + 1, col.getRGB());
-            offsetY += font.FONT_HEIGHT;
+            labelFont.drawStringWithShadow(tab.getLabel(), subOffset, offsetY - 2, col.getRGB());
+            offsetY += labelFont.getHeight() / 1.3;
             offsetY += subOffset;
         }
 
-        GlStateManager.translate(-5, -16, 0);
+        GlStateManager.translate(-5, -20, 0);
     }
 
     @Override

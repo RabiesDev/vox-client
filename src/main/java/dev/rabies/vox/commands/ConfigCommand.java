@@ -15,7 +15,7 @@ public class ConfigCommand extends Command {
     public void execute(String[] args) {
         if (args == null || args.length <= 0) {
             ChatUtils.info("\2477 - Usage");
-            ChatUtils.info(" :config \2477<\247eLoad/Save/List\2477> \2477<\247eConfigName\2477>");
+            ChatUtils.info(" :config \2477<\247eLoad/Save/Reload/List\2477> \2477<\247eConfigName\2477>");
             return;
         }
 
@@ -32,8 +32,12 @@ public class ConfigCommand extends Command {
                 case "save":
                     cfm.saveConfig(configName, mc.getSession().getUsername(), false);
             }
-        } else if (first.equalsIgnoreCase("list")) {
-            printConfigList();
+        } else {
+            if (first.equalsIgnoreCase("reload")) {
+                VoxMod.get().getConfigManager().reloadConfigs();
+            } else if (first.equalsIgnoreCase("list")) {
+                printConfigList();
+            }
         }
     }
 
