@@ -20,6 +20,11 @@ public class AutoToolCheat extends Cheat {
         super("Auto Tool", Category.RAGE);
     }
 
+    @Override
+    public void onEnable() {
+        prevSlot = mc.player.inventory.currentItem;
+    }
+
     @SubscribeEvent
     public void onUpdate(UpdateEvent event) {
         if (mc.currentScreen != null) return;
@@ -49,6 +54,7 @@ public class AutoToolCheat extends Cheat {
                 }
             }
         } else if (prevSlot != mc.player.inventory.currentItem) {
+            if (prevSlot == -1) return;
             if (!switchBackSetting.getValue()) return;
             mc.player.inventory.currentItem = prevSlot;
         }
