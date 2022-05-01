@@ -32,18 +32,20 @@ import org.lwjgl.input.Keyboard;
 
 public class AutoClickerCheat extends Cheat {
 
+    private final BoolSetting itemInUse = registerBoolSetting("Item in use", false);
+
     private final BoolSetting leftClickSetting = registerBoolSetting("Left click", true);
     private final NumberSetting leftCpsSetting = registerNumberSetting("Left Cps", 7, 1, 30, 1,
             leftClickSetting::getValue);
 
     private final BoolSetting rightClickSetting = registerBoolSetting("Right click", true);
-    private final NumberSetting rightCpsSetting = registerNumberSetting("Right Cps", 7, 1, 30, 1,
+    private final NumberSetting rightCpsSetting = registerNumberSetting("Right Cps", 12, 1, 30, 1,
             rightClickSetting::getValue);
 
     private final BoolSetting renderSetting = registerBoolSetting("Show info", true,
             leftClickSetting::getValue);
 
-    private final SystemFontRenderer infoFont = VoxMod.get().newSystemFont("Mukta-Bold", 16);
+    private final SystemFontRenderer infoFont = VoxMod.get().newSystemFont("Mukta-Bold", 18);
     private final TimerUtil leftTimerUtil = new TimerUtil();
     private final TimerUtil rightTimerUtil = new TimerUtil();
     private float leftClickNextDelay;
@@ -59,19 +61,23 @@ public class AutoClickerCheat extends Cheat {
 
     @SubscribeEvent
     public void onUpdate(UpdateEvent event) {
-    	attackable = canClick(true);
-        if (mc.gameSettings.keyBindAttack.isKeyDown()) {
-            doLeftClick();
-        } else {
-            leftClickNextDelay = 350;
-            leftTimerUtil.reset();
+        if (leftClickSetting.getValue()) {
+            attackable = canClick(true);
+            if (mc.gameSettings.keyBindAttack.isKeyDown()) {
+                doLeftClick();
+            } else {
+                leftClickNextDelay = 350;
+                leftTimerUtil.reset();
+            }
         }
 
-        if (mc.gameSettings.keyBindUseItem.isKeyDown()) {
-            doRightClick();
-        } else {
-            rightClickNextDelay /= 2;
-            rightTimerUtil.reset();
+        if (rightClickSetting.getValue()) {
+            if (mc.gameSettings.keyBindUseItem.isKeyDown()) {
+                doRightClick();
+            } else {
+                rightClickNextDelay /= 2;
+                rightTimerUtil.reset();
+            }
         }
     }
 
@@ -168,6 +174,8 @@ public class AutoClickerCheat extends Cheat {
     public boolean canClick(boolean left) {
         if (mc.isGamePaused()) return false;
         if (!mc.inGameHasFocus) return false;
+        if (mc.player.isActiveItemStackBlocking() &&
+                !itemInUse.getValue()) return false;
         if (mc.objectMouseOver != null && left) {
             RayTraceResult result = mc.objectMouseOver;
             if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
