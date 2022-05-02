@@ -8,7 +8,7 @@
     "MixinEntityPlayerSP",
     "MixinGuiInGame",
     "MixinKeyBinding",
-    "MixinMinecraft",
+    "AccessorMinecraft",
     "MixinNetworkManager"
   ]
 }

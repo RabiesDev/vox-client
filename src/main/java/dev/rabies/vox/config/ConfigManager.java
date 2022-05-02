@@ -6,8 +6,8 @@ import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.cheats.setting.Setting;
-import dev.rabies.vox.utils.ChatUtils;
-import dev.rabies.vox.utils.ModFile;
+import dev.rabies.vox.utils.misc.ChatUtil;
+import dev.rabies.vox.utils.misc.ModFile;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import org.apache.commons.io.FileUtils;
@@ -38,7 +38,7 @@ public class ConfigManager {
             if (Minecraft.getMinecraft().world == null) {
                 System.out.println("No config found");
             } else {
-                ChatUtils.error("No config found");
+                ChatUtil.error("No config found");
             }
             return;
         }
@@ -80,7 +80,7 @@ public class ConfigManager {
         File newConfig = new File(configFolder.getFile(), String.format("%s.json", name));
         if (newConfig.exists() && !overwrite) {
             if (Minecraft.getMinecraft().world == null) return;
-            ChatUtils.error("Config already exists");
+            ChatUtil.error("Config already exists");
             return;
         }
 
@@ -123,7 +123,7 @@ public class ConfigManager {
         }
         
         if (Minecraft.getMinecraft().world != null) {
-            ChatUtils.info(result);
+            ChatUtil.info(result);
         }
     }
 
@@ -134,7 +134,7 @@ public class ConfigManager {
             if (Minecraft.getMinecraft().world == null) {
                 System.out.println("No config found");
             } else {
-                ChatUtils.error("No config found");
+                ChatUtil.error("No config found");
             }
             return;
         }
@@ -153,7 +153,7 @@ public class ConfigManager {
         }
 
         if (Minecraft.getMinecraft().world != null) {
-            ChatUtils.info("Config has been reloaded");
+            ChatUtil.info("Config has been reloaded");
         }
     }
 }

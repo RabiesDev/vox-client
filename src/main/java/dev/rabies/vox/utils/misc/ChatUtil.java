@@ -1,11 +1,11 @@
-package dev.rabies.vox.utils;
+package dev.rabies.vox.utils.misc;
 
 import dev.rabies.vox.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TextComponentString;
 
-public class ChatUtils {
+public class ChatUtil {
 
     public static void info(Object content) {
         Minecraft.getMinecraft().ingameGUI.addChatMessage(

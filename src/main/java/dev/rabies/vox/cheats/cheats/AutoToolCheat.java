@@ -5,7 +5,7 @@ import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.events.UpdateEvent;
-import dev.rabies.vox.utils.ChatUtils;
+import dev.rabies.vox.utils.misc.ChatUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.RayTraceResult;
@@ -18,11 +18,6 @@ public class AutoToolCheat extends Cheat {
 
     public AutoToolCheat() {
         super("Auto Tool", Category.RAGE);
-    }
-
-    @Override
-    public void onEnable() {
-        prevSlot = mc.player.inventory.currentItem;
     }
 
     @SubscribeEvent
@@ -50,11 +45,11 @@ public class AutoToolCheat extends Cheat {
                 mc.player.inventory.currentItem = bestToolSlot;
                 mc.playerController.updateController();
                 if (VoxMod.get().isDebugMode()) {
-                    ChatUtils.info("Switched to " + mc.player.inventory.getCurrentItem().getDisplayName());
+                    ChatUtil.info("Switched to " + mc.player.inventory.getCurrentItem().getDisplayName());
                 }
             }
         } else if (prevSlot != mc.player.inventory.currentItem) {
-            if (prevSlot == -1) return;
+            if (prevSlot == -1) prevSlot = mc.player.inventory.currentItem;
             if (!switchBackSetting.getValue()) return;
             mc.player.inventory.currentItem = prevSlot;
         }

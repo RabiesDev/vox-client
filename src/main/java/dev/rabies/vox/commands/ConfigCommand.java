@@ -3,7 +3,7 @@ package dev.rabies.vox.commands;
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.config.Config;
 import dev.rabies.vox.config.ConfigManager;
-import dev.rabies.vox.utils.ChatUtils;
+import dev.rabies.vox.utils.misc.ChatUtil;
 
 public class ConfigCommand extends Command {
 
@@ -14,8 +14,8 @@ public class ConfigCommand extends Command {
     @Override
     public void execute(String[] args) {
         if (args == null || args.length <= 0) {
-            ChatUtils.info("\2477 - Usage");
-            ChatUtils.info(" :config \2477<\247eLoad/Save/Reload/List\2477> \2477<\247eConfigName\2477>");
+            ChatUtil.info("\2477 - Usage");
+            ChatUtil.info(" :config \2477<\247eLoad/Save/Reload/List\2477> \2477<\247eConfigName\2477>");
             return;
         }
 
@@ -42,9 +42,9 @@ public class ConfigCommand extends Command {
     }
 
     private void printConfigList() {
-        ChatUtils.info(" - Configs");
+        ChatUtil.info(" - Configs");
         for (Config config : VoxMod.get().getConfigManager().getConfigs()) {
-            ChatUtils.info(String.format(" \2479%s \2477- \2471%s",
+            ChatUtil.info(String.format(" \2479%s \2477- \2471%s",
                     config.getName(), config.getAuthor()));
         }
     }

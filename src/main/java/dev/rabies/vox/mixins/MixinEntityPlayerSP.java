@@ -4,7 +4,7 @@ import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.commands.Command;
 import dev.rabies.vox.events.UpdateEvent;
 import dev.rabies.vox.events.VoxEventTiming;
-import dev.rabies.vox.utils.ChatUtils;
+import dev.rabies.vox.utils.misc.ChatUtil;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -39,8 +39,8 @@ public class MixinEntityPlayerSP {
                             Arrays.stream(it.getAliases()).anyMatch(s -> s.equalsIgnoreCase(first));
                 }).findFirst().orElse(null);
         if (command == null) {
-            ChatUtils.error("No command found");
-            ChatUtils.error("Try running :help");
+            ChatUtil.error("No command found");
+            ChatUtil.error("Try running :help");
         } else {
             command.execute(Arrays.copyOfRange(commandSplit, 1, commandSplit.length));
         }

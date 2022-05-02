@@ -1,6 +1,6 @@
 package dev.rabies.vox;
 
-import dev.rabies.vox.utils.ModFile;
+import dev.rabies.vox.utils.misc.ModFile;
 import lombok.Getter;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

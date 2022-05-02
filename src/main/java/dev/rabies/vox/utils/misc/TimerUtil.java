@@ -1,4 +1,4 @@
-package dev.rabies.vox.utils;
+package dev.rabies.vox.utils.misc;
 
 public class TimerUtil {
 

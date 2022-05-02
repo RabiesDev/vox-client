@@ -2,7 +2,7 @@ package dev.rabies.vox.commands;
 
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Cheat;
-import dev.rabies.vox.utils.ChatUtils;
+import dev.rabies.vox.utils.misc.ChatUtil;
 import org.lwjgl.input.Keyboard;
 
 public class BindCommand extends Command {
@@ -14,16 +14,16 @@ public class BindCommand extends Command {
     @Override
     public void execute(String[] args) {
         if (args == null || args.length <= 0) {
-            ChatUtils.info("\2477 - Usage");
-            ChatUtils.info(" :bind \2477<\247eCheat\2477> \2477<\247eKeyCode\2477>");
-            ChatUtils.info(" :bind \2477<\247eCheat\2477> \2477<\247eKeyCode\2477> \2477<\247eType\2477>");
+            ChatUtil.info("\2477 - Usage");
+            ChatUtil.info(" :bind \2477<\247eCheat\2477> \2477<\247eKeyCode\2477>");
+            ChatUtil.info(" :bind \2477<\247eCheat\2477> \2477<\247eKeyCode\2477> \2477<\247eType\2477>");
             return;
         }
 
         String first = args[0];
         Cheat cheat = VoxMod.get().getCheatByName(first);
         if (cheat == null) {
-            ChatUtils.error(String.format("%s was not found", first));
+            ChatUtil.error(String.format("%s was not found", first));
             return;
         }
 
@@ -33,6 +33,6 @@ public class BindCommand extends Command {
         } else {
             cheat.getBind().setKeyCode(keyCode);
         }
-        ChatUtils.info("Updated key bindings");
+        ChatUtil.info("Updated key bindings");
     }
 }

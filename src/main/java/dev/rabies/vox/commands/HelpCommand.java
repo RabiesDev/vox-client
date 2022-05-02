@@ -2,7 +2,7 @@ package dev.rabies.vox.commands;
 
 import dev.rabies.vox.Constants;
 import dev.rabies.vox.VoxMod;
-import dev.rabies.vox.utils.ChatUtils;
+import dev.rabies.vox.utils.misc.ChatUtil;
 
 public class HelpCommand extends Command {
 
@@ -12,9 +12,9 @@ public class HelpCommand extends Command {
 
     @Override
     public void execute(String[] args) {
-        ChatUtils.info(String.format("\247aVox \247fv%s", Constants.VERSION));
-        ChatUtils.info(String.format("\2479Git\2477hub\247f: %s", Constants.URL));
-        ChatUtils.info("");
-        VoxMod.get().getCommands().forEach(it -> ChatUtils.info(" \2477:" + it.getName()));
+        ChatUtil.info(String.format("\247aVox \247fv%s", Constants.VERSION));
+        ChatUtil.info(String.format("\2479Git\2477hub\247f: %s", Constants.URL));
+        ChatUtil.info("");
+        VoxMod.get().getCommands().forEach(it -> ChatUtil.info(" \2477:" + it.getName()));
     }
 }

@@ -1,6 +1,7 @@
 package dev.rabies.vox;
 
-import dev.rabies.vox.cheats.*;
+import dev.rabies.vox.cheats.Category;
+import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.cheats.*;
 import dev.rabies.vox.commands.*;
 import dev.rabies.vox.config.ConfigManager;
