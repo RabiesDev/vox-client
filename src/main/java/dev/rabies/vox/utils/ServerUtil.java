@@ -55,9 +55,9 @@ public class ServerUtil {
             if (formatting != null && formatting2 != null) {
                 result = (formatting != formatting2);
             } else if (mc.player.getTeam() != null) {
-                result = !mc.player.isOnSameTeam(otherEntity);
+                result = mc.player.isOnSameTeam(otherEntity);
             } else if (mc.player.inventory.armorInventory.get(3).getItem() instanceof ItemBlock) {
-                result = !ItemStack.areItemStacksEqual(
+                result = ItemStack.areItemStacksEqual(
                         mc.player.inventory.armorInventory.get(3),
                         otherEntity.inventory.armorInventory.get(3));
             }
