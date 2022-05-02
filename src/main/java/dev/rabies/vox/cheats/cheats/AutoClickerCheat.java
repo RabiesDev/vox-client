@@ -31,7 +31,8 @@ import org.lwjgl.input.Keyboard;
 
 public class AutoClickerCheat extends Cheat {
 
-    private final BoolSetting itemInUse = registerBoolSetting("Item in use", false);
+    private final BoolSetting teamCheckSetting = registerBoolSetting("Team check", true);
+    private final BoolSetting itemInUseSetting = registerBoolSetting("Item in use", false);
 
     private final BoolSetting leftClickSetting = registerBoolSetting("Left click", true);
     private final NumberSetting leftCpsSetting = registerNumberSetting("Left Cps", 7, 1, 30, 1,
@@ -172,7 +173,7 @@ public class AutoClickerCheat extends Cheat {
         if (mc.isGamePaused()) return false;
         if (!mc.inGameHasFocus) return false;
         if (left && mc.player.getItemInUseCount() > 0 &&
-                !itemInUse.getValue()) return false;
+                !itemInUseSetting.getValue()) return false;
         if (mc.objectMouseOver != null && left) {
             RayTraceResult result = mc.objectMouseOver;
             if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
@@ -189,7 +190,7 @@ public class AutoClickerCheat extends Cheat {
             } else {
                 breakTick = 0;
 
-                if (result.typeOfHit == RayTraceResult.Type.ENTITY) {
+                if (result.typeOfHit == RayTraceResult.Type.ENTITY && teamCheckSetting.getValue()) {
                     Entity entity = result.entityHit;
                     if (!(entity instanceof EntityPlayer)) return true;
                     if (entity == mc.player) return false;
