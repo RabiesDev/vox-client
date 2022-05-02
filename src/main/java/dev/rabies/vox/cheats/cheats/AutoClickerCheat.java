@@ -38,7 +38,7 @@ public class AutoClickerCheat extends Cheat {
             leftClickSetting::getValue);
 
     private final BoolSetting rightClickSetting = registerBoolSetting("Right click", true);
-    private final NumberSetting rightCpsSetting = registerNumberSetting("Right Cps", 12, 1, 30, 1,
+    private final NumberSetting rightCpsSetting = registerNumberSetting("Right Cps", 18, 1, 30, 1,
             rightClickSetting::getValue);
 
     private final BoolSetting renderSetting = registerBoolSetting("Show info", true,
@@ -120,17 +120,15 @@ public class AutoClickerCheat extends Cheat {
         rightTimerUtil.reset();
 
         PlayerUtils.holdState(1, true);
-        if (mc.playerController.getIsHittingBlock()) return;
+//        if (mc.playerController.getIsHittingBlock()) return;
         if (mc.player.isRowingBoat()) return;
         for (EnumHand enumhand : EnumHand.values()) {
             ItemStack itemstack = mc.player.getHeldItem(enumhand);
             if (mc.objectMouseOver != null) {
                 switch (mc.objectMouseOver.typeOfHit) {
                     case ENTITY:
-                        if (mc.playerController.interactWithEntity(mc.player, mc.objectMouseOver.entityHit,
-                                mc.objectMouseOver, enumhand) == EnumActionResult.SUCCESS)return;
-                        if (mc.playerController.interactWithEntity(mc.player, mc.objectMouseOver.entityHit,
-                                enumhand) == EnumActionResult.SUCCESS) return;
+                        if (mc.playerController.interactWithEntity(mc.player, mc.objectMouseOver.entityHit, mc.objectMouseOver, enumhand) == EnumActionResult.SUCCESS)return;
+                        if (mc.playerController.interactWithEntity(mc.player, mc.objectMouseOver.entityHit, enumhand) == EnumActionResult.SUCCESS) return;
                         break;
 
                     case BLOCK:
@@ -173,7 +171,7 @@ public class AutoClickerCheat extends Cheat {
     public boolean canClick(boolean left) {
         if (mc.isGamePaused()) return false;
         if (!mc.inGameHasFocus) return false;
-        if (mc.player.isActiveItemStackBlocking() &&
+        if (left && mc.player.getItemInUseCount() > 0 &&
                 !itemInUse.getValue()) return false;
         if (mc.objectMouseOver != null && left) {
             RayTraceResult result = mc.objectMouseOver;
