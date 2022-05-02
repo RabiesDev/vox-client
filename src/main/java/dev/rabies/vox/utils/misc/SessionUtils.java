@@ -7,7 +7,6 @@ import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
 import com.thealtening.auth.TheAlteningAuthentication;
 import com.thealtening.auth.service.AlteningServiceType;
-import dev.rabies.vox.mixins.AccessorMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Session;
 
@@ -16,7 +15,7 @@ import java.net.Proxy;
 public class SessionUtils {
 
     private final Minecraft mc = Minecraft.getMinecraft();
-    private TheAlteningAuthentication theAlteningAuth = TheAlteningAuthentication.mojang(environment -> {});
+    private final TheAlteningAuthentication theAlteningAuth = TheAlteningAuthentication.theAltening(environment -> {});
     private final YggdrasilUserAuthentication authentication;
 
     public SessionUtils() {
@@ -38,7 +37,6 @@ public class SessionUtils {
     }
 
     public SessionUtils username(String username) {
-        theAlteningAuth.updateService(AlteningServiceType.MOJANG);
         authentication.setUsername(username);
         return this;
     }
@@ -54,8 +52,8 @@ public class SessionUtils {
             authentication.logIn();
             GameProfile profile = authentication.getSelectedProfile();
             if (profile == null) return false;
-            ((AccessorMinecraft) mc).setSession(new Session(profile.getName(), profile.getId().toString(),
-                    authentication.getAuthenticatedToken(), "MOJANG"));
+            mc.session = new Session(profile.getName(), profile.getId().toString(),
+                    authentication.getAuthenticatedToken(), "MOJANG");
             return true;
         } catch (AuthenticationException e) {
             e.printStackTrace();

@@ -7,8 +7,8 @@
   "client": [
     "MixinEntityPlayerSP",
     "MixinGuiInGame",
+    "MixinGuiMultiplayer",
     "MixinKeyBinding",
-    "AccessorMinecraft",
     "MixinNetworkManager"
   ]
 }
