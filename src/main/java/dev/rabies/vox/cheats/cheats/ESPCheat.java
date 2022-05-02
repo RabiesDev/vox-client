@@ -5,6 +5,7 @@ import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.events.Render2DEvent;
+import dev.rabies.vox.events.RenderNameEvent;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.utils.DrawUtils;
 import dev.rabies.vox.utils.ServerUtil;
@@ -33,6 +34,11 @@ public class ESPCheat extends Cheat {
 
     public ESPCheat() {
         super("ESP", Category.LEGIT);
+    }
+
+    @SubscribeEvent
+    public void onRenderName(RenderNameEvent event) {
+        event.setCanceled(true);
     }
 
     @SubscribeEvent

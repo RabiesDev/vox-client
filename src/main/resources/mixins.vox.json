@@ -9,6 +9,7 @@
     "MixinGuiInGame",
     "MixinGuiMultiplayer",
     "MixinKeyBinding",
-    "MixinNetworkManager"
+    "MixinNetworkManager",
+    "MixinRenderLivingBase"
   ]
 }

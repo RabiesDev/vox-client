@@ -15,7 +15,7 @@ import java.net.Proxy;
 public class SessionUtils {
 
     private final Minecraft mc = Minecraft.getMinecraft();
-    private final TheAlteningAuthentication theAlteningAuth = TheAlteningAuthentication.theAltening(environment -> {});
+    private final TheAlteningAuthentication theAlteningAuth = TheAlteningAuthentication.theAltening();
     private final YggdrasilUserAuthentication authentication;
 
     public SessionUtils() {
