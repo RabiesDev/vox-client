@@ -12,6 +12,7 @@ import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import org.lwjgl.input.Mouse;
 
 public class PlayerUtils {
 
@@ -66,6 +67,7 @@ public class PlayerUtils {
 
     // 0 -> left, 1 -> right, 2 -> middle?
     public static void holdState(int button, boolean state) {
+        Mouse.poll();
         MouseEvent mouseEvent = new MouseEvent();
         ObfuscationReflectionHelper.setPrivateValue(MouseEvent.class, mouseEvent, button, "button");
         ObfuscationReflectionHelper.setPrivateValue(MouseEvent.class, mouseEvent, state, "buttonstate");
