@@ -15,7 +15,6 @@ import dev.rabies.vox.events.UpdateEvent;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.utils.PlayerUtils;
 import dev.rabies.vox.utils.ServerUtil;
-import dev.rabies.vox.utils.misc.ChatUtil;
 import dev.rabies.vox.utils.misc.TimerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;

@@ -9,11 +9,6 @@ public class ModeSetting<V extends Enum<V>> extends Setting<V> {
     @Getter
     private final V[] values;
 
-    public ModeSetting(String label, V value) {
-        super(label, value, () -> true);
-        this.values = (V[]) value.getClass().getEnumConstants();
-    }
-
     public ModeSetting(String label, V value, Supplier<Boolean> dependency) {
         super(label, value, dependency);
         this.values = (V[]) value.getClass().getEnumConstants();

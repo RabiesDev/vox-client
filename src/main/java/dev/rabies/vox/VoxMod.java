@@ -12,9 +12,6 @@ import java.io.File;
 @Mod(modid = Constants.MOD_ID, name = Constants.MOD_NAME, version = Constants.VERSION)
 public class VoxMod {
 
-    @Mod.Instance(Constants.MOD_ID)
-    public static VoxMod INSTANCE;
-
     private static final Initializer initializer = new VoxInitializer();
     @Getter
     private static final ModFile modFolder = new ModFile(new File(Constants.MOD_NAME), true);

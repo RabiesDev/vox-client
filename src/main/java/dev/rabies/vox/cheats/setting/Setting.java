@@ -12,10 +12,6 @@ public class Setting<V> {
     @Getter @Setter
     protected V value;
 
-//    public Setting(final String label, V value) {
-//        this(label, value, () -> true);
-//    }
-
     public Setting(final String label, V value, Supplier<Boolean> dependency) {
         this.label = label;
         this.dependency = dependency;
