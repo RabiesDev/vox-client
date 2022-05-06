@@ -52,6 +52,7 @@ public class AutoToolCheat extends Cheat {
             if (prevSlot == -1) prevSlot = mc.player.inventory.currentItem;
             if (!switchBackSetting.getValue()) return;
             mc.player.inventory.currentItem = prevSlot;
+            prevSlot = -1;
         }
     }
 }
