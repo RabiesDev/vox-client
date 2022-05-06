@@ -22,6 +22,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector4d;
+
 import java.awt.*;
 
 public class ESPCheat extends Cheat {
@@ -93,20 +94,27 @@ public class ESPCheat extends Cheat {
                 double endPosX = position.z;
                 double endPosY = position.w;
 
-                int black = new Color(0, 0, 0, 220).getRGB();
-                Color color = livingBase.hurtTime > 0 ?
-                        new Color(255, 100, 90) :
-                        new Color(235, 235, 235);
+                int black = new Color(0, 0, 0, 200).getRGB();
+                Color first = getEspColor(0);
+                Color second = getEspColor(90);
+                Color third = getEspColor(180);
+                Color fourth = getEspColor(270);
+                if (livingBase.hurtTime > 0) {
+                	first = new Color(255, 100, 100);
+                	second = new Color(255, 100, 100);
+                	third = new Color(255, 100, 100);
+                	fourth = new Color(255, 100, 100);
+                }
 
-                DrawUtils.drawRect(posX - 1.0D, posY, posX + 0.5D, endPosY + 0.5D, black);
-                DrawUtils.drawRect(posX - 1.0D, posY - 0.5D, endPosX + 0.5D, posY + 0.5D + 0.5D, black);
-                DrawUtils.drawRect(endPosX - 0.5D - 0.5D, posY, endPosX + 0.5D, endPosY + 0.5D, black);
-                DrawUtils.drawRect(posX - 1.0D, endPosY - 0.5D - 0.5D, endPosX + 0.5D, endPosY + 0.5D, black);
+                DrawUtils.drawRect(posX - 1.0D, posY, posX + 1.0D, endPosY + 0.5D, black);
+                DrawUtils.drawRect(posX - 1.0D, endPosY - 1.5D, endPosX + 0.5D, endPosY + 0.5D, black);
+                DrawUtils.drawRect(endPosX - 1.5D, posY, endPosX + 0.5D, endPosY + 0.5D, black);
+                DrawUtils.drawRect(posX - 1.0D, posY - 0.5D, endPosX + 0.5D, posY + 1.5D, black);
 
-                DrawUtils.drawRect(posX - 0.5D, posY, posX + 0.5D - 0.5D, endPosY, color.getRGB());
-                DrawUtils.drawRect(posX, endPosY - 0.5D, endPosX, endPosY, color.getRGB());
-                DrawUtils.drawRect(posX - 0.5D, posY, endPosX, posY + 0.5D, color.getRGB());
-                DrawUtils.drawRect(endPosX - 0.5D, posY, endPosX, endPosY, color.getRGB());
+                DrawUtils.drawGradientH(posX - 0.5D, posY, posX + 0.5D, endPosY, first.getRGB(), second.getRGB());
+                DrawUtils.drawGradientV(posX, endPosY - 1.0D, endPosX, endPosY, second.getRGB(), third.getRGB());
+                DrawUtils.drawGradientH(endPosX - 1.0D, posY, endPosX, endPosY, fourth.getRGB(), third.getRGB());
+                DrawUtils.drawGradientV(posX - 0.5D, posY, endPosX, posY + 1.0D, first.getRGB(), fourth.getRGB());
 
                 double armorPercentage = livingBase.getTotalArmorValue() / 20.0D;
                 double armorBarHeight = (endPosY - posY) * armorPercentage;
@@ -155,6 +163,19 @@ public class ESPCheat extends Cheat {
         };
         float progress = health / maxHealth;
         return DrawUtils.blendColors(fractions, colors, progress).brighter();
+    }
+    
+    public Color getEspColor(double offset) {
+        float[] fractions = {0.0F, 0.3F, 0.7F, 1.0F};
+        Color[] colors = {
+                new Color(55, 33, 255),
+                new Color(255, 70, 90),
+                new Color(50, 150, 255),
+                new Color(55, 33, 255)
+        };
+        double progress = Math.ceil((System.currentTimeMillis() + (offset * 2) * 2) / 5);
+        progress %= 270.0D;
+        return DrawUtils.blendColors(fractions, colors, (float) (progress / 270)).brighter();
     }
 
     private boolean isValidEntity(Entity entity) {

@@ -109,6 +109,64 @@ public class DrawUtils {
         }
         return null;
     }
+    
+    public static void drawGradientH(double x, double y, double x2, double y2, int col1, int col2) {
+        float f = (col1 >> 24 & 0xFF) / 255.0F;
+        float f1 = (col1 >> 16 & 0xFF) / 255.0F;
+        float f2 = (col1 >> 8 & 0xFF) / 255.0F;
+        float f3 = (col1 & 0xFF) / 255.0F;
+        float f4 = (col2 >> 24 & 0xFF) / 255.0F;
+        float f5 = (col2 >> 16 & 0xFF) / 255.0F;
+        float f6 = (col2 >> 8 & 0xFF) / 255.0F;
+        float f7 = (col2 & 0xFF) / 255.0F;
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glColor4f(f1, f2, f3, f);
+        GL11.glVertex2d(x2, y);
+        GL11.glVertex2d(x, y);
+        GL11.glColor4f(f5, f6, f7, f4);
+        GL11.glVertex2d(x, y2);
+        GL11.glVertex2d(x2, y2);
+        GL11.glEnd();
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        GlStateManager.resetColor();
+    }
+    
+    public static void drawGradientV(double left, double top, double right, double bottom, int col1, int col2) {
+        float f = (col1 >> 24 & 0xFF) / 255.0F;
+        float f1 = (col1 >> 16 & 0xFF) / 255.0F;
+        float f2 = (col1 >> 8 & 0xFF) / 255.0F;
+        float f3 = (col1 & 0xFF) / 255.0F;
+        float f4 = (col2 >> 24 & 0xFF) / 255.0F;
+        float f5 = (col2 >> 16 & 0xFF) / 255.0F;
+        float f6 = (col2 >> 8 & 0xFF) / 255.0F;
+        float f7 = (col2 & 0xFF) / 255.0F;
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glColor4f(f1, f2, f3, f);
+        GL11.glVertex2d(left, top);
+        GL11.glVertex2d(left, bottom);
+        GL11.glColor4f(f5, f6, f7, f4);
+        GL11.glVertex2d(right, bottom);
+        GL11.glVertex2d(right, top);
+        GL11.glEnd();
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        GlStateManager.resetColor();
+    }
 
     public static void drawRect(double left, double top, double right, double bottom, int color) {
         drawRect(GL11.GL_QUADS, left, top, right, bottom, color);
@@ -132,9 +190,9 @@ public class DrawUtils {
         float blue = (color & 0xFF) / 255.0F;
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
-        GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA,
+        		GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.color(red, green, blue, alpha);
         bufferBuilder.begin(flag, DefaultVertexFormats.POSITION);
         bufferBuilder.pos(left, bottom, 0.0D).endVertex();
@@ -143,6 +201,5 @@ public class DrawUtils {
         bufferBuilder.pos(left, top, 0.0D).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
-//        GlStateManager.disableBlend();
     }
 }
