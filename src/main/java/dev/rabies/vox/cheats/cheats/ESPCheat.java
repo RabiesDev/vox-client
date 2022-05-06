@@ -27,6 +27,7 @@ import java.awt.*;
 
 public class ESPCheat extends Cheat {
 
+    private final BoolSetting ignoreSelfSetting = registerBoolSetting("Ignore self", false);
     private final BoolSetting invisSetting = registerBoolSetting("Invisible entity", true);
 
     private final SystemFontRenderer tagFont = VoxMod.get().newSystemFont("Mukta-Bold", 13);
@@ -182,7 +183,7 @@ public class ESPCheat extends Cheat {
         if (entity.isDead) return false;
         if (!entity.isEntityAlive()) return false;
         if (!invisSetting.getValue() && entity.isInvisible()) return false;
-        
+        if (ignoreSelfSetting.getValue() && entity == mc.player) return false;
         if (entity == mc.player && mc.gameSettings.thirdPersonView == 0) return false;
         if (!(entity instanceof EntityPlayer)) return false;
         return isInViewFrustum(entity.getEntityBoundingBox());
