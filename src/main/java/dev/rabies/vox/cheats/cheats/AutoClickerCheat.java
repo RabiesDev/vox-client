@@ -178,7 +178,7 @@ public class AutoClickerCheat extends Cheat {
         float maxCps = middleCps + 2;
         float cps = RandomUtils.nextFloat(minCps, maxCps);
         if (cps < 1) cps = 1;
-        setSuffix((int) cps);
+        setSuffix("CPS - " + ((int) cps));
         return 820.0F / cps;
     }
 

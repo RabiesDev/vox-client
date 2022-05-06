@@ -45,6 +45,8 @@ public class ESPCheat extends Cheat {
 
     @SubscribeEvent
     public void onRender2d(Render2DEvent event) {
+        setSuffix("2D");
+
         EntityRenderer entityRenderer = mc.entityRenderer;
         RenderManager renderManager = mc.getRenderManager();
         ScaledResolution resolution = event.getResolution();
