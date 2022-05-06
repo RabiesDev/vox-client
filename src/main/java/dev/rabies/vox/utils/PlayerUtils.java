@@ -1,13 +1,17 @@
 package dev.rabies.vox.utils;
 
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
@@ -63,6 +67,46 @@ public class PlayerUtils {
         }
     	
         mc.player.swingArm(EnumHand.MAIN_HAND);
+    }
+
+    public static void legitClick() {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc.player.isRowingBoat()) return;
+        for (EnumHand enumhand : EnumHand.values()) {
+            ItemStack itemstack = mc.player.getHeldItem(enumhand);
+            if (mc.objectMouseOver != null) {
+                switch (mc.objectMouseOver.typeOfHit) {
+                    case ENTITY:
+                        if (mc.playerController.interactWithEntity(mc.player, mc.objectMouseOver.entityHit, mc.objectMouseOver, enumhand) == EnumActionResult.SUCCESS)return;
+                        if (mc.playerController.interactWithEntity(mc.player, mc.objectMouseOver.entityHit, enumhand) == EnumActionResult.SUCCESS) return;
+                        break;
+
+                    case BLOCK:
+                        BlockPos blockpos = mc.objectMouseOver.getBlockPos();
+                        if (mc.world.getBlockState(blockpos).getMaterial() != Material.AIR) {
+                            int i = itemstack.getCount();
+                            EnumActionResult enumactionresult = mc.playerController.processRightClickBlock(
+                                    mc.player, mc.world, blockpos, mc.objectMouseOver.sideHit,
+                                    mc.objectMouseOver.hitVec, enumhand);
+
+                            if (enumactionresult == EnumActionResult.SUCCESS) {
+                                mc.player.swingArm(enumhand);
+                                if (!itemstack.isEmpty() && (itemstack.getCount() != i || mc.playerController.isInCreativeMode())) {
+                                    mc.entityRenderer.itemRenderer.resetEquippedProgress(enumhand);
+                                }
+                                return;
+                            }
+                        }
+                }
+            }
+
+            if (itemstack.isEmpty() && (mc.objectMouseOver == null || mc.objectMouseOver.typeOfHit == RayTraceResult.Type.MISS))
+                ForgeHooks.onEmptyClick(mc.player, enumhand);
+            if (!itemstack.isEmpty() && mc.playerController.processRightClick(mc.player, mc.world, enumhand) == EnumActionResult.SUCCESS) {
+                mc.entityRenderer.itemRenderer.resetEquippedProgress(enumhand);
+                return;
+            }
+        }
     }
 
     // 0 -> left, 1 -> right, 2 -> middle?

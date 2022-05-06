@@ -4,6 +4,7 @@ import com.google.gson.*;
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
+import dev.rabies.vox.cheats.setting.ModeSetting;
 import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.cheats.setting.Setting;
 import dev.rabies.vox.utils.misc.ChatUtil;
@@ -65,7 +66,10 @@ public class ConfigManager {
             for (Map.Entry<String, JsonElement> settingEntry : settingsObject.entrySet()) {
                 Setting<?> setting = cheat.getSettingByName(settingEntry.getKey());
                 if (setting == null) continue;
-                if (setting instanceof BoolSetting) {
+                if (setting instanceof ModeSetting) {
+                    ModeSetting<?> modeSetting = (ModeSetting<?>) setting;
+                    modeSetting.setEnumValue(settingEntry.getValue().getAsString());
+                } else if (setting instanceof BoolSetting) {
                     Setting<Boolean> boolSetting = (Setting<Boolean>) setting;
                     boolSetting.setValue(settingEntry.getValue().getAsBoolean());
                 } else if (setting instanceof NumberSetting) {
@@ -92,7 +96,10 @@ public class ConfigManager {
         for (Cheat cheat : VoxMod.get().getCheats()) {
             JsonObject settingsObject = new JsonObject();
             for (Setting<?> setting : cheat.getSettings()) {
-                if (setting instanceof BoolSetting) {
+                if (setting instanceof ModeSetting) {
+                    ModeSetting<?> modeSetting = (ModeSetting<?>) setting;
+                    settingsObject.addProperty(setting.getLabel(), modeSetting.getValue().name());
+                } else if (setting instanceof BoolSetting) {
                     Setting<Boolean> boolSetting = (Setting<Boolean>) setting;
                     settingsObject.addProperty(setting.getLabel(), boolSetting.getValue());
                 } else if (setting instanceof NumberSetting) {

@@ -1,9 +1,6 @@
 package dev.rabies.vox.cheats;
 
-import dev.rabies.vox.cheats.setting.BoolSetting;
-import dev.rabies.vox.cheats.setting.KeyBind;
-import dev.rabies.vox.cheats.setting.NumberSetting;
-import dev.rabies.vox.cheats.setting.Setting;
+import dev.rabies.vox.cheats.setting.*;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.network.Packet;
@@ -38,6 +35,16 @@ public class Cheat implements ICheat {
     public Setting<?> getSettingByName(String name) {
         return settings.stream().filter(it -> it.getLabel().equalsIgnoreCase(name))
                 .findFirst().orElse(null);
+    }
+
+    protected ModeSetting registerModeSetting(String name, Enum<?> defaultValue) {
+        return registerModeSetting(name, defaultValue, () -> true);
+    }
+
+    protected ModeSetting registerModeSetting(String name, Enum<?> defaultValue, Supplier<Boolean> dependency) {
+        ModeSetting modeSetting = new ModeSetting(name, defaultValue, dependency);
+        settings.add(modeSetting);
+        return modeSetting;
     }
 
     protected BoolSetting registerBoolSetting(String name, Boolean state) {

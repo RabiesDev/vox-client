@@ -1,35 +1,39 @@
 package dev.rabies.vox.cheats.cheats;
 
+import org.apache.commons.lang3.RandomUtils;
+import org.lwjgl.input.Keyboard;
+
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.cheats.setting.KeyBind;
+import dev.rabies.vox.cheats.setting.ModeSetting;
 import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.events.Render2DEvent;
 import dev.rabies.vox.events.UpdateEvent;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.utils.PlayerUtils;
 import dev.rabies.vox.utils.ServerUtil;
+import dev.rabies.vox.utils.misc.ChatUtil;
 import dev.rabies.vox.utils.misc.TimerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.commons.lang3.RandomUtils;
-import org.lwjgl.input.Keyboard;
 
 public class AutoClickerCheat extends Cheat {
+
+    enum Mode {
+        Normal, Wave
+    }
+
+    private final ModeSetting<Mode> modeSetting = registerModeSetting("Mode", Mode.Normal);
 
     private final BoolSetting teamCheckSetting = registerBoolSetting("Team check", true);
     private final BoolSetting itemInUseSetting = registerBoolSetting("Item in use", false);
@@ -53,6 +57,7 @@ public class AutoClickerCheat extends Cheat {
 
     private boolean attackable;
     private boolean attacked;
+    private boolean clicked;
     private int breakTick;
 
     public AutoClickerCheat() {
@@ -93,16 +98,37 @@ public class AutoClickerCheat extends Cheat {
 
     private void doLeftClick() {
         if (!attackable) return;
-        if (attacked) {
-            if (mc.player.ticksExisted % RandomUtils.nextInt(1, 3) != 0) return;
-            PlayerUtils.holdState(0, false);
-            attacked = false;
-            return;
-        }
+        float cps = leftCpsSetting.getValue().floatValue();
 
-        if (!leftTimerUtil.delay(leftClickNextDelay)) return;
-        leftClickNextDelay = getNextDelay(leftCpsSetting.getValue().floatValue());
-        leftTimerUtil.reset();
+        switch (modeSetting.getValue()) {
+            case Normal:
+                if (attacked) {
+                    if (mc.player.ticksExisted % RandomUtils.nextInt(1, 3) != 0) return;
+                    PlayerUtils.holdState(0, false);
+                    attacked = false;
+                    return;
+                }
+
+                if (!leftTimerUtil.delay(leftClickNextDelay)) return;
+                leftClickNextDelay = getNextDelay(cps);
+                leftTimerUtil.reset();
+                break;
+
+            case Wave:
+                if (attacked) {
+                    PlayerUtils.holdState(0, false);
+                    if (mc.player.ticksExisted % RandomUtils.nextInt(14, 16) == 0) {
+                    	leftClickNextDelay = getNextDelay(cps) * 3.2f;
+                        leftTimerUtil.reset();
+                    } else {
+	                    leftClickNextDelay = getNextDelay(cps) / 1.24f;
+	                    leftTimerUtil.reset();
+                    }
+                    attacked = false;
+                }
+
+                if (!leftTimerUtil.delay(leftClickNextDelay)) return;
+        }
 
         PlayerUtils.holdState(0, true);
         PlayerUtils.legitAttack();
@@ -111,53 +137,41 @@ public class AutoClickerCheat extends Cheat {
 
     private void doRightClick() {
         if (!canClick(false)) return;
-        if (attacked) {
-            if (mc.player.ticksExisted % RandomUtils.nextInt(1, 3) != 0) return;
-            PlayerUtils.holdState(1, false);
-        }
+        float cps = rightCpsSetting.getValue().floatValue();
+        
+        switch (modeSetting.getValue()) {
+            case Normal:
+                if (clicked) {
+                    if (mc.player.ticksExisted % RandomUtils.nextInt(2, 4) != 0) return;
+                    PlayerUtils.holdState(1, false);
+                    clicked = false;
+                    return;
+                }
 
-        if (rightTimerUtil.delay(rightClickNextDelay)) return;
-        rightClickNextDelay = getNextDelay(rightCpsSetting.getValue().floatValue());
-        rightTimerUtil.reset();
+                if (!rightTimerUtil.delay(rightClickNextDelay)) return;
+                rightClickNextDelay = getNextDelay(cps);
+                rightTimerUtil.reset();
+                break;
+
+            case Wave:
+                if (clicked) {
+                    PlayerUtils.holdState(1, false);
+                    if (mc.player.ticksExisted % RandomUtils.nextInt(11, 12) == 0) {
+                    	rightClickNextDelay = getNextDelay(cps) * 1.6f;
+                        rightTimerUtil.reset();
+                    } else {
+	                    rightClickNextDelay = getNextDelay(cps) / 1.1f;
+	                    rightTimerUtil.reset();
+                    }
+                    clicked = false;
+                }
+
+                if (!rightTimerUtil.delay(rightClickNextDelay)) return;
+        }
 
         PlayerUtils.holdState(1, true);
-//        if (mc.playerController.getIsHittingBlock()) return;
-        if (mc.player.isRowingBoat()) return;
-        for (EnumHand enumhand : EnumHand.values()) {
-            ItemStack itemstack = mc.player.getHeldItem(enumhand);
-            if (mc.objectMouseOver != null) {
-                switch (mc.objectMouseOver.typeOfHit) {
-                    case ENTITY:
-                        if (mc.playerController.interactWithEntity(mc.player, mc.objectMouseOver.entityHit, mc.objectMouseOver, enumhand) == EnumActionResult.SUCCESS)return;
-                        if (mc.playerController.interactWithEntity(mc.player, mc.objectMouseOver.entityHit, enumhand) == EnumActionResult.SUCCESS) return;
-                        break;
-
-                    case BLOCK:
-                        BlockPos blockpos = mc.objectMouseOver.getBlockPos();
-                        if (mc.world.getBlockState(blockpos).getMaterial() != Material.AIR) {
-                            int i = itemstack.getCount();
-                            EnumActionResult enumactionresult = mc.playerController.processRightClickBlock(
-                                    mc.player, mc.world, blockpos, mc.objectMouseOver.sideHit,
-                                    mc.objectMouseOver.hitVec, enumhand);
-
-                            if (enumactionresult == EnumActionResult.SUCCESS) {
-                                mc.player.swingArm(enumhand);
-                                if (!itemstack.isEmpty() && (itemstack.getCount() != i || mc.playerController.isInCreativeMode())) {
-                                    mc.entityRenderer.itemRenderer.resetEquippedProgress(enumhand);
-                                }
-                                return;
-                            }
-                        }
-                }
-            }
-
-            if (itemstack.isEmpty() && (mc.objectMouseOver == null || mc.objectMouseOver.typeOfHit == RayTraceResult.Type.MISS))
-                ForgeHooks.onEmptyClick(mc.player, enumhand);
-            if (!itemstack.isEmpty() && mc.playerController.processRightClick(mc.player, mc.world, enumhand) == EnumActionResult.SUCCESS) {
-                mc.entityRenderer.itemRenderer.resetEquippedProgress(enumhand);
-                return;
-            }
-        }
+        PlayerUtils.legitClick();
+        clicked = true;
     }
     
     private float getNextDelay(float middleCps) {
@@ -172,7 +186,7 @@ public class AutoClickerCheat extends Cheat {
     public boolean canClick(boolean left) {
         if (mc.isGamePaused()) return false;
         if (!mc.inGameHasFocus) return false;
-        if (left && mc.player.getItemInUseCount() > 0 &&
+        if (mc.player.getItemInUseCount() > 0 &&
                 !itemInUseSetting.getValue()) return false;
         if (mc.objectMouseOver != null && left) {
             RayTraceResult result = mc.objectMouseOver;
@@ -192,6 +206,7 @@ public class AutoClickerCheat extends Cheat {
 
                 if (result.typeOfHit == RayTraceResult.Type.ENTITY && teamCheckSetting.getValue()) {
                     Entity entity = result.entityHit;
+                    if (entity.isDead) return false;
                     if (!(entity instanceof EntityPlayer)) return true;
                     if (entity == mc.player) return false;
                     return !ServerUtil.isTeams((EntityPlayer) entity);
