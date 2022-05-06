@@ -6,6 +6,7 @@
   "refmap": "mixins.vox.refmap.json",
   "client": [
     "MixinEntityPlayerSP",
+    "MixinEntityRenderer",
     "MixinGuiInGame",
     "MixinGuiMultiplayer",
     "MixinKeyBinding",
