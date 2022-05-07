@@ -35,7 +35,7 @@ public class ESPCheat extends Cheat {
     private final Frustum frustum = new Frustum();
 
     public ESPCheat() {
-        super("ESP", Category.LEGIT);
+        super("ESP", Category.OTHER);
     }
 
     @SubscribeEvent
