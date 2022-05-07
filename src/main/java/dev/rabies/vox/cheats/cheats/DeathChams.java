@@ -1,0 +1,133 @@
+package dev.rabies.vox.cheats.cheats;
+
+import dev.rabies.vox.cheats.Category;
+import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.events.PacketEvent;
+import dev.rabies.vox.events.Render3DEvent;
+import dev.rabies.vox.utils.DrawUtils;
+import dev.rabies.vox.utils.misc.ChatUtil;
+import lombok.Data;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.play.server.SPacketEntityStatus;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
+public class DeathChams extends Cheat {
+
+    private final List<DeadPlayerData> playerDataList = new ArrayList<>();
+
+    public DeathChams() {
+        super("Death Chams", Category.OTHER);
+    }
+
+    @SubscribeEvent
+    public void onRender3d(Render3DEvent event) {
+        if (playerDataList.isEmpty()) return;
+        for (int i = 0; i < playerDataList.size(); i++) {
+        	playerDataList.get(i).render(i * 5);
+        }
+        playerDataList.removeIf(it -> System.currentTimeMillis() - it.getTime() > 2000);
+    }
+
+    @SubscribeEvent
+    public void onPacket(PacketEvent event) {
+    	if (mc.world == null) return;
+        if (event.isOut()) return;
+        if (event.getPacket() instanceof SPacketEntityStatus) {
+            SPacketEntityStatus entityStatus = (SPacketEntityStatus) event.getPacket();
+            Entity entity = entityStatus.getEntity(mc.world);
+            if (entityStatus.getOpCode() != 3) return;
+            if (!(entity instanceof EntityPlayer)) return;
+            playerDataList.add(new DeadPlayerData(
+                    (EntityPlayer) entity, System.currentTimeMillis(),
+                    entity.rotationYaw, entity.rotationPitch,
+                    entity.posX, entity.posY, entity.posZ
+            ));
+        }
+    }
+
+    @Data
+    static class DeadPlayerData {
+
+        private final EntityPlayer player;
+        private final long time;
+
+        private final float yaw, pitch;
+        private final double x, y, z;
+
+        public void render(int num) {
+            double viewX = x - mc.getRenderManager().viewerPosX;
+            double viewY = y - mc.getRenderManager().viewerPosY;
+            double viewZ = z - mc.getRenderManager().viewerPosZ;
+            int alpha = (int) MathHelper.clamp(255 - ((System.currentTimeMillis() - time) * 60 / 255), 0, 255);
+            int headColor = reAlpha(getChamsColor(45 + num).getRGB(), alpha);
+            int chestColor = reAlpha(getChamsColor(30 + num).getRGB(), alpha);
+            int armColor = reAlpha(getChamsColor(15 + num).getRGB(), alpha);
+            int legColor = reAlpha(getChamsColor(0 + num).getRGB(), alpha);
+
+            AxisAlignedBB head = new AxisAlignedBB(viewX - 0.2D, viewY + 1.42D, viewZ - 0.25D, viewX + 0.2D, viewY + 1.92D, viewZ + 0.25D);
+            AxisAlignedBB chest = new AxisAlignedBB(viewX - 0.15D, viewY + 0.72D, viewZ - 0.25D, viewX + 0.15D, viewY + 1.42D, viewZ + 0.25D);
+            AxisAlignedBB arm1 = new AxisAlignedBB(viewX - 0.15D, viewY + 0.72D, viewZ + 0.25D, viewX + 0.15D, viewY + 1.42D, viewZ + 0.5D);
+            AxisAlignedBB arm2 = new AxisAlignedBB(viewX - 0.15D, viewY + 0.72D, viewZ - 0.25D, viewX + 0.15D, viewY + 1.42D, viewZ - 0.5D);
+            AxisAlignedBB leg1 = new AxisAlignedBB(viewX - 0.15D, viewY + 0.0D, viewZ + 0.0D, viewX + 0.15D, viewY + 0.72D, viewZ + 0.25D);
+            AxisAlignedBB leg2 = new AxisAlignedBB(viewX - 0.15D, viewY + 0.0D, viewZ + 0.0D, viewX + 0.15D, viewY + 0.72D, viewZ - 0.25D);
+
+            GlStateManager.pushMatrix();
+            GlStateManager.disableLighting();
+            GlStateManager.disableTexture2D();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GlStateManager.disableDepth();
+            GlStateManager.depthMask(false);
+            GL11.glEnable(GL11.GL_LINE_SMOOTH);
+            GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+            GlStateManager.glLineWidth(2f);
+            GlStateManager.translate(viewX, viewY, viewZ);
+            GlStateManager.rotate(180.0F - (yaw + 90.0F), 0.0f, 1.0f, 0.0f);
+            GlStateManager.translate(-viewX, -viewY, -viewZ);
+            DrawUtils.drawOutlinedBB(head, headColor);
+            DrawUtils.drawOutlinedBB(chest, chestColor);
+            DrawUtils.drawOutlinedBB(arm1, armColor);
+            DrawUtils.drawOutlinedBB(arm2, armColor);
+            DrawUtils.drawOutlinedBB(leg1, legColor);
+            DrawUtils.drawOutlinedBB(leg2, legColor);
+            GlStateManager.enableLighting();
+            GlStateManager.enableTexture2D();
+            GlStateManager.disableBlend();
+            GlStateManager.enableDepth();
+            GlStateManager.depthMask(true);
+            GL11.glDisable(GL11.GL_LINE_SMOOTH);
+            GlStateManager.popMatrix();
+        }
+        
+        public static int reAlpha(int color, int alpha) {
+            Color c = new Color(color);
+            return new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha).getRGB();
+        }
+        
+        private Color getChamsColor(double offset) {
+            float[] fractions = {0.0F, 0.3F, 0.7F, 1.0F};
+            Color[] colors = {
+                    new Color(55, 33, 255),
+                    new Color(255, 70, 90),
+                    new Color(50, 150, 255),
+                    new Color(55, 33, 255)
+            };
+            double progress = Math.ceil((time + System.currentTimeMillis() + (offset * 2) * 2) / 3);
+            progress %= 270.0D;
+            return DrawUtils.blendColors(fractions, colors, (float) (progress / 270)).brighter();
+        }
+    }
+}

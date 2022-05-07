@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.math.AxisAlignedBB;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
@@ -201,5 +202,43 @@ public class DrawUtils {
         bufferBuilder.pos(left, top, 0.0D).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
+        GlStateManager.resetColor();
+    }
+
+    public static void drawOutlinedBB(AxisAlignedBB aabb, int color) {
+        float alpha = (color >> 24 & 0xFF) / 255.0F;
+        float red = (color >> 16 & 0xFF) / 255.0F;
+        float green = (color >> 8 & 0xFF) / 255.0F;
+        float blue = (color & 0xFF) / 255.0F;
+        GlStateManager.color(red, green, blue, alpha);
+//        GlStateManager.glLineWidth(1.0f);
+
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
+        worldRenderer.begin(3, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
+        worldRenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
+        worldRenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
+        tessellator.draw();
+        worldRenderer.begin(3, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
+        worldRenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
+        worldRenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
+        tessellator.draw();
+        worldRenderer.begin(1, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
+        worldRenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
+        worldRenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
+        tessellator.draw();
+        GlStateManager.resetColor();
     }
 }

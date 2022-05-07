@@ -1,12 +1,21 @@
 package dev.rabies.vox;
 
 import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.events.Render3DEvent;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
 public class ClientEvents {
+
+	@SubscribeEvent
+	public void onRenderWorldLast(RenderWorldLastEvent event) {
+		Render3DEvent render3DEvent = new Render3DEvent(event.getPartialTicks());
+		MinecraftForge.EVENT_BUS.post(render3DEvent);
+	}
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {

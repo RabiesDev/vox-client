@@ -13,6 +13,11 @@ public class PacketEvent extends VoxEvent {
         super(timing);
         this.packet = packetIn;
     }
+    
+    @Override
+    public boolean isCancelable() {
+    	return true;
+    }
 
     public boolean isOut() {
         return getTiming() == VoxEventTiming.PRE;
