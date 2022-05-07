@@ -14,6 +14,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import org.apache.commons.lang3.RandomUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,6 +34,9 @@ public class MixinEntityRenderer {
     public void getMouseOver(float partialTicks, CallbackInfo ci) {
         ReachCheat reachCheat = (ReachCheat) VoxMod.get().getCheatByName("Reach");
         if (reachCheat == null || !reachCheat.isEnabled()) return;
+        double reach = reachCheat.likeLegitSetting.getValue() ?
+                RandomUtils.nextDouble(3.08, 3.655) :
+                reachCheat.reachSetting.getValue();
         ci.cancel();
         
         Entity entity = mc.getRenderViewEntity();
@@ -49,7 +53,7 @@ public class MixinEntityRenderer {
                 if (mc.playerController.extendedReach()) {
                     d1 = 6.0D;
                     d0 = d1;
-                } else if (d0 > reachCheat.reachSetting.getValue()) {
+                } else if (d0 > reach) {
                 	flag = true;
                 }
 
@@ -97,7 +101,7 @@ public class MixinEntityRenderer {
                     }
                 }
 
-                if (pointedEntity != null && flag && vec3d.distanceTo(vec3d3) > reachCheat.reachSetting.getValue()) {
+                if (pointedEntity != null && flag && vec3d.distanceTo(vec3d3) > reach) {
                     pointedEntity = null;
                     mc.objectMouseOver = new RayTraceResult(RayTraceResult.Type.MISS, vec3d3, null, new BlockPos(vec3d3));
                 }
