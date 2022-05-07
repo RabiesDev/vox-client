@@ -2,7 +2,7 @@ package dev.rabies.vox.mixins;
 
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.commands.Command;
-import dev.rabies.vox.events.UpdateEvent;
+import dev.rabies.vox.events.game.UpdateEvent;
 import dev.rabies.vox.events.VoxEventTiming;
 import dev.rabies.vox.utils.misc.ChatUtil;
 import net.minecraftforge.common.MinecraftForge;

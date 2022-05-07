@@ -6,7 +6,7 @@ import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
-import dev.rabies.vox.events.UpdateEvent;
+import dev.rabies.vox.events.game.UpdateEvent;
 import dev.rabies.vox.utils.misc.ChatUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;

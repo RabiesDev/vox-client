@@ -15,6 +15,11 @@ public class VoxEvent extends Event {
         this.timing = timing;
     }
 
+    @Override
+    public boolean isCancelable() {
+        return true;
+    }
+
     public boolean isPre() {
         return timing == VoxEventTiming.PRE;
     }

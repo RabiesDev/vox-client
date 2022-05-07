@@ -4,7 +4,7 @@ import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.cheats.setting.NumberSetting;
-import dev.rabies.vox.events.UpdateEvent;
+import dev.rabies.vox.events.game.UpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ReachCheat extends Cheat {

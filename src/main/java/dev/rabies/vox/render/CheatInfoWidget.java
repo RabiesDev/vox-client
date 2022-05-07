@@ -2,7 +2,7 @@ package dev.rabies.vox.render;
 
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Cheat;
-import dev.rabies.vox.events.Render2DEvent;
+import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 
 import java.util.Comparator;

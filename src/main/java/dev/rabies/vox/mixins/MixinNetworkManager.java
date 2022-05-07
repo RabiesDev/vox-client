@@ -1,6 +1,6 @@
 package dev.rabies.vox.mixins;
 
-import dev.rabies.vox.events.PacketEvent;
+import dev.rabies.vox.events.game.PacketEvent;
 import dev.rabies.vox.events.VoxEventTiming;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.NetworkManager;

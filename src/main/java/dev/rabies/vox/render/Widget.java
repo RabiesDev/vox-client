@@ -1,6 +1,6 @@
 package dev.rabies.vox.render;
 
-import dev.rabies.vox.events.Render2DEvent;
+import dev.rabies.vox.events.render.Render2DEvent;
 import lombok.Getter;
 
 public abstract class Widget {

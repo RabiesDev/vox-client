@@ -1,6 +1,6 @@
 package dev.rabies.vox.mixins;
 
-import dev.rabies.vox.events.Render2DEvent;
+import dev.rabies.vox.events.render.Render2DEvent;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.common.MinecraftForge;

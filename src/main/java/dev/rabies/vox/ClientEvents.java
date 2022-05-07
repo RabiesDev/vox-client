@@ -1,7 +1,7 @@
 package dev.rabies.vox;
 
 import dev.rabies.vox.cheats.Cheat;
-import dev.rabies.vox.events.Render3DEvent;
+import dev.rabies.vox.events.render.Render3DEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;

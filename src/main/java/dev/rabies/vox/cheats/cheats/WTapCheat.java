@@ -2,8 +2,8 @@ package dev.rabies.vox.cheats.cheats;
 
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.Cheat;
-import dev.rabies.vox.events.PacketEvent;
-import dev.rabies.vox.events.UpdateEvent;
+import dev.rabies.vox.events.game.PacketEvent;
+import dev.rabies.vox.events.game.UpdateEvent;
 import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketUseEntity;

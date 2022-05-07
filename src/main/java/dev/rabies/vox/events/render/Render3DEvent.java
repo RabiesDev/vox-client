@@ -1,5 +1,6 @@
-package dev.rabies.vox.events;
+package dev.rabies.vox.events.render;
 
+import dev.rabies.vox.events.VoxEvent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

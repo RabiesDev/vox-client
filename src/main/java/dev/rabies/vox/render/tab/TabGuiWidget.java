@@ -2,7 +2,7 @@ package dev.rabies.vox.render.tab;
 
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.events.Render2DEvent;
+import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.render.Widget;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.utils.DrawUtils;

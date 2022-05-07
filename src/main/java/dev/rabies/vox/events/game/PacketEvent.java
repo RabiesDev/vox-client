@@ -1,5 +1,7 @@
-package dev.rabies.vox.events;
+package dev.rabies.vox.events.game;
 
+import dev.rabies.vox.events.VoxEvent;
+import dev.rabies.vox.events.VoxEventTiming;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.network.Packet;

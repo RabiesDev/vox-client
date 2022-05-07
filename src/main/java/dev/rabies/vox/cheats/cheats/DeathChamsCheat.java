@@ -2,8 +2,8 @@ package dev.rabies.vox.cheats.cheats;
 
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.Cheat;
-import dev.rabies.vox.events.PacketEvent;
-import dev.rabies.vox.events.Render3DEvent;
+import dev.rabies.vox.events.game.PacketEvent;
+import dev.rabies.vox.events.render.Render3DEvent;
 import dev.rabies.vox.utils.DrawUtils;
 import lombok.Data;
 import net.minecraft.client.renderer.GlStateManager;
@@ -20,11 +20,11 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-public class DeathChams extends Cheat {
+public class DeathChamsCheat extends Cheat {
 
     private final List<DeadPlayerData> playerDataList = new ArrayList<>();
 
-    public DeathChams() {
+    public DeathChamsCheat() {
         super("Death Chams", Category.OTHER);
     }
 

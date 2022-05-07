@@ -1,4 +1,4 @@
-package dev.rabies.vox.events;
+package dev.rabies.vox.events.render;
 
 import net.minecraftforge.fml.common.eventhandler.Event;
 

@@ -3,7 +3,7 @@ package dev.rabies.vox.cheats.cheats;
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.Cheat;
 import dev.rabies.vox.cheats.setting.BoolSetting;
-import dev.rabies.vox.events.UpdateEvent;
+import dev.rabies.vox.events.game.UpdateEvent;
 import dev.rabies.vox.utils.PlayerUtils;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
