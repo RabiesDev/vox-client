@@ -1,5 +1,7 @@
 package dev.rabies.vox.cheats.cheats;
 
+import org.lwjgl.input.Mouse;
+
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.Cheat;
@@ -24,7 +26,7 @@ public class AutoToolCheat extends Cheat {
     public void onUpdate(UpdateEvent event) {
         if (mc.currentScreen != null) return;
         if (mc.objectMouseOver == null) return;
-        if (mc.gameSettings.keyBindAttack.isKeyDown()) {
+        if (Mouse.isButtonDown(0)) {
             if (mc.objectMouseOver.typeOfHit != RayTraceResult.Type.BLOCK) return;
             IBlockState block = mc.world.getBlockState(mc.objectMouseOver.getBlockPos());
             float strength = 1.0F;
@@ -48,9 +50,7 @@ public class AutoToolCheat extends Cheat {
                     ChatUtil.info("Switched to " + mc.player.inventory.getCurrentItem().getDisplayName());
                 }
             }
-        } else if (prevSlot != mc.player.inventory.currentItem) {
-            if (prevSlot == -1) prevSlot = mc.player.inventory.currentItem;
-            if (!switchBackSetting.getValue()) return;
+        } else if (switchBackSetting.getValue() && prevSlot != -1) {
             mc.player.inventory.currentItem = prevSlot;
             prevSlot = -1;
         }
