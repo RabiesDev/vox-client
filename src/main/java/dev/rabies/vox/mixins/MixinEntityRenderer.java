@@ -3,7 +3,8 @@ package dev.rabies.vox.mixins;
 import com.google.common.base.Predicates;
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.cheats.ReachCheat;
-import dev.rabies.vox.utils.misc.ChatUtil;
+import dev.rabies.vox.events.VoxEventTiming;
+import dev.rabies.vox.events.render.RenderEntityEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.common.MinecraftForge;
 import org.apache.commons.lang3.RandomUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,8 +29,11 @@ import java.util.List;
 @Mixin(EntityRenderer.class)
 public class MixinEntityRenderer {
 
-    @Shadow @Final private Minecraft mc;
-    @Shadow private Entity pointedEntity;
+    @Shadow
+    @Final
+    private Minecraft mc;
+    @Shadow
+    private Entity pointedEntity;
 
     @Inject(method = "getMouseOver", at = @At("HEAD"), cancellable = true)
     public void getMouseOver(float partialTicks, CallbackInfo ci) {
@@ -38,7 +43,7 @@ public class MixinEntityRenderer {
                 RandomUtils.nextDouble(3.08, 3.655) :
                 reachCheat.reachSetting.getValue();
         ci.cancel();
-        
+
         Entity entity = mc.getRenderViewEntity();
         if (entity != null) {
             if (mc.world != null) {
@@ -54,7 +59,7 @@ public class MixinEntityRenderer {
                     d1 = 6.0D;
                     d0 = d1;
                 } else if (d0 > reach) {
-                	flag = true;
+                    flag = true;
                 }
 
                 if (mc.objectMouseOver != null) {
@@ -118,4 +123,20 @@ public class MixinEntityRenderer {
             }
         }
     }
+
+//    @Inject(method = "renderWorldPass", at = @At(value = "INVOKE",
+//            target = "Lnet/minecraft/client/renderer/RenderGlobal;renderEntities(Lnet/minecraft/entity/Entity;Lnet/minecraft/client/renderer/culling/ICamera;F)V",
+//            shift = At.Shift.BEFORE))
+//    public void preRenderEntities(int p_175068_1_, float p_175068_2_, long p_175068_3_, CallbackInfo ci) {
+//        RenderEntityEvent renderEntityEvent = new RenderEntityEvent(VoxEventTiming.PRE, mc.getRenderViewEntity());
+//        MinecraftForge.EVENT_BUS.post(renderEntityEvent);
+//    }
+//
+//    @Inject(method = "renderWorldPass", at = @At(value = "INVOKE",
+//            target = "Lnet/minecraft/client/renderer/RenderGlobal;renderEntities(Lnet/minecraft/entity/Entity;Lnet/minecraft/client/renderer/culling/ICamera;F)V",
+//            shift = At.Shift.AFTER))
+//    public void postRenderEntities(int p_175068_1_, float p_175068_2_, long p_175068_3_, CallbackInfo ci) {
+//        RenderEntityEvent renderEntityEvent = new RenderEntityEvent(VoxEventTiming.POST, mc.getRenderViewEntity());
+//        MinecraftForge.EVENT_BUS.post(renderEntityEvent);
+//    }
 }

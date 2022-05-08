@@ -11,6 +11,7 @@
     "MixinGuiMultiplayer",
     "MixinKeyBinding",
     "MixinNetworkManager",
-    "MixinRenderLivingBase"
+    "MixinRenderLivingBase",
+    "MixinRenderManager"
   ]
 }

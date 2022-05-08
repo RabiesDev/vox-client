@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 
 public class RenderModelEvent extends VoxEvent {
 
-    @Getter private final RenderCallback callback;
+    @Getter private final RenderCallback<RenderModelEvent> callback;
     @Getter private final EntityLivingBase livingBase;
 
     @Getter @Setter
@@ -25,7 +25,7 @@ public class RenderModelEvent extends VoxEvent {
     private float scaleFactor;
 
     public RenderModelEvent(VoxEventTiming timing, EntityLivingBase livingBase, float limbSwing, float limbSwingAmount, float ageInTicks,
-                            float netHeadYaw, float headPitch, float scaleFactor, RenderCallback callback) {
+                            float netHeadYaw, float headPitch, float scaleFactor, RenderCallback<RenderModelEvent> callback) {
         super(timing);
         this.livingBase = livingBase;
         this.limbSwing = limbSwing;
@@ -35,9 +35,5 @@ public class RenderModelEvent extends VoxEvent {
         this.headPitch = headPitch;
         this.scaleFactor = scaleFactor;
         this.callback = callback;
-    }
-
-    public interface RenderCallback {
-        void render(RenderModelEvent event);
     }
 }
