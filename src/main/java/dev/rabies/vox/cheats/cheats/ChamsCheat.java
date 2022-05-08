@@ -22,9 +22,11 @@ public class ChamsCheat extends Cheat {
             GlStateManager.enableAlpha();
             GlStateManager.disableLighting();
             mc.entityRenderer.disableLightmap();
+            mc.getRenderManager().setRenderShadow(false);
         } else {
             GlStateManager.enableDepth();
             GlStateManager.enableLighting();
+            mc.getRenderManager().setRenderShadow(true);
             event.getCallback().render(event);
             GlStateManager.enableAlpha();
             GlStateManager.popMatrix();
