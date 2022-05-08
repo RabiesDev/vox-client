@@ -30,7 +30,9 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> {
         if (renderNameEvent.isCanceled()) ci.cancel();
     }
 
-    @Inject(method = "renderModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V", shift = At.Shift.BEFORE))
+    @Inject(method = "renderModel", at = @At(value = "INVOKE",
+    		target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V",
+    		shift = At.Shift.BEFORE), cancellable = true)
     public void preRenderModel(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks,
                                float netHeadYaw, float headPitch, float scaleFactor, CallbackInfo ci) {
         float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
@@ -41,6 +43,8 @@ public abstract class MixinRenderLivingBase<T extends EntityLivingBase> {
                 event -> renderLayers(entitylivingbaseIn, event.getLimbSwing(), event.getLimbSwingAmount(), partialTicks, event.getAgeInTicks(),
                         event.getNetHeadYaw(), event.getHeadPitch(), event.getScaleFactor()));
         MinecraftForge.EVENT_BUS.post(renderModelEvent);
+        if (renderModelEvent.isCanceled())
+        	ci.cancel();
     }
 
     @Inject(method = "renderModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V", shift = At.Shift.AFTER))

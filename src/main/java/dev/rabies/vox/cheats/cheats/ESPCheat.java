@@ -103,10 +103,10 @@ public class ESPCheat extends Cheat {
                 Color third = getEspColor(180);
                 Color fourth = getEspColor(270);
                 if (livingBase.hurtTime > 0) {
-                	first = new Color(255, 100, 100);
-                	second = new Color(255, 100, 100);
-                	third = new Color(255, 100, 100);
-                	fourth = new Color(255, 100, 100);
+                	first = new Color(255, 80, 80);
+                	second = new Color(255, 80, 80);
+                	third = new Color(255, 80, 80);
+                	fourth = new Color(255, 80, 80);
                 }
 
                 DrawUtils.drawRect(posX - 1.0D, posY, posX + 1.0D, endPosY + 0.5D, black);
