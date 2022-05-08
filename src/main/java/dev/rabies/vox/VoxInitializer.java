@@ -9,6 +9,7 @@ import dev.rabies.vox.render.RenderHook;
 import dev.rabies.vox.render.font.FontData;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -29,7 +30,7 @@ public class VoxInitializer implements Initializer {
     @Getter private final ArrayList<Command> commands = new ArrayList<>();
     @Getter
     private ConfigManager configManager;
-    @Getter
+    @Getter @Setter
     private boolean debugMode;
 
     @Override
