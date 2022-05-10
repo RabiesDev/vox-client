@@ -118,11 +118,11 @@ public class AutoClickerCheat extends Cheat {
                     PlayerUtils.holdState(0, false);
                     if (mc.player.ticksExisted % RandomUtils.nextInt(14, 16) == 0) {
                     	leftClickNextDelay = getNextDelay(cps) * 3.2f;
-                        leftTimerUtil.reset();
                     } else {
 	                    leftClickNextDelay = getNextDelay(cps) / 1.24f;
-	                    leftTimerUtil.reset();
                     }
+
+                    leftTimerUtil.reset();
                     attacked = false;
                 }
 
@@ -157,11 +157,11 @@ public class AutoClickerCheat extends Cheat {
                     PlayerUtils.holdState(1, false);
                     if (mc.player.ticksExisted % RandomUtils.nextInt(11, 12) == 0) {
                     	rightClickNextDelay = getNextDelay(cps) * 1.6f;
-                        rightTimerUtil.reset();
                     } else {
 	                    rightClickNextDelay = getNextDelay(cps) / 1.1f;
-	                    rightTimerUtil.reset();
                     }
+
+                    rightTimerUtil.reset();
                     clicked = false;
                 }
 

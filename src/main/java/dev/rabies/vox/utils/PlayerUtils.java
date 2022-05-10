@@ -117,4 +117,34 @@ public class PlayerUtils {
         ObfuscationReflectionHelper.setPrivateValue(MouseEvent.class, mouseEvent, state, "buttonstate");
         MinecraftForge.EVENT_BUS.post(mouseEvent);
     }
+
+    public static void setMotion(double speed) {
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        if (player == null) return;
+        double forward = player.moveForward;
+        double strafe = player.moveStrafing;
+        float yaw = player.rotationYaw;
+        if (isMoving()) {
+            if (forward != 0.0D) {
+                if (strafe > 0.0D) {
+                    yaw += (forward > 0.0D ? -45 : 45);
+                } else if (strafe < 0.0D) {
+                    yaw += (forward > 0.0D ? 45 : -45);
+                }
+                strafe = 0.0D;
+                if (forward > 0.0D) {
+                    forward = 1;
+                } else if (forward < 0.0D) {
+                    forward = -1;
+                }
+            }
+            double cos = Math.cos(Math.toRadians(yaw + 90.0F));
+            double sin = Math.sin(Math.toRadians(yaw + 90.0F));
+            player.motionX = forward * speed * cos + strafe * speed * sin;
+            player.motionZ = forward * speed * sin - strafe * speed * cos;
+        } else {
+            player.motionX = 0.0D;
+            player.motionZ = 0.0D;
+        }
+    }
 }

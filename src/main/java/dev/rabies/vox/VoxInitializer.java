@@ -71,7 +71,9 @@ public class VoxInitializer implements Initializer {
                 new ReachCheat(),
                 new DeathChamsCheat(),
                 new ChamsCheat(),
-                new SneakCheat()
+                new SneakCheat(),
+                new AutoRespawnCheat(),
+                new FreecamCheat()
         );
     }
 

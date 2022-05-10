@@ -58,7 +58,7 @@ public class SystemFontRenderer extends SystemFont {
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
         GlStateManager.enableTexture2D();
-        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_DONT_CARE);
+        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST);
         GlStateManager.bindTexture(getTexture().getGlTextureId());
         ArrayList<VanillaChar> vanillaChars = new ArrayList<>();
         for (int i = 0; i < text.length(); i++) {
