@@ -1,14 +1,14 @@
 package dev.rabies.vox.cheats.cheats;
 
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.cheats.setting.ModeSetting;
 import dev.rabies.vox.events.game.UpdateEvent;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class SneakCheat extends Cheat {
+public class SneakCheat extends CheatWrapper {
 
     enum Mode {
         Normal, Always, Bypass

@@ -1,7 +1,7 @@
 package dev.rabies.vox;
 
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.cheats.cheats.*;
 import dev.rabies.vox.commands.*;
 import dev.rabies.vox.config.ConfigManager;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class VoxInitializer implements Initializer {
 
     @Getter private final ArrayList<FontData> fontCaches = new ArrayList<>();
-    @Getter private final ArrayList<Cheat> cheats = new ArrayList<>();
+    @Getter private final ArrayList<CheatWrapper> cheats = new ArrayList<>();
     @Getter private final ArrayList<Command> commands = new ArrayList<>();
     @Getter
     private ConfigManager configManager;
@@ -73,7 +73,8 @@ public class VoxInitializer implements Initializer {
                 new ChamsCheat(),
                 new SneakCheat(),
                 new AutoRespawnCheat(),
-                new FreecamCheat()
+                new FreecamCheat(),
+                new AimAssistCheat()
         );
     }
 
@@ -86,12 +87,12 @@ public class VoxInitializer implements Initializer {
         );
     }
 
-    public Cheat getCheatByName(String name) {
+    public CheatWrapper getCheatByName(String name) {
         return cheats.stream().filter(it -> it.getName().equalsIgnoreCase(name))
                 .findFirst().orElse(null);
     }
 
-    public List<Cheat> getCheatsByCategory(Category category) {
+    public List<CheatWrapper> getCheatsByCategory(Category category) {
         return cheats.stream().filter(it -> it.getCategory() == category)
                 .collect(Collectors.toList());
     }

@@ -2,7 +2,7 @@ package dev.rabies.vox.config;
 
 import com.google.gson.*;
 import dev.rabies.vox.VoxMod;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.cheats.setting.ModeSetting;
 import dev.rabies.vox.cheats.setting.NumberSetting;
@@ -46,7 +46,7 @@ public class ConfigManager {
 
         JsonObject jsonObject = config.getJsonObject();
         for (Map.Entry<String, JsonElement> cheatEntry : jsonObject.entrySet()) {
-            Cheat cheat = VoxMod.get().getCheatByName(cheatEntry.getKey());
+            CheatWrapper cheat = VoxMod.get().getCheatByName(cheatEntry.getKey());
             if (cheat == null) continue;
             JsonObject cheatObject = cheatEntry.getValue().getAsJsonObject();
 
@@ -93,7 +93,7 @@ public class ConfigManager {
         jsonObject.addProperty("name", name);
         jsonObject.addProperty("author", author);
 
-        for (Cheat cheat : VoxMod.get().getCheats()) {
+        for (CheatWrapper cheat : VoxMod.get().getCheats()) {
             JsonObject settingsObject = new JsonObject();
             for (Setting<?> setting : cheat.getSettings()) {
                 if (setting instanceof ModeSetting) {

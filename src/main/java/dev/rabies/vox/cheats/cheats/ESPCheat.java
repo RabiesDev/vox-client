@@ -2,7 +2,7 @@ package dev.rabies.vox.cheats.cheats;
 
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.events.render.RenderNameEvent;
@@ -25,7 +25,7 @@ import javax.vecmath.Vector4d;
 
 import java.awt.*;
 
-public class ESPCheat extends Cheat {
+public class ESPCheat extends CheatWrapper {
 
     private final BoolSetting ignoreSelfSetting = registerBoolSetting("Ignore self", false);
     private final BoolSetting invisSetting = registerBoolSetting("Invisible entity", true);

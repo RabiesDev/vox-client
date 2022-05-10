@@ -1,7 +1,7 @@
 package dev.rabies.vox.cheats.cheats;
 
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.events.game.PacketEvent;
 import dev.rabies.vox.events.game.UpdateEvent;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class WTapCheat extends Cheat {
+public class WTapCheat extends CheatWrapper {
 
     public static WTapCheat INSTANCE;
     @Getter

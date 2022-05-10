@@ -1,17 +1,17 @@
 package dev.rabies.vox.render.tab;
 
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import lombok.Getter;
 import org.lwjgl.input.Keyboard;
 
 public class CheatTab implements TabActionListener {
 
     @Getter
-    private final Cheat cheat;
+    private final CheatWrapper cheat;
     @Getter
     private final String label;
 
-    public CheatTab(Cheat cheat) {
+    public CheatTab(CheatWrapper cheat) {
         this.cheat = cheat;
         this.label = cheat.getName();
     }

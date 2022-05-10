@@ -1,7 +1,7 @@
 package dev.rabies.vox.cheats.cheats;
 
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.events.game.PacketEvent;
 import dev.rabies.vox.events.render.Render3DEvent;
 import dev.rabies.vox.utils.DrawUtils;
@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-public class DeathChamsCheat extends Cheat {
+public class DeathChamsCheat extends CheatWrapper {
 
     private final List<DeadPlayerData> playerDataList = new ArrayList<>();
 

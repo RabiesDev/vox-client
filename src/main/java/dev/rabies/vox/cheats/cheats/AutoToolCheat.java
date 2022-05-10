@@ -4,7 +4,7 @@ import org.lwjgl.input.Mouse;
 
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.events.game.UpdateEvent;
 import dev.rabies.vox.utils.misc.ChatUtil;
@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class AutoToolCheat extends Cheat {
+public class AutoToolCheat extends CheatWrapper {
 
     private final BoolSetting switchBackSetting = registerBoolSetting("Switch back", true);
     private int prevSlot = -1;

@@ -1,7 +1,7 @@
 package dev.rabies.vox.cheats.cheats;
 
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiRepair;
@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 
-public class InvPlusCheat extends Cheat {
+public class InvPlusCheat extends CheatWrapper {
 
     private final BoolSetting sneakSetting = registerBoolSetting("Sneak", false);
     private final KeyBinding[] moveKeys = {

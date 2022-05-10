@@ -1,7 +1,7 @@
 package dev.rabies.vox.commands;
 
 import dev.rabies.vox.VoxMod;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.utils.misc.ChatUtil;
 import org.lwjgl.input.Keyboard;
 
@@ -21,7 +21,7 @@ public class BindCommand extends Command {
         }
 
         String first = args[0];
-        Cheat cheat = VoxMod.get().getCheatByName(first);
+        CheatWrapper cheat = VoxMod.get().getCheatByName(first);
         if (cheat == null) {
             ChatUtil.error(String.format("%s was not found", first));
             return;

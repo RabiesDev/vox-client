@@ -5,7 +5,7 @@ import org.lwjgl.input.Keyboard;
 
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.cheats.setting.KeyBind;
 import dev.rabies.vox.cheats.setting.ModeSetting;
@@ -26,7 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class AutoClickerCheat extends Cheat {
+public class AutoClickerCheat extends CheatWrapper {
 
     enum Mode {
         Normal, Wave

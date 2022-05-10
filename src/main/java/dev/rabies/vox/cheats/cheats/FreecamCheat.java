@@ -1,20 +1,17 @@
 package dev.rabies.vox.cheats.cheats;
 
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.events.game.EntityMoveEvent;
 import dev.rabies.vox.events.game.PacketEvent;
 import dev.rabies.vox.events.game.UpdateEvent;
 import dev.rabies.vox.utils.PlayerUtils;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.GameType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import org.lwjgl.input.Keyboard;
 
-public class FreecamCheat extends Cheat {
+public class FreecamCheat extends CheatWrapper {
 
     private double posX, posY, posZ;
     private float yaw, pitch;

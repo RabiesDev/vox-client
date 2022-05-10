@@ -1,13 +1,13 @@
 package dev.rabies.vox.cheats.cheats;
 
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.events.game.UpdateEvent;
 import dev.rabies.vox.utils.PlayerUtils;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class AutoSprintCheat extends Cheat {
+public class AutoSprintCheat extends CheatWrapper {
 
     private final BoolSetting omniSetting = registerBoolSetting("All direction", true);
 

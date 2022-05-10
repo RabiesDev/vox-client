@@ -1,11 +1,11 @@
 package dev.rabies.vox.cheats.cheats;
 
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.events.game.UpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class AutoRespawnCheat extends Cheat {
+public class AutoRespawnCheat extends CheatWrapper {
 
     public AutoRespawnCheat() {
         super("Auto Respawn", Category.LEGIT);

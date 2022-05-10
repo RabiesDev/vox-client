@@ -1,13 +1,13 @@
 package dev.rabies.vox.cheats.cheats;
 
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.events.render.RenderEntityEvent;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class ChamsCheat extends Cheat {
+public class ChamsCheat extends CheatWrapper {
 
     public ChamsCheat() {
         super("Chams", Category.OTHER);

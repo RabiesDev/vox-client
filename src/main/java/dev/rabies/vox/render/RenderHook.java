@@ -1,7 +1,7 @@
 package dev.rabies.vox.render;
 
 import dev.rabies.vox.VoxMod;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.render.tab.TabGuiWidget;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class RenderHook {
 
     @Getter
     private static ArrayList<Widget> widgets;
-    private Cheat hudCheat;
+    private CheatWrapper hudCheat;
 
     public RenderHook() {
         widgets = new ArrayList<>();

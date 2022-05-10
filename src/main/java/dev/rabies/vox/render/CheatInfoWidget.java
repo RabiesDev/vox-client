@@ -1,7 +1,7 @@
 package dev.rabies.vox.render;
 
 import dev.rabies.vox.VoxMod;
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 
@@ -24,8 +24,8 @@ public class CheatInfoWidget extends Widget {
 
     @Override
     public void draw(Render2DEvent event) {
-        List<Cheat> sorted = VoxMod.get().getCheats().stream()
-                .filter(Cheat::isEnabled)
+        List<CheatWrapper> sorted = VoxMod.get().getCheats().stream()
+                .filter(CheatWrapper::isEnabled)
                 .sorted(Comparator.comparingDouble(it -> {
                     String label = it.getName();
                     if (it.getSuffix() != null && it.getSuffix().toString().length() > 0 &&
@@ -36,7 +36,7 @@ public class CheatInfoWidget extends Widget {
                 })).collect(Collectors.toList());
 
         double offsetY = RenderHook.getWidgetByName("tabgui").isVisible() ? 68 : cheatInfoFont.getHeight() + 2;
-        for (Cheat cheat : sorted) {
+        for (CheatWrapper cheat : sorted) {
             String label = cheat.getName();
             if (cheat.getSuffix() != null && cheat.getSuffix().toString().length() > 0 &&
                     VoxMod.get().isDebugMode()) {

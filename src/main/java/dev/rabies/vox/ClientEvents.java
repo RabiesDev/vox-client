@@ -1,6 +1,6 @@
 package dev.rabies.vox;
 
-import dev.rabies.vox.cheats.Cheat;
+import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.events.render.Render3DEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -25,7 +25,7 @@ public class ClientEvents {
         boolean state = Keyboard.getEventKeyState();
         int key = Keyboard.getEventKey();
         if (key == 0) return;
-        for (Cheat cheat : VoxMod.get().getCheats()) {
+        for (CheatWrapper cheat : VoxMod.get().getCheats()) {
         	if (key != cheat.getBind().getKeyCode()) continue;
         	switch (cheat.getBind().getType()) {
         		case TOGGLE:
