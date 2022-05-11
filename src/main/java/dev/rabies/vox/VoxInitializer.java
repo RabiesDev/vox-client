@@ -69,13 +69,12 @@ public class VoxInitializer implements Initializer {
                 new AutoToolCheat(),
                 new AntiForgeBypassCheat(),
                 new ReachCheat(),
-                new DeathChamsCheat(),
                 new ChamsCheat(),
                 new SneakCheat(),
                 new AutoRespawnCheat(),
                 new FreecamCheat(),
-                new AimAssistCheat(),
-                new OutlineEspCheat()
+                new OutlineEspCheat(),
+                new HitBoxCheat()
         );
     }
 
