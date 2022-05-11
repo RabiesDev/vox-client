@@ -25,6 +25,10 @@ public class BindCommand extends Command {
         if (cheat == null) {
             ChatUtil.error(String.format("%s was not found", first));
             return;
+        } else if (args.length <= 1) {
+            String keyName = cheat.getBind().getKeyCode() == -1 ? "None" : Keyboard.getKeyName(cheat.getBind().getKeyCode());
+            ChatUtil.info(String.format("%s key is %s", cheat.getName(), keyName));
+            return;
         }
 
         int keyCode = Keyboard.getKeyIndex(args[1].toUpperCase());
