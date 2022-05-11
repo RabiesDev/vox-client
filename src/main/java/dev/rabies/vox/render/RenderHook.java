@@ -30,6 +30,7 @@ public class RenderHook {
 
     @SubscribeEvent
     public void onRender2d(Render2DEvent event) {
+        if (Minecraft.getMinecraft().gameSettings.showDebugInfo) return;
         if (hudCheat == null) {
             hudCheat = VoxMod.get().getCheatByName("Hud");
             return;

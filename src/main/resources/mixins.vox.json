@@ -9,6 +9,7 @@
     "MixinEntityRenderer",
     "MixinGuiInGame",
     "MixinGuiMultiplayer",
+    "MixinGuiSubtitleOverlay",
     "MixinKeyBinding",
     "MixinNetworkManager",
     "MixinRenderLivingBase",

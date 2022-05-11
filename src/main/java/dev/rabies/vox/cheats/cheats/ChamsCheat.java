@@ -8,6 +8,7 @@ import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.events.render.Render3DEvent;
 import dev.rabies.vox.utils.ColorUtil;
 import dev.rabies.vox.utils.ShaderUtil;
+import dev.rabies.vox.utils.misc.ChatUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
@@ -45,7 +46,7 @@ public class ChamsCheat extends CheatWrapper {
         GL20.glUniform1f(chamsShader.getUniformByName("u_mixin"), 0.5f);
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent
     public void onRender2d(Render2DEvent event) {
         if (framebuffer == null || !chamsShader.isBinded()) return;
         mc.getFramebuffer().bindFramebuffer(true);
@@ -82,7 +83,6 @@ public class ChamsCheat extends CheatWrapper {
             if (ignoreSelfSetting.getValue() && entity == mc.player) continue;
             if (entity == mc.player && mc.gameSettings.thirdPersonView == 0) continue;
             mc.getRenderManager().setRenderShadow(false);
-            mc.entityRenderer.disableLightmap();
             mc.getRenderManager().renderEntityStatic(entity, partialTicks, true);
             mc.getRenderManager().setRenderShadow(true);
             chamsShader.setBinded(true);

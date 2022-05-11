@@ -5,7 +5,7 @@ import java.awt.*;
 public class ColorUtil {
 
     public static Color getRainbowColor(double offset, double p) {
-        double rainbow = Math.ceil(((System.currentTimeMillis() * 1.22) + (offset * 2) * 2) / 5);
+        double rainbow = Math.ceil((System.currentTimeMillis() + (offset * 2) * 2) / 5);
         rainbow %= p;
         return Color.getHSBColor((float) (rainbow / p), 0.78f, 0.88f);
     }

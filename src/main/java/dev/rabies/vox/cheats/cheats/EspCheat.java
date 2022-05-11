@@ -141,7 +141,7 @@ public class EspCheat extends CheatWrapper {
 
                 String hpFormat = String.format("%.1f", health / 2 * 10);
                 hpFont.drawCenteredStringWithShadow(
-                        hpFormat.replace(".0", "") + "%",
+                        String.format("\2477HP: %s%", hpFormat.replace(".0", "")),
                         (posX + endPosX) / 2,
                         posY - (hpFont.getHeight() + 2),
                         healthColor);

@@ -20,6 +20,7 @@ public class ShaderUtil {
 	private boolean binded;
 
 	public ShaderUtil(String frag) {
+		GL20.glValidateProgram(programId);
 		GL20.glAttachShader(programId, compile(
 				this.getClass().getResourceAsStream("/assets/minecraft/vox/vertex.vsh"),
 				GL20.GL_VERTEX_SHADER));
@@ -35,18 +36,18 @@ public class ShaderUtil {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glTexCoord2d(0.0, 1.0);
-		GL11.glVertex2d(0.0, 0.0);
-		GL11.glTexCoord2d(0.0, 0.0);
-		GL11.glVertex2d(0.0, resolution.getScaledHeight());
-		GL11.glTexCoord2d(1.0, 0.0);
-		GL11.glVertex2d(resolution.getScaledWidth(), resolution.getScaledHeight());
-		GL11.glTexCoord2d(1.0, 1.0);
-		GL11.glVertex2d(resolution.getScaledWidth(), 0.0);
+		GL11.glTexCoord2f(0.0f, 1.0f);
+		GL11.glVertex2f(0.0f, 0.0f);
+		GL11.glTexCoord2f(0.0f, 0.0f);
+		GL11.glVertex2f(0.0f, resolution.getScaledHeight());
+		GL11.glTexCoord2f(1.0f, 0.0f);
+		GL11.glVertex2f(resolution.getScaledWidth(), resolution.getScaledHeight());
+		GL11.glTexCoord2f(1.0f, 1.0f);
+		GL11.glVertex2f(resolution.getScaledWidth(), 0.0f);
 		GL11.glEnd();
-		GL11.glDisable(GL11.GL_LINE_SMOOTH);
-		GlStateManager.disableBlend();
 		GL20.glUseProgram(0);
+		GlStateManager.disableBlend();
+		GlStateManager.resetColor();
 		binded = false;
 	}
 
@@ -58,7 +59,6 @@ public class ShaderUtil {
 		int shader = GL20.glCreateShader(type);
 		try {
 			GL20.glShaderSource(shader, readInputStream(inputStream));
-			GL20.glValidateProgram(programId);
 			GL20.glCompileShader(shader);
 		} catch (IOException e) {
 			e.printStackTrace();
