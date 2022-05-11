@@ -5,9 +5,11 @@ import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.events.game.PacketEvent;
 import dev.rabies.vox.events.render.Render3DEvent;
 import dev.rabies.vox.utils.DrawUtils;
+import dev.rabies.vox.utils.misc.ChatUtil;
 import lombok.Data;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -39,15 +41,13 @@ public class DeathChamsCheat extends CheatWrapper {
 
     @SubscribeEvent
     public void onPacket(PacketEvent event) {
-    	if (mc.world == null) return;
-        if (event.isOut()) return;
         if (event.getPacket() instanceof SPacketEntityStatus) {
             SPacketEntityStatus entityStatus = (SPacketEntityStatus) event.getPacket();
+            if (mc.world == null || mc.player == null || entityStatus.getOpCode() != 3) return;
             Entity entity = entityStatus.getEntity(mc.world);
-            if (entityStatus.getOpCode() != 3) return;
             if (!(entity instanceof EntityPlayer)) return;
             playerDataList.add(new DeadPlayerData(
-                    (EntityPlayer) entity, System.currentTimeMillis(),
+                    (EntityLivingBase) entity, System.currentTimeMillis(),
                     entity.rotationYaw, entity.rotationPitch,
                     entity.posX, entity.posY, entity.posZ
             ));
@@ -57,7 +57,7 @@ public class DeathChamsCheat extends CheatWrapper {
     @Data
     static class DeadPlayerData {
 
-        private final EntityPlayer player;
+        private final EntityLivingBase player;
         private final long time;
 
         private final float yaw, pitch;
@@ -68,13 +68,13 @@ public class DeathChamsCheat extends CheatWrapper {
             double viewY = y - mc.getRenderManager().viewerPosY;
             double viewZ = z - mc.getRenderManager().viewerPosZ;
 
-            int boxAlpha = (int) MathHelper.clamp(255 - ((System.currentTimeMillis() - time) * 60.0 / 255), 0, 150);
+            int boxAlpha = (int) MathHelper.clamp(255 - ((System.currentTimeMillis() - time) * 60.0 / 255), 0, 35);
             int boxHeadColor = reAlpha(getChamsColor(45 + num).getRGB(), boxAlpha);
             int boxChestColor = reAlpha(getChamsColor(30 + num).getRGB(), boxAlpha);
             int boxArmColor = reAlpha(getChamsColor(15 + num).getRGB(), boxAlpha);
             int boxLegColor = reAlpha(getChamsColor(num).getRGB(), boxAlpha);
 
-            int outlineAlpha = (int) MathHelper.clamp(255 - ((System.currentTimeMillis() - time) * 60.0 / 255), 0, 255);
+            int outlineAlpha = (int) MathHelper.clamp(255 - ((System.currentTimeMillis() - time) * 60.0 / 255), 0, 100);
             int outlineHeadColor = reAlpha(getChamsColor(45 + num).getRGB(), outlineAlpha);
             int outlineChestColor = reAlpha(getChamsColor(30 + num).getRGB(), outlineAlpha);
             int outlineArmColor = reAlpha(getChamsColor(15 + num).getRGB(), outlineAlpha);
