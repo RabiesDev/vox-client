@@ -11,6 +11,7 @@
     "MixinGuiMultiplayer",
     "MixinGuiSubtitleOverlay",
     "MixinKeyBinding",
+    "MixinMinecraft",
     "MixinNetworkManager",
     "MixinRenderLivingBase",
     "MixinRenderManager"

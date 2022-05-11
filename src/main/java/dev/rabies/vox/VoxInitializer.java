@@ -74,7 +74,8 @@ public class VoxInitializer implements Initializer {
                 new AutoRespawnCheat(),
                 new FreecamCheat(),
                 new OutlineEspCheat(),
-                new HitBoxCheat()
+                new HitBoxCheat(),
+                new FakeFpsCheat()
         );
     }
 

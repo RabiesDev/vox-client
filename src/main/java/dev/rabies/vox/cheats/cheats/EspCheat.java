@@ -4,6 +4,7 @@ import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.cheats.setting.BoolSetting;
+import dev.rabies.vox.cheats.setting.ModeSetting;
 import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.events.render.RenderNameEvent;
 import dev.rabies.vox.render.font.SystemFontRenderer;
@@ -27,6 +28,12 @@ import javax.vecmath.Vector4d;
 import java.awt.*;
 
 public class EspCheat extends CheatWrapper {
+
+    enum Mode {
+        Normal, SuperCool
+    }
+
+    private final ModeSetting<Mode> modeSetting = registerModeSetting("Mode", Mode.SuperCool);
 
     private final BoolSetting ignoreSelfSetting = registerBoolSetting("Ignore self", false);
     private final BoolSetting invisSetting = registerBoolSetting("Invisible entity", true);
@@ -98,31 +105,19 @@ public class EspCheat extends CheatWrapper {
                 double endPosX = position.z;
                 double endPosY = position.w;
 
-                int black = new Color(0, 0, 0, 200).getRGB();
-                Color first = ColorUtil.getSuperCoolColor(0, 270);
-                Color second = ColorUtil.getSuperCoolColor(90, 270);
-                Color third = ColorUtil.getSuperCoolColor(180, 270);
-                Color fourth = ColorUtil.getSuperCoolColor(270, 270);
-                if (livingBase.hurtTime > 0) {
-                	first = new Color(255, 80, 80);
-                	second = new Color(255, 80, 80);
-                	third = new Color(255, 80, 80);
-                	fourth = new Color(255, 80, 80);
+                switch (modeSetting.getValue()) {
+                    case Normal:
+                        renderNormalBox(livingBase, posX, posY, endPosX, endPosY);
+                        break;
+
+                    case SuperCool:
+                        renderSuperCoolBox(livingBase, posX, posY, endPosX, posY);
                 }
 
-                DrawUtils.drawRect(posX - 1.0D, posY, posX + 1.0D, endPosY + 0.5D, black);
-                DrawUtils.drawRect(posX - 1.0D, endPosY - 1.5D, endPosX + 0.5D, endPosY + 0.5D, black);
-                DrawUtils.drawRect(endPosX - 1.5D, posY, endPosX + 0.5D, endPosY + 0.5D, black);
-                DrawUtils.drawRect(posX - 1.0D, posY - 0.5D, endPosX + 0.5D, posY + 1.5D, black);
-
-                DrawUtils.drawGradientH(posX - 0.5D, posY, posX + 0.5D, endPosY, first.getRGB(), second.getRGB());
-                DrawUtils.drawGradientV(posX, endPosY - 1.0D, endPosX, endPosY, second.getRGB(), third.getRGB());
-                DrawUtils.drawGradientH(endPosX - 1.0D, posY, endPosX, endPosY, fourth.getRGB(), third.getRGB());
-                DrawUtils.drawGradientV(posX - 0.5D, posY, endPosX, posY + 1.0D, first.getRGB(), fourth.getRGB());
-
+                int backgroundColor = new Color(0, 0, 0, 200).getRGB();
                 double armorPercentage = livingBase.getTotalArmorValue() / 20.0D;
                 double armorBarHeight = (endPosY - posY) * armorPercentage;
-                DrawUtils.drawRect(endPosX + 1.0D, posY - 0.5D, endPosX + 3.0D, endPosY + 0.5D, black);
+                DrawUtils.drawRect(endPosX + 1.0D, posY - 0.5D, endPosX + 3.0D, endPosY + 0.5D, backgroundColor);
                 if (armorBarHeight > 0) {
                     DrawUtils.drawRect(endPosX + 1.5D, endPosY, endPosX + 2.5D, endPosY - armorBarHeight, new Color(60, 100, 255).getRGB());
                 }
@@ -134,14 +129,14 @@ public class EspCheat extends CheatWrapper {
                 int healthColor = getHealthColor(health, maxHealth).getRGB();
                 double hpPercentage = (health / maxHealth);
                 double hpHeight = (endPosY - posY) * hpPercentage;
-                DrawUtils.drawRect(posX - 3.5D, posY - 0.5D, posX - 1.5D, endPosY + 0.5D, black);
+                DrawUtils.drawRect(posX - 3.5D, posY - 0.5D, posX - 1.5D, endPosY + 0.5D, backgroundColor);
                 if (health > 0) {
                     DrawUtils.drawRect(posX - 3.0D, endPosY, posX - 2.0D, endPosY - hpHeight, healthColor);
                 }
 
                 String hpFormat = String.format("%.1f", health / 2 * 10);
                 hpFont.drawCenteredStringWithShadow(
-                        String.format("\2477HP: %s%", hpFormat.replace(".0", "")),
+                        "\2477HP: " + hpFormat.replace(".0", "") + "%",
                         (posX + endPosX) / 2,
                         posY - (hpFont.getHeight() + 2),
                         healthColor);
@@ -156,6 +151,56 @@ public class EspCheat extends CheatWrapper {
         entityRenderer.setupOverlayRendering();
         GlStateManager.enableBlend();
         GlStateManager.popMatrix();
+    }
+
+    private void renderSuperCoolBox(EntityLivingBase livingBase, double posX, double posY, double endPosX, double endPosY) {
+        int backgroundColor = new Color(0, 0, 0, 200).getRGB();
+        Color first = ColorUtil.getSuperCoolColor(0, 270);
+        Color second = ColorUtil.getSuperCoolColor(90, 270);
+        Color third = ColorUtil.getSuperCoolColor(180, 270);
+        Color fourth = ColorUtil.getSuperCoolColor(270, 270);
+        if (livingBase.hurtTime > 0) {
+            first = new Color(255, 80, 80);
+            second = new Color(255, 80, 80);
+            third = new Color(255, 80, 80);
+            fourth = new Color(255, 80, 80);
+        }
+
+        DrawUtils.drawRect(posX - 1.0D, posY, posX + 1.0D, endPosY + 0.5D, backgroundColor);
+        DrawUtils.drawRect(posX - 1.0D, endPosY - 1.5D, endPosX + 0.5D, endPosY + 0.5D, backgroundColor);
+        DrawUtils.drawRect(endPosX - 1.5D, posY, endPosX + 0.5D, endPosY + 0.5D, backgroundColor);
+        DrawUtils.drawRect(posX - 1.0D, posY - 0.5D, endPosX + 0.5D, posY + 1.5D, backgroundColor);
+
+        DrawUtils.drawGradientH(posX - 0.5D, posY, posX + 0.5D, endPosY, first.getRGB(), second.getRGB());
+        DrawUtils.drawGradientV(posX, endPosY - 1.0D, endPosX, endPosY, second.getRGB(), third.getRGB());
+        DrawUtils.drawGradientH(endPosX - 1.0D, posY, endPosX, endPosY, fourth.getRGB(), third.getRGB());
+        DrawUtils.drawGradientV(posX - 0.5D, posY, endPosX, posY + 1.0D, first.getRGB(), fourth.getRGB());
+    }
+
+    private void renderNormalBox(EntityLivingBase livingBase, double posX, double posY, double endPosX, double endPosY) {
+        int backgroundColor = new Color(0, 0, 0, 200).getRGB();
+        int mainColor = new Color(40, 255, 60).getRGB();
+        if (livingBase.hurtTime > 0) {
+            mainColor = new Color(255, 80, 80).getRGB();
+        }
+
+        DrawUtils.drawRect(posX + 0.5D, posY, posX - 1.0D, posY + (endPosY - posY) / 7.0D + 0.5D, backgroundColor);
+        DrawUtils.drawRect(posX - 1.0D, endPosY, posX + 0.5D, endPosY - (endPosY - posY) / 7.0D - 0.5D, backgroundColor);
+        DrawUtils.drawRect(posX - 1.0D, posY - 0.5D, posX + (endPosX - posX) / 4.0D + 0.5D, posY + 1.0D, backgroundColor);
+        DrawUtils.drawRect(endPosX - (endPosX - posX) / 4.0D - 0.5D, posY - 0.5D, endPosX, posY + 1.0D, backgroundColor);
+        DrawUtils.drawRect(endPosX - 1.0D, posY, endPosX + 0.5D, posY + (endPosY - posY) / 7.0D + 0.5D, backgroundColor);
+        DrawUtils.drawRect(endPosX - 1.0D, endPosY, endPosX + 0.5D, endPosY - (endPosY - posY) / 7.0D - 0.5D, backgroundColor);
+        DrawUtils.drawRect(posX - 1.0D, endPosY - 1.0D, posX + (endPosX - posX) / 4.0D + 0.5D, endPosY + 0.5D, backgroundColor);
+        DrawUtils.drawRect(endPosX - (endPosX - posX) / 4.0D - 0.5D, endPosY - 1.0D, endPosX + 0.5D, endPosY + 0.5D, backgroundColor);
+
+        DrawUtils.drawRect(posX, posY, posX - 0.5D, posY + (endPosY - posY) / 7.0D, mainColor);
+        DrawUtils.drawRect(posX, endPosY, posX - 0.5D, endPosY - (endPosY - posY) / 7.0D, mainColor);
+        DrawUtils.drawRect(posX - 0.5D, posY, posX + (endPosX - posX) / 4.0D, posY + 0.5D, mainColor);
+        DrawUtils.drawRect(endPosX - (endPosX - posX) / 4.0D, posY, endPosX, posY + 0.5D, mainColor);
+        DrawUtils.drawRect(endPosX - 0.5D, posY, endPosX, posY + (endPosY - posY) / 7.0D, mainColor);
+        DrawUtils.drawRect(endPosX - 0.5D, endPosY, endPosX, endPosY - (endPosY - posY) / 7.0D, mainColor);
+        DrawUtils.drawRect(posX, endPosY - 0.5D, posX + (endPosX - posX) / 4.0D, endPosY, mainColor);
+        DrawUtils.drawRect(endPosX - (endPosX - posX) / 4.0D, endPosY - 0.5D, endPosX - 0.5D, endPosY, mainColor);
     }
 
     public static Color getHealthColor(float health, float maxHealth) {
