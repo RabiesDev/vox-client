@@ -2,8 +2,11 @@ package dev.rabies.vox.cheats.cheats;
 
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.CheatWrapper;
+import dev.rabies.vox.cheats.setting.BoolSetting;
+import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.events.render.Render3DEvent;
+import dev.rabies.vox.utils.ColorUtil;
 import dev.rabies.vox.utils.ShaderUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
@@ -12,7 +15,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL20;
 
+import java.awt.*;
+
 public class OutlineEspCheat extends CheatWrapper {
+
+    private final BoolSetting ignoreSelfSetting = registerBoolSetting("Ignore self", false);
+    private final BoolSetting invisSetting = registerBoolSetting("Invisible entity", true);
+
+    private final NumberSetting radiusSetting = registerNumberSetting("Radius", 1.0f, 1.0f, 5.0f, 0.5f);
 
     private final ShaderUtil outlineShader = new ShaderUtil("outline_shader.frag");
     private Framebuffer framebuffer;
@@ -21,12 +31,17 @@ public class OutlineEspCheat extends CheatWrapper {
         super("Outline ESP", Category.OTHER);
     }
 
-    private void setupUni(int direction1, int direction2) {
+    private void setupUniform(int direction1, int direction2) {
+        Color rainbow = ColorUtil.getRainbowColor(0, 360);
+        float r = rainbow.getRed() / 255.0f;
+        float g = rainbow.getGreen() / 255.0f;
+        float b = rainbow.getBlue() / 255.0f;
+
         GL20.glUniform1i(outlineShader.getUniformByName("u_texture"), 0);
-        GL20.glUniform1f(outlineShader.getUniformByName("u_radius"), 1.5f);
+        GL20.glUniform1f(outlineShader.getUniformByName("u_radius"), radiusSetting.getValue().floatValue());
         GL20.glUniform2f(outlineShader.getUniformByName("u_texelSize"), 1.0f / mc.displayWidth, 1.0f / mc.displayHeight);
         GL20.glUniform2f(outlineShader.getUniformByName("u_direction"), direction1, direction2);
-        GL20.glUniform3f(outlineShader.getUniformByName("u_color"), 0.4f, 0.6f, 1.0f);
+        GL20.glUniform3f(outlineShader.getUniformByName("u_color"), r, g, b);
     }
 
     @SubscribeEvent
@@ -34,12 +49,12 @@ public class OutlineEspCheat extends CheatWrapper {
         if (framebuffer == null || !outlineShader.isBinded()) return;
         mc.getFramebuffer().bindFramebuffer(true);
         GL20.glUseProgram(outlineShader.getProgramId());
-        setupUni(0, 1);
+        setupUniform(0, 1);
         GlStateManager.bindTexture(framebuffer.framebufferTexture);
         outlineShader.renderShader(event.getResolution());
 
         GL20.glUseProgram(outlineShader.getProgramId());
-        setupUni(1, 0);
+        setupUniform(1, 0);
         GlStateManager.bindTexture(framebuffer.framebufferTexture);
         outlineShader.renderShader(event.getResolution());
     }
@@ -67,7 +82,10 @@ public class OutlineEspCheat extends CheatWrapper {
     private void renderEntities(float partialTicks) {
         for (Entity entity : mc.world.getLoadedEntityList()) {
             if (!(entity instanceof EntityPlayer)) continue;
-            if (entity == mc.player && mc.gameSettings.thirdPersonView == 0) return;
+            if (!entity.isEntityAlive()) continue;
+            if (!invisSetting.getValue() && entity.isInvisible()) continue;
+            if (ignoreSelfSetting.getValue() && entity == mc.player) continue;
+            if (entity == mc.player && mc.gameSettings.thirdPersonView == 0) continue;
             mc.getRenderManager().setRenderShadow(false);
             mc.entityRenderer.disableLightmap();
             mc.getRenderManager().renderEntityStatic(entity, partialTicks, true);

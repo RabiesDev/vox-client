@@ -3,8 +3,10 @@ package dev.rabies.vox.cheats.cheats;
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.cheats.setting.BoolSetting;
+import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.events.render.Render3DEvent;
+import dev.rabies.vox.utils.ColorUtil;
 import dev.rabies.vox.utils.ShaderUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
@@ -14,10 +16,14 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL20;
 
+import java.awt.*;
+
 public class ChamsCheat extends CheatWrapper {
 
     private final BoolSetting ignoreSelfSetting = registerBoolSetting("Ignore self", false);
     private final BoolSetting invisSetting = registerBoolSetting("Invisible entity", true);
+
+    private final NumberSetting alphaSetting = registerNumberSetting("Alpha", 0.42f, 0.1f, 1.0f, 0.1f);
 
     private final ShaderUtil chamsShader = new ShaderUtil("chams_shader.frag");
     private Framebuffer framebuffer;
@@ -26,11 +32,16 @@ public class ChamsCheat extends CheatWrapper {
         super("Chams", Category.OTHER);
     }
     
-    private void setupUni() {
+    private void setupUniform() {
+        Color rainbow = ColorUtil.getRainbowColor(0, 360);
+        float r = rainbow.getRed() / 255.0f;
+        float g = rainbow.getGreen() / 255.0f;
+        float b = rainbow.getBlue() / 255.0f;
+
     	GL20.glUniform1i(chamsShader.getUniformByName("u_texture"), 0);
         GL20.glUniform1i(chamsShader.getUniformByName("u_coloring"), 1);
-        GL20.glUniform1f(chamsShader.getUniformByName("u_alpha"), 0.45f);
-        GL20.glUniform3f(chamsShader.getUniformByName("u_color"), 0.4f, 0.6f, 1.0f);
+        GL20.glUniform1f(chamsShader.getUniformByName("u_alpha"), alphaSetting.getValue().floatValue());
+        GL20.glUniform3f(chamsShader.getUniformByName("u_color"), r, g, b);
         GL20.glUniform1f(chamsShader.getUniformByName("u_mixin"), 0.5f);
     }
 
@@ -39,7 +50,7 @@ public class ChamsCheat extends CheatWrapper {
         if (framebuffer == null || !chamsShader.isBinded()) return;
         mc.getFramebuffer().bindFramebuffer(true);
         GL20.glUseProgram(chamsShader.getProgramId());
-        setupUni();
+        setupUniform();
         GlStateManager.bindTexture(framebuffer.framebufferTexture);
         chamsShader.renderShader(event.getResolution());
     }

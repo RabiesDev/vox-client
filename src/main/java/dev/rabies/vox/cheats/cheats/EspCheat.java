@@ -7,6 +7,7 @@ import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.events.render.RenderNameEvent;
 import dev.rabies.vox.render.font.SystemFontRenderer;
+import dev.rabies.vox.utils.ColorUtil;
 import dev.rabies.vox.utils.DrawUtils;
 import dev.rabies.vox.utils.ServerUtil;
 import net.minecraft.client.gui.ScaledResolution;
@@ -98,10 +99,10 @@ public class EspCheat extends CheatWrapper {
                 double endPosY = position.w;
 
                 int black = new Color(0, 0, 0, 200).getRGB();
-                Color first = getEspColor(0);
-                Color second = getEspColor(90);
-                Color third = getEspColor(180);
-                Color fourth = getEspColor(270);
+                Color first = ColorUtil.getSuperCoolColor(0, 270);
+                Color second = ColorUtil.getSuperCoolColor(90, 270);
+                Color third = ColorUtil.getSuperCoolColor(180, 270);
+                Color fourth = ColorUtil.getSuperCoolColor(270, 270);
                 if (livingBase.hurtTime > 0) {
                 	first = new Color(255, 80, 80);
                 	second = new Color(255, 80, 80);
@@ -166,19 +167,6 @@ public class EspCheat extends CheatWrapper {
         };
         float progress = health / maxHealth;
         return DrawUtils.blendColors(fractions, colors, progress).brighter();
-    }
-    
-    public Color getEspColor(double offset) {
-        float[] fractions = {0.0F, 0.3F, 0.7F, 1.0F};
-        Color[] colors = {
-                new Color(55, 33, 255),
-                new Color(255, 70, 90),
-                new Color(50, 150, 255),
-                new Color(55, 33, 255)
-        };
-        double progress = Math.ceil((System.currentTimeMillis() + (offset * 2) * 2) / 5);
-        progress %= 270.0D;
-        return DrawUtils.blendColors(fractions, colors, (float) (progress / 270)).brighter();
     }
 
     private boolean isValidEntity(Entity entity) {
