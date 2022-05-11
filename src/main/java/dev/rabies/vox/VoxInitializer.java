@@ -64,7 +64,7 @@ public class VoxInitializer implements Initializer {
                 new AutoSprintCheat(),
                 new AutoClickerCheat(),
                 new InvPlusCheat(),
-                new ESPCheat(),
+                new EspCheat(),
                 new WTapCheat(),
                 new AutoToolCheat(),
                 new AntiForgeBypassCheat(),
@@ -74,7 +74,8 @@ public class VoxInitializer implements Initializer {
                 new SneakCheat(),
                 new AutoRespawnCheat(),
                 new FreecamCheat(),
-                new AimAssistCheat()
+                new AimAssistCheat(),
+                new OutlineEspCheat()
         );
     }
 

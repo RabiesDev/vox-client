@@ -1,6 +1,7 @@
 package dev.rabies.vox.utils;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
@@ -15,6 +16,8 @@ public class ShaderUtil {
 	
 	@Getter
 	private final int programId = GL20.glCreateProgram();
+	@Getter @Setter
+	private boolean binded;
 
 	public ShaderUtil(String frag) {
 		GL20.glAttachShader(programId, compile(
@@ -31,8 +34,6 @@ public class ShaderUtil {
 	public void renderShader(ScaledResolution resolution) {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2d(0.0, 1.0);
 		GL11.glVertex2d(0.0, 0.0);
@@ -46,6 +47,7 @@ public class ShaderUtil {
 		GL11.glDisable(GL11.GL_LINE_SMOOTH);
 		GlStateManager.disableBlend();
 		GL20.glUseProgram(0);
+		binded = false;
 	}
 
 	public int getUniformByName(String name) {

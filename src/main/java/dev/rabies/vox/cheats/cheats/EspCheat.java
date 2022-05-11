@@ -25,7 +25,7 @@ import javax.vecmath.Vector4d;
 
 import java.awt.*;
 
-public class ESPCheat extends CheatWrapper {
+public class EspCheat extends CheatWrapper {
 
     private final BoolSetting ignoreSelfSetting = registerBoolSetting("Ignore self", false);
     private final BoolSetting invisSetting = registerBoolSetting("Invisible entity", true);
@@ -34,7 +34,7 @@ public class ESPCheat extends CheatWrapper {
     private final SystemFontRenderer hpFont = VoxMod.get().newSystemFont("Mukta-SemiBold", 11);
     private final Frustum frustum = new Frustum();
 
-    public ESPCheat() {
+    public EspCheat() {
         super("ESP", Category.OTHER);
     }
 
