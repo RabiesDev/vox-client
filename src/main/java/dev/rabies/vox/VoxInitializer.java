@@ -78,7 +78,9 @@ public class VoxInitializer implements Initializer {
                 new FakeFpsCheat(),
                 new TabGuiCheat(),
                 new StreamerCheat(),
-                new AimAssistCheat()
+                new AimAssistCheat(),
+                new PackSpooferCheat(),
+                new PingSpooferCheat()
         );
     }
 
