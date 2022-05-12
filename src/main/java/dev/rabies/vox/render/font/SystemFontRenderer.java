@@ -1,8 +1,11 @@
 package dev.rabies.vox.render.font;
 
+import dev.rabies.vox.events.VoxEventTiming;
+import dev.rabies.vox.events.render.RenderTextEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.Color;
@@ -37,9 +40,14 @@ public class SystemFontRenderer extends SystemFont {
     }
 
     public void drawString(String text, double x, double y, Color color, boolean shadow) {
+        if (text == null) return;
+        RenderTextEvent renderTextEvent = new RenderTextEvent(VoxEventTiming.POST, text);
+        MinecraftForge.EVENT_BUS.post(renderTextEvent);
+        text = renderTextEvent.getString();
+
         x -= 1;
         y -= 2;
-        if (text == null) return;
+
         if (color.getRed() == 255 && color.getGreen() == 255 && color.getBlue() == 255 && color.getAlpha() == 32)
             color = new Color(255, 255, 255);
         if (color.getAlpha() < 4)
@@ -118,6 +126,10 @@ public class SystemFontRenderer extends SystemFont {
     @Override
     public double getStringWidth(String text) {
         if (text == null) return 0;
+        RenderTextEvent renderTextEvent = new RenderTextEvent(VoxEventTiming.POST, text);
+        MinecraftForge.EVENT_BUS.post(renderTextEvent);
+        text = renderTextEvent.getString();
+
         double width = 0;
 
         for (int i = 0; i < text.length(); i++) {

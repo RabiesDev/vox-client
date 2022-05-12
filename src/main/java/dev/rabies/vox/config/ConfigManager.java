@@ -119,7 +119,7 @@ public class ConfigManager {
             jsonObject.add(cheat.getName(), cheatObject);
         }
 
-        String result = "";
+        String result;
         try {
             FileUtils.writeStringToFile(newConfig, gson.toJson(jsonObject), StandardCharsets.UTF_8);
             configs.add(new Config(name, author, jsonObject));
