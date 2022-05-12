@@ -2,8 +2,10 @@ package dev.rabies.vox.utils;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
@@ -77,4 +79,13 @@ public class ShaderUtil {
             sb.append(line).append('\n');
         return sb.toString();
     }
+
+	public static Framebuffer createFramebuffer(Framebuffer framebuffer) {
+		if (framebuffer == null || framebuffer.framebufferWidth != Minecraft.getMinecraft().displayWidth ||
+				framebuffer.framebufferHeight != Minecraft.getMinecraft().displayHeight) {
+			if (framebuffer != null) framebuffer.deleteFramebuffer();
+			return new Framebuffer(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, true);
+		}
+		return framebuffer;
+	}
 }

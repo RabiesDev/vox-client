@@ -61,7 +61,7 @@ public class OutlineEspCheat extends CheatWrapper {
 
     @SubscribeEvent
     public void onRender3d(Render3DEvent event) {
-        framebuffer = createFramebuffer();
+        framebuffer = ShaderUtil.createFramebuffer(framebuffer);
         framebuffer.framebufferClear();
         framebuffer.bindFramebuffer(true);
         renderEntities(event.getPartialTicks());
@@ -69,14 +69,6 @@ public class OutlineEspCheat extends CheatWrapper {
         mc.getFramebuffer().bindFramebuffer(true);
         mc.entityRenderer.disableLightmap();
         GlStateManager.disableLighting();
-    }
-
-    private Framebuffer createFramebuffer() {
-        if (framebuffer == null || framebuffer.framebufferWidth != mc.displayWidth || framebuffer.framebufferHeight != mc.displayHeight) {
-            if (framebuffer != null) framebuffer.deleteFramebuffer();
-            framebuffer = new Framebuffer(mc.displayWidth, mc.displayHeight, true);
-        }
-        return framebuffer;
     }
 
     private void renderEntities(float partialTicks) {

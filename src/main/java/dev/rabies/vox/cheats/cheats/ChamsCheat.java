@@ -58,21 +58,13 @@ public class ChamsCheat extends CheatWrapper {
 
     @SubscribeEvent
     public void onRender3d(Render3DEvent event) {
-        framebuffer = createFramebuffer();
+        framebuffer = ShaderUtil.createFramebuffer(framebuffer);
         framebuffer.framebufferClear();
         framebuffer.bindFramebuffer(true);
         renderEntities(event.getPartialTicks());
         framebuffer.unbindFramebuffer();
         mc.getFramebuffer().bindFramebuffer(true);
         mc.entityRenderer.disableLightmap();
-    }
-
-    private Framebuffer createFramebuffer() {
-        if (framebuffer == null || framebuffer.framebufferWidth != mc.displayWidth || framebuffer.framebufferHeight != mc.displayHeight) {
-            if (framebuffer != null) framebuffer.deleteFramebuffer();
-            framebuffer = new Framebuffer(mc.displayWidth, mc.displayHeight, true);
-        }
-        return framebuffer;
     }
 
     private void renderEntities(float partialTicks) {

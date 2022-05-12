@@ -111,7 +111,7 @@ public class EspCheat extends CheatWrapper {
                         break;
 
                     case SuperCool:
-                        renderSuperCoolBox(livingBase, posX, posY, endPosX, posY);
+                        renderSuperCoolBox(livingBase, posX, posY, endPosX, endPosY);
                 }
 
                 int backgroundColor = new Color(0, 0, 0, 200).getRGB();
