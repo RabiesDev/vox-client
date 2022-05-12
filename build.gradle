@@ -19,7 +19,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group = 'dev.rabies'
-version = '0.1.0'
+version = '0.1.1'
 
 java {
     archivesBaseName = 'vox'
