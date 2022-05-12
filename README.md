@@ -1,6 +1,7 @@
 ## Vox
 1.12.2のGhostClient的な  
-ライセンスはMITです
+ライセンスはMITです  
+Starがいっぱいつくとやる気が起きます
 
 ### Build
 1: Clone  
