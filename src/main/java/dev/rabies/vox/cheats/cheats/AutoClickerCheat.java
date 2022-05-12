@@ -63,6 +63,13 @@ public class AutoClickerCheat extends CheatWrapper {
         super("Auto Clicker", Category.LEGIT, KeyBind.fromKey(Keyboard.KEY_R));
     }
 
+    @Override
+    public void onDisable() {
+        attacked = false;
+        clicked = false;
+        breakTick = 0;
+    }
+
     @SubscribeEvent
     public void onUpdate(UpdateEvent event) {
         if (leftClickSetting.getValue()) {
@@ -183,8 +190,7 @@ public class AutoClickerCheat extends CheatWrapper {
     }
 
     public boolean canClick(boolean left) {
-        if (mc.isGamePaused()) return false;
-        if (!mc.inGameHasFocus) return false;
+        if (mc.isGamePaused() || !mc.inGameHasFocus) return false;
         if (mc.player.getItemInUseCount() > 0 &&
                 !itemInUseSetting.getValue()) return false;
         if (mc.objectMouseOver != null && left) {

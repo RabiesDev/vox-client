@@ -6,10 +6,15 @@ import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.events.game.UpdateEvent;
 import dev.rabies.vox.utils.ServerUtil;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.RandomUtils;
 
@@ -27,6 +32,7 @@ public class AimAssistCheat extends CheatWrapper {
 
     private final List<EntityLivingBase> targetEntities = new ArrayList<>();
     private EntityLivingBase targetEntity;
+    private int breakTick;
 
     public AimAssistCheat() {
         super("Aim Assist", Category.LEGIT);
@@ -36,6 +42,7 @@ public class AimAssistCheat extends CheatWrapper {
     public void onDisable() {
         targetEntities.clear();
         targetEntity = null;
+        breakTick = 0;
     }
 
     @SubscribeEvent
@@ -43,8 +50,8 @@ public class AimAssistCheat extends CheatWrapper {
         if (event.isPost()) return;
         targetEntity = findTarget();
         if (targetEntity == null) return;
-        if (clickOnlySetting.getValue() && !mc.gameSettings.keyBindAttack.isKeyDown()) return;
-        if (mc.player.getItemInUseCount() > 0 && !itemInUseSetting.getValue()) return;
+        if (!canAssist()) return;
+
         float yawChange = getYawChangeToEntity(targetEntity);
         float speed = speedSetting.getValue().floatValue();
         float improvedSpeed = (float) MathHelper.clamp(RandomUtils.nextFloat(speed - 0.2f, speed + 1.8f),
@@ -62,6 +69,29 @@ public class AimAssistCheat extends CheatWrapper {
     public float getGcd() {
         float sensitivity = mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
         return sensitivity * sensitivity * sensitivity * RandomUtils.nextFloat(2.0f, 5.0f);
+    }
+
+    private boolean canAssist() {
+        if (mc.isGamePaused() || !mc.inGameHasFocus) return false;
+        if (mc.currentScreen != null) return false;
+        if (clickOnlySetting.getValue() && !mc.gameSettings.keyBindAttack.isKeyDown()) return false;
+        if (mc.player.getItemInUseCount() > 0 && !itemInUseSetting.getValue()) return false;
+        if (mc.objectMouseOver != null) {
+            RayTraceResult result = mc.objectMouseOver;
+            if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
+                BlockPos blockPos = result.getBlockPos();
+                Block block = mc.world.getBlockState(blockPos).getBlock();
+                if (block instanceof BlockAir) return true;
+                if (block instanceof BlockLiquid) return true;
+                if (mc.gameSettings.keyBindAttack.isKeyDown()) {
+                    if (breakTick > 2) return false;
+                    breakTick++;
+                } else {
+                    breakTick = 0;
+                }
+            }
+        }
+        return true;
     }
 
     private EntityLivingBase findTarget() {
