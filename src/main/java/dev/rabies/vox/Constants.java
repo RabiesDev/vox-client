@@ -12,5 +12,6 @@ public class Constants {
 
     public static final String URL = "https://github.com/Rabies1337/Vox";
 
-    public static final String PREFIX = String.format("\2477[\247a%s\2477]\247f ", MOD_NAME);
+    public static final String SUFFIX = String.format("\2477[\247a%s\2477]\247f ", MOD_NAME);
+
 }

@@ -10,14 +10,14 @@ public class ChatUtil {
     public static void info(Object content) {
         Minecraft.getMinecraft().ingameGUI.addChatMessage(
                 ChatType.SYSTEM,
-                new TextComponentString(Constants.PREFIX.concat(content.toString()))
+                new TextComponentString(Constants.SUFFIX.concat(content.toString()))
         );
     }
 
     public static void error(Object content) {
         Minecraft.getMinecraft().ingameGUI.addChatMessage(
                 ChatType.SYSTEM,
-                new TextComponentString(Constants.PREFIX.concat("\247c" + content.toString()))
+                new TextComponentString(Constants.SUFFIX.concat("\247c" + content.toString()))
         );
     }
 
