@@ -27,7 +27,8 @@ public class AimAssistCheat extends CheatWrapper {
     private final NumberSetting rangeSetting = registerNumberSetting("Range", 3.8, 3.0, 10.0, 0.1);
     private final NumberSetting speedSetting = registerNumberSetting("Speed", 0.45f, 0.1f, 10.0f, 0.1f);
     private final BoolSetting clickOnlySetting = registerBoolSetting("Click Only", false);
-    private final BoolSetting teamCheckSetting = registerBoolSetting("Team check", true);
+    private final BoolSetting ignoreFriendsSetting = registerBoolSetting("Ignore Friends", true);
+    private final BoolSetting ignoreTeamsSetting = registerBoolSetting("Ignore teams", true);
     private final BoolSetting itemInUseSetting = registerBoolSetting("Item in use", false);
 
     private final List<EntityLivingBase> targetEntities = new ArrayList<>();
@@ -105,7 +106,10 @@ public class AimAssistCheat extends CheatWrapper {
             if (mc.player.getDistance(entity) > focusRange) continue;
             if (entity instanceof EntityPlayer) {
                 if (entity == mc.player) continue;
-                if (teamCheckSetting.getValue() && ServerUtil.isTeams((EntityPlayer) entity)) continue;
+                if (ignoreFriendsSetting.getValue() && ServerUtil.isFriend((EntityPlayer) entity))
+                    continue;
+                if (ignoreTeamsSetting.getValue() && ServerUtil.isTeam((EntityPlayer) entity))
+                    continue;
                 targetEntities.add((EntityLivingBase) entity);
             }
         }

@@ -1,5 +1,6 @@
 package dev.rabies.vox.utils;
 
+import dev.rabies.vox.VoxMod;
 import joptsimple.internal.Strings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -35,7 +36,7 @@ public class ServerUtil {
         return color;
     }
 
-    public static boolean isTeams(EntityPlayer player) {
+    public static boolean isTeam(EntityPlayer player) {
         Minecraft mc = Minecraft.getMinecraft();
         boolean result = false;
         TextFormatting formatting = null;
@@ -61,5 +62,11 @@ public class ServerUtil {
             }
         }
         return result;
+    }
+
+    public static boolean isFriend(EntityPlayer player) {
+        return VoxMod.get().getFriendManager().getFriends().stream()
+                .filter(it -> it.getIgn().equalsIgnoreCase(player.getName()))
+                .findFirst().orElse(null) != null;
     }
 }

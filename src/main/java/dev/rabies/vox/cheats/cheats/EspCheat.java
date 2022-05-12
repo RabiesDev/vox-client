@@ -134,14 +134,19 @@ public class EspCheat extends CheatWrapper {
                     DrawUtils.drawRect(posX - 3.0D, endPosY, posX - 2.0D, endPosY - hpHeight, healthColor);
                 }
 
+                String tagString = livingBase.getName();
+                if (livingBase instanceof EntityPlayer) {
+                    tagString += " §7[§aFriend§7]";
+                }
+
                 String hpFormat = String.format("%.1f", health / 2 * 10);
                 hpFont.drawCenteredStringWithShadow(
-                        "\2477HP: " + hpFormat.replace(".0", "") + "%",
+                        "§7HP: §r" + hpFormat.replace(".0", "") + "%",
                         (posX + endPosX) / 2,
                         posY - (hpFont.getHeight() + 2),
                         healthColor);
                 tagFont.drawCenteredStringWithShadow(
-                        livingBase.getName(),
+                        tagString,
                         (posX + endPosX) / 2,
                         posY - ((hpFont.getHeight() + 3) + tagFont.getHeight()),
                         ServerUtil.getTeamColor(livingBase).getRGB());

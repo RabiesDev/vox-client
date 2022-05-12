@@ -5,6 +5,7 @@ import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.cheats.cheats.*;
 import dev.rabies.vox.commands.*;
 import dev.rabies.vox.config.ConfigManager;
+import dev.rabies.vox.friend.FriendManager;
 import dev.rabies.vox.render.RenderHook;
 import dev.rabies.vox.render.font.FontData;
 import dev.rabies.vox.render.font.SystemFontRenderer;
@@ -31,6 +32,8 @@ public class VoxInitializer implements Initializer {
     @Getter private final ArrayList<Command> commands = new ArrayList<>();
     @Getter
     private ConfigManager configManager;
+    @Getter
+    private FriendManager friendManager;
     @Getter @Setter
     private boolean debugMode;
 
@@ -51,6 +54,8 @@ public class VoxInitializer implements Initializer {
     public void postInitialize(FMLPostInitializationEvent event) {
         configManager = new ConfigManager();
         configManager.loadConfig("default");
+        friendManager = new FriendManager();
+        friendManager.loadFriends();
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         MinecraftForge.EVENT_BUS.register(new RenderHook());
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -59,6 +64,7 @@ public class VoxInitializer implements Initializer {
                 Minecraft.getMinecraft().gameSettings.gammaSetting = brightnessCheat.getPrevGammaSetting();
             }
             configManager.saveConfig("default", Constants.MOD_NAME, true);
+            friendManager.saveFriends();
         }));
     }
 

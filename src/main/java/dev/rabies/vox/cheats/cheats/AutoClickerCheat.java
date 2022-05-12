@@ -34,7 +34,8 @@ public class AutoClickerCheat extends CheatWrapper {
 
     private final ModeSetting<Mode> modeSetting = registerModeSetting("Mode", Mode.Normal);
 
-    private final BoolSetting teamCheckSetting = registerBoolSetting("Team check", true);
+    private final BoolSetting ignoreFriendsSetting = registerBoolSetting("Ignore Friends", true);
+    private final BoolSetting ignoreTeamsSetting = registerBoolSetting("Ignore teams", true);
     private final BoolSetting itemInUseSetting = registerBoolSetting("Item in use", false);
 
     private final BoolSetting leftClickSetting = registerBoolSetting("Left click", true);
@@ -198,8 +199,8 @@ public class AutoClickerCheat extends CheatWrapper {
             if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
                 BlockPos blockPos = result.getBlockPos();
                 Block block = mc.world.getBlockState(blockPos).getBlock();
-                if (block instanceof BlockAir) return true;
-                if (block instanceof BlockLiquid) return true;
+                if (block instanceof BlockAir || block instanceof BlockLiquid)
+                    return true;
                 if (mc.gameSettings.keyBindAttack.isKeyDown()) {
                     if (breakTick > 1) return false;
                     breakTick++;
@@ -209,12 +210,14 @@ public class AutoClickerCheat extends CheatWrapper {
             } else {
                 breakTick = 0;
 
-                if (result.typeOfHit == RayTraceResult.Type.ENTITY && teamCheckSetting.getValue()) {
+                if (result.typeOfHit == RayTraceResult.Type.ENTITY) {
                     Entity entity = result.entityHit;
-                    if (entity.isDead) return false;
                     if (!(entity instanceof EntityPlayer)) return true;
-                    if (entity == mc.player) return false;
-                    return !ServerUtil.isTeams((EntityPlayer) entity);
+                    if (entity.isDead || entity == mc.player) return false;
+                    if (ignoreFriendsSetting.getValue() && ServerUtil.isFriend((EntityPlayer) entity))
+                        return false;
+                    if (ignoreTeamsSetting.getValue() && ServerUtil.isTeam((EntityPlayer) entity))
+                        return false;
                 }
             }
         }
