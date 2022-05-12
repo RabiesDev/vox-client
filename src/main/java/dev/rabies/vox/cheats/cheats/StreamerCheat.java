@@ -13,6 +13,7 @@ public class StreamerCheat extends CheatWrapper {
 
     @SubscribeEvent
     public void onRenderText(RenderTextEvent event) {
+    	if (mc.player == null) return;
         String string = event.getString();
         if (!string.contains(mc.player.getName())) return;
         event.setString(string.replace(mc.player.getName(), "§aVox"));
