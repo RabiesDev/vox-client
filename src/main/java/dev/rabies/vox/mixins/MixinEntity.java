@@ -25,6 +25,6 @@ public class MixinEntity {
     public void getCollisionBorderSize(CallbackInfoReturnable<Float> cir) {
         HitBoxCheat hitBoxCheat = (HitBoxCheat) VoxMod.get().getCheatByName("hitbox");
         if (hitBoxCheat == null) return;
-        cir.setReturnValue(1.0f + hitBoxCheat.sizeSetting.getValue().floatValue());
+        cir.setReturnValue(hitBoxCheat.sizeSetting.getValue().floatValue());
     }
 }
