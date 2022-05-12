@@ -78,11 +78,11 @@ public class CheatWrapper implements Cheat {
     public void toggle() {
         enabled = !enabled;
         if (enabled) {
-            onEnable();
             MinecraftForge.EVENT_BUS.register(this);
+            onEnable();
         } else {
-            onDisable();
             MinecraftForge.EVENT_BUS.unregister(this);
+            onDisable();
         }
     }
     
