@@ -1,4 +1,4 @@
-package dev.rabies.vox.render.tab;
+package dev.rabies.vox.render.tabgui;
 
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
@@ -12,22 +12,22 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryTab {
+public class TabCategoryComponent {
 
     private final SystemFontRenderer labelFont = VoxMod.get().newSystemFont("Mukta-Regular", 20);
     @Getter
-    private final List<CheatTab> cheatTabs = new ArrayList<>();
+    private final List<TabCheatComponent> cheatTabs = new ArrayList<>();
     @Getter
     private final Category category;
     @Getter
     private final String label;
 
-    public CategoryTab(Category category) {
+    public TabCategoryComponent(Category category) {
         this.category = category;
         this.label = category.getLabel();
     }
 
-    public void registerTab(CheatTab tab) {
+    public void registerTab(TabCheatComponent tab) {
         cheatTabs.add(tab);
     }
 
@@ -35,7 +35,7 @@ public class CategoryTab {
         int offset = 6;
         double height = ((labelFont.getHeight() / 1.3) + offset - 1) * cheatTabs.size();
         double width = 0;
-        for (CheatTab tab : cheatTabs) {
+        for (TabCheatComponent tab : cheatTabs) {
             if (labelFont.getStringWidth(tab.getLabel()) > width) {
                 width = labelFont.getStringWidth(tab.getLabel());
             }
@@ -53,7 +53,7 @@ public class CategoryTab {
         int subOffset = offset - 1;
         int offsetY = subOffset - 1;
         for (int i = 0; i < cheatTabs.size(); i++) {
-            CheatTab tab = cheatTabs.get(i);
+            TabCheatComponent tab = cheatTabs.get(i);
             Color col = new Color(255, 255, 255).darker();
             if (tab.getCheat().isEnabled()) {
             	col = new Color(110, 255, 60).darker();

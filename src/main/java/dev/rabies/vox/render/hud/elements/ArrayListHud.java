@@ -1,20 +1,22 @@
-package dev.rabies.vox.render;
+package dev.rabies.vox.render.hud.elements;
 
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.events.render.Render2DEvent;
+import dev.rabies.vox.render.RenderHook;
 import dev.rabies.vox.render.font.SystemFontRenderer;
+import dev.rabies.vox.render.hud.HudElement;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CheatInfoWidget extends Widget {
+public class ArrayListHud extends HudElement {
 
     private final SystemFontRenderer cheatInfoFont = VoxMod.get().newSystemFont("Mukta-SemiBold", 20);
 
-    public CheatInfoWidget() {
-        super("CheatInfo");
+    public ArrayListHud() {
+        super("ArrayList");
     }
 
     @Override
@@ -23,7 +25,7 @@ public class CheatInfoWidget extends Widget {
     }
 
     @Override
-    public void draw(Render2DEvent event) {
+    public void render(RenderHook hook, Render2DEvent event) {
         List<CheatWrapper> sorted = VoxMod.get().getCheats().stream()
                 .filter(CheatWrapper::isEnabled)
                 .sorted(Comparator.comparingDouble(it -> {
@@ -35,7 +37,7 @@ public class CheatInfoWidget extends Widget {
                     return -cheatInfoFont.getStringWidth(label);
                 })).collect(Collectors.toList());
 
-        double offsetY = RenderHook.getWidgetByName("tabgui").isVisible() ? 68 : cheatInfoFont.getHeight() + 2;
+        double offsetY = hook.getTabGuiCheat().isEnabled() ? 68 : cheatInfoFont.getHeight() + 5;
         for (CheatWrapper cheat : sorted) {
             String label = cheat.getName();
             if (cheat.getSuffix() != null && cheat.getSuffix().toString().length() > 0 &&
@@ -46,9 +48,5 @@ public class CheatInfoWidget extends Widget {
             cheatInfoFont.drawStringWithShadow(label, 5, offsetY, -1);
             offsetY += cheatInfoFont.getHeight();
         }
-    }
-
-    @Override
-    public void onInputKey(int keyCode, boolean state) {
     }
 }

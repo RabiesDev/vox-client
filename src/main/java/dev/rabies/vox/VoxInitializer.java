@@ -75,7 +75,8 @@ public class VoxInitializer implements Initializer {
                 new FreecamCheat(),
                 new OutlineEspCheat(),
                 new HitBoxCheat(),
-                new FakeFpsCheat()
+                new FakeFpsCheat(),
+                new TabGuiCheat()
         );
     }
 
@@ -89,7 +90,8 @@ public class VoxInitializer implements Initializer {
     }
 
     public CheatWrapper getCheatByName(String name) {
-        return cheats.stream().filter(it -> it.getName().equalsIgnoreCase(name))
+        return cheats.stream().filter(it -> it.getName().replace(" ", "")
+                        .equalsIgnoreCase(name.replace(" ", "")))
                 .findFirst().orElse(null);
     }
 

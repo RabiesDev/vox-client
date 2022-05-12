@@ -1,11 +1,12 @@
-package dev.rabies.vox.render.tab;
+package dev.rabies.vox.render.tabgui;
 
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.events.render.Render2DEvent;
-import dev.rabies.vox.render.Widget;
+import dev.rabies.vox.render.RenderHook;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.utils.DrawUtils;
+import dev.rabies.vox.utils.misc.ChatUtil;
 import lombok.Getter;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
@@ -16,39 +17,31 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TabGuiWidget extends Widget implements TabActionListener {
+public class TabGuiRenderer implements TabActionListener {
 
     private final SystemFontRenderer labelFont = VoxMod.get().newSystemFont("Mukta-Regular", 20);
     @Getter
-    private final List<CategoryTab> categoryTabs = new ArrayList<>();
+    private final List<TabCategoryComponent> categoryTabs = new ArrayList<>();
     @Getter
     private int selectedIndex;
     @Getter
     private int selectedCheatIndex;
 
-    public TabGuiWidget() {
-        super("TabGui");
+    public TabGuiRenderer() {
         Arrays.stream(Category.values()).forEach(cat -> {
-            CategoryTab tab = new CategoryTab(cat);
-            VoxMod.get().getCheatsByCategory(cat).forEach(ch ->
-                    tab.registerTab(new CheatTab(ch))
-            );
+            TabCategoryComponent tab = new TabCategoryComponent(cat);
+            VoxMod.get().getCheatsByCategory(cat).forEach(ch -> tab.registerTab(new TabCheatComponent(ch)));
             categoryTabs.add(tab);
         });
         selectedIndex = 0;
+        selectedCheatIndex = -1;
     }
 
-    @Override
-    public boolean isVisible() {
-        return true;
-    }
-
-    @Override
-    public void draw(Render2DEvent event) {
+    public void render(RenderHook hook) {
         int offset = 6;
         double height = ((labelFont.getHeight() / 1.3) + offset - 1) * categoryTabs.size();
         double width = 0;
-        for (CategoryTab tab : categoryTabs) {
+        for (TabCategoryComponent tab : categoryTabs) {
             if (labelFont.getStringWidth(tab.getLabel()) > width) {
                 width = labelFont.getStringWidth(tab.getLabel());
             }
@@ -58,7 +51,7 @@ public class TabGuiWidget extends Widget implements TabActionListener {
         int bg = new Color(20, 20, 20, 200).getRGB();
         int theme = new Color(110, 255, 60).getRGB();
 
-        GlStateManager.translate(5, 20, 0);
+        GlStateManager.translate(5, hook.getHudCheat().isEnabled() ? 20 : 5, 0);
         DrawUtils.drawRect(0, 0, width, height, bg);
         GlStateManager.glLineWidth(1.2F);
         DrawUtils.drawRect(GL11.GL_LINE_LOOP, 0, 0, width, height, theme);
@@ -66,7 +59,7 @@ public class TabGuiWidget extends Widget implements TabActionListener {
         int subOffset = offset - 1;
         int offsetY = subOffset - 1;
         for (int i = 0; i < categoryTabs.size(); i++) {
-            CategoryTab tab = categoryTabs.get(i);
+            TabCategoryComponent tab = categoryTabs.get(i);
             Color col = new Color(255, 255, 255).darker();
             if (selectedIndex == i) {
                 col = col.brighter().brighter();
@@ -82,11 +75,11 @@ public class TabGuiWidget extends Widget implements TabActionListener {
             offsetY += subOffset;
         }
 
-        GlStateManager.translate(-5, -20, 0);
+        GlStateManager.translate(-5, hook.getHudCheat().isEnabled() ? -20 : -5, 0);
     }
 
     @Override
-    public void onInputKey(int keyCode, boolean state) {
+    public void input(int keyCode, boolean state) {
     	if (!state) return;
 
         switch (keyCode) {
@@ -124,10 +117,9 @@ public class TabGuiWidget extends Widget implements TabActionListener {
 
             case Keyboard.KEY_RIGHT:
             case Keyboard.KEY_RETURN: // enter
-            	CategoryTab tab = categoryTabs.get(selectedIndex);
+            	TabCategoryComponent tab = categoryTabs.get(selectedIndex);
                 if (selectedCheatIndex != -1) {
-                	tab.getCheatTabs().get(selectedCheatIndex)
-                            .onInputKey(keyCode, true);
+                	tab.getCheatTabs().get(selectedCheatIndex).input(keyCode, true);
                     return;
                 }
                 

@@ -1,17 +1,19 @@
-package dev.rabies.vox.render;
+package dev.rabies.vox.render.hud.elements;
 
 import dev.rabies.vox.Constants;
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.events.render.Render2DEvent;
+import dev.rabies.vox.render.RenderHook;
 import dev.rabies.vox.render.font.SystemFontRenderer;
+import dev.rabies.vox.render.hud.HudElement;
 
 import java.awt.*;
 
-public class WatermarkWidget extends Widget {
+public class WatermarkHud extends HudElement {
 
     private final SystemFontRenderer watermarkFont = VoxMod.get().newSystemFont("Mukta-Bold", 28);
 
-    public WatermarkWidget() {
+    public WatermarkHud() {
         super("Watermark");
     }
 
@@ -21,11 +23,8 @@ public class WatermarkWidget extends Widget {
     }
 
     @Override
-    public void draw(Render2DEvent event) {
+    public void render(RenderHook hook, Render2DEvent event) {
         watermarkFont.drawStringWithShadow(Constants.MOD_NAME, 5, 0, new Color(120, 255, 70).getRGB());
-    }
-
-    @Override
-    public void onInputKey(int keyCode, boolean state) {
+        box.setSize(watermarkFont.getStringWidth(Constants.MOD_NAME), watermarkFont.getHeight());
     }
 }
