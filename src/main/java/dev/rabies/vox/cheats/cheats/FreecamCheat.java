@@ -23,6 +23,7 @@ public class FreecamCheat extends CheatWrapper {
 
     @Override
     public void onEnable() {
+    	toggleableCheck();
         posX = mc.player.posX;
         posY = mc.player.posY;
         posZ = mc.player.posZ;

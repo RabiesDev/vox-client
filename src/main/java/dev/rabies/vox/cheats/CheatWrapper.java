@@ -85,4 +85,11 @@ public class CheatWrapper implements Cheat {
             MinecraftForge.EVENT_BUS.unregister(this);
         }
     }
+    
+    protected void toggleableCheck() {
+    	if (mc.player == null || mc.world == null) {
+    		enabled = false;
+    		MinecraftForge.EVENT_BUS.unregister(this);
+    	}
+    }
 }
