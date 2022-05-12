@@ -11,7 +11,7 @@ public class FakeFpsCheat extends CheatWrapper {
     private static FakeFpsCheat instance;
 
     public FakeFpsCheat() {
-        super("Fake Fps", Category.OTHER);
+        super("Fake FPS", Category.OTHER);
         instance = this;
     }
 }

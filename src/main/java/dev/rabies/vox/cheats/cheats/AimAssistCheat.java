@@ -30,7 +30,7 @@ public class AimAssistCheat extends CheatWrapper {
     private EntityLivingBase targetEntity;
 
     public AimAssistCheat() {
-        super("AimAssist", Category.LEGIT);
+        super("Aim Assist", Category.LEGIT);
     }
 
     @Override
