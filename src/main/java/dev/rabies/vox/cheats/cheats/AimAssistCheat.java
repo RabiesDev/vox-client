@@ -20,9 +20,8 @@ import java.util.List;
 public class AimAssistCheat extends CheatWrapper {
 
     private final NumberSetting rangeSetting = registerNumberSetting("Range", 3.8, 3.0, 10.0, 0.1);
-    private final NumberSetting speedSetting = registerNumberSetting("Speed", 0.4f, 0.1f, 10.0f, 0.1f);
-    private final NumberSetting tickExistSetting = registerNumberSetting("Tick Exist", 15, 0, 50, 1);
-    private final BoolSetting clickOnlySetting = registerBoolSetting("On click only", false);
+    private final NumberSetting speedSetting = registerNumberSetting("Speed", 0.45f, 0.1f, 10.0f, 0.1f);
+    private final BoolSetting clickOnlySetting = registerBoolSetting("Click Only", false);
     private final BoolSetting teamCheckSetting = registerBoolSetting("Team check", true);
     private final BoolSetting itemInUseSetting = registerBoolSetting("Item in use", false);
 
@@ -48,7 +47,7 @@ public class AimAssistCheat extends CheatWrapper {
         if (mc.player.getItemInUseCount() > 0 && !itemInUseSetting.getValue()) return;
         float yawChange = getYawChangeToEntity(targetEntity);
         float speed = speedSetting.getValue().floatValue();
-        float improvedSpeed = (float) MathHelper.clamp(RandomUtils.nextFloat(speed - 0.2f, speed + 1.4f),
+        float improvedSpeed = (float) MathHelper.clamp(RandomUtils.nextFloat(speed - 0.2f, speed + 1.8f),
                 speedSetting.getMinValue(), speedSetting.getMaxValue());
         improvedSpeed -= improvedSpeed % getGcd();
         if (yawChange < -3.5) {
@@ -70,7 +69,8 @@ public class AimAssistCheat extends CheatWrapper {
         for (Entity entity : mc.world.getLoadedEntityList()) {
             if (!(entity instanceof EntityLivingBase)) continue;
             if (entity.isDead || !entity.isEntityAlive()) continue;
-            if (entity.ticksExisted < tickExistSetting.getValue()) continue;
+            if (((EntityLivingBase) entity).getHealth() <= 0.0) continue;
+            if (entity.ticksExisted < 15) continue;
             double focusRange = mc.player.canEntityBeSeen(entity) ? rangeSetting.getValue() : 3.5f;
             if (mc.player.getDistance(entity) > focusRange) continue;
             if (entity instanceof EntityPlayer) {

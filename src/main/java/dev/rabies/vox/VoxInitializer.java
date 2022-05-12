@@ -10,6 +10,7 @@ import dev.rabies.vox.render.font.FontData;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -53,6 +54,10 @@ public class VoxInitializer implements Initializer {
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         MinecraftForge.EVENT_BUS.register(new RenderHook());
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (getCheatByName("brightness").isEnabled()) {
+                BrightnessCheat brightnessCheat = (BrightnessCheat) getCheatByName("brightness");
+                Minecraft.getMinecraft().gameSettings.gammaSetting = brightnessCheat.getPrevGammaSetting();
+            }
             configManager.saveConfig("default", Constants.MOD_NAME, true);
         }));
     }
@@ -80,7 +85,8 @@ public class VoxInitializer implements Initializer {
                 new StreamerCheat(),
                 new AimAssistCheat(),
                 new PackSpooferCheat(),
-                new PingSpooferCheat()
+                new PingSpooferCheat(),
+                new BrightnessCheat()
         );
     }
 
