@@ -8,12 +8,10 @@ import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.events.render.Render3DEvent;
 import dev.rabies.vox.utils.ColorUtil;
 import dev.rabies.vox.utils.ShaderUtil;
-import dev.rabies.vox.utils.misc.ChatUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL20;
 
