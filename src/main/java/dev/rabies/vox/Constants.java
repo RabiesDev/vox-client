@@ -12,6 +12,6 @@ public class Constants {
 
     public static final String URL = "https://github.com/Rabies1337/Vox";
 
-    public static final String SUFFIX = String.format("§7[§a%s§7]§f ", MOD_NAME);
+    public static final String SUFFIX = String.format("\2477[\247a%s§7]\247f ", MOD_NAME);
 
 }

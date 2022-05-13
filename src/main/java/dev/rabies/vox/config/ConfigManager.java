@@ -150,6 +150,7 @@ public class ConfigManager {
         for (File file : configFiles) {
             try {
                 String content = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+                if (content.isEmpty()) return;
                 JsonObject jsonObject = new JsonParser().parse(content).getAsJsonObject();
                 String name = jsonObject.getAsJsonPrimitive("name").getAsString();
                 String author = jsonObject.getAsJsonPrimitive("author").getAsString();

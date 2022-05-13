@@ -136,12 +136,14 @@ public class EspCheat extends CheatWrapper {
 
                 String tagString = livingBase.getName();
                 if (livingBase instanceof EntityPlayer) {
-                    tagString += " §7[§aFriend§7]";
+                    if (ServerUtil.isFriend((EntityPlayer) livingBase)) {
+                        tagString += " \2477[\247aFriend\2477]";
+                    }
                 }
 
                 String hpFormat = String.format("%.1f", health / 2 * 10);
                 hpFont.drawCenteredStringWithShadow(
-                        "§7HP: §r" + hpFormat.replace(".0", "") + "%",
+                        "\2477HP: \247r" + hpFormat.replace(".0", "") + "%",
                         (posX + endPosX) / 2,
                         posY - (hpFont.getHeight() + 2),
                         healthColor);

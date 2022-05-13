@@ -26,6 +26,7 @@ public class FriendManager {
         if (!friendFile.exists()) return;
         try {
             String content = FileUtils.readFileToString(friendFile.getFile(), StandardCharsets.UTF_8);
+            if (content.isEmpty()) return;
             JsonArray jsonArray = new JsonParser().parse(content).getAsJsonArray();
             for (JsonElement jsonElement : jsonArray) {
                 if (!(jsonElement instanceof JsonObject)) continue;

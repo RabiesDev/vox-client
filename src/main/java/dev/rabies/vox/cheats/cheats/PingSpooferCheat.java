@@ -43,7 +43,7 @@ public class PingSpooferCheat extends CheatWrapper {
                     lagInterval.getMinValue(), lagInterval.getMaxValue());
             if (!timerUtil.delay(randomized)) return;
             while (!packetBuffer.isEmpty()) {
-                mc.player.connection.getNetworkManager().sendPacket(packetBuffer.remove(0));
+                sendPacketNoEvent(packetBuffer.remove(0));
             }
             timerUtil.reset();
         }

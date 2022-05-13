@@ -20,8 +20,8 @@ public class VelocityCheat extends CheatWrapper {
     private final BoolSetting ladderSetting = registerBoolSetting("No ladder", true);
 
     private final NumberSetting chanceSetting = registerNumberSetting("Chance", 80, 10, 100, 1);
-    private final NumberSetting horizontalSetting = registerNumberSetting("Horizontal", 70, 0, 100, 1);
-    private final NumberSetting verticalSetting = registerNumberSetting("Vertical", 80, 0, 100, 1);
+    private final NumberSetting horizontalSetting = registerNumberSetting("Horizontal", 60, 0, 100, 1);
+    private final NumberSetting verticalSetting = registerNumberSetting("Vertical", 70, 0, 100, 1);
 
     public VelocityCheat() {
         super("Velocity", Category.LEGIT);
@@ -59,9 +59,8 @@ public class VelocityCheat extends CheatWrapper {
                     smartVertical = verticalSetting.getMaxValue();
 
                 velocity.motionX = (int) format(motionX, smartHorizontal / 100.0);
-                velocity.motionX = (int) format(motionY, smartVertical / 100.0);
-                velocity.motionX = (int) format(motionZ, smartHorizontal / 100.0);
-                event.setPacket(velocity);
+                velocity.motionY = (int) format(motionY, smartVertical / 100.0);
+                velocity.motionZ = (int) format(motionZ, smartHorizontal / 100.0);
             }
         } else if (packet instanceof SPacketExplosion) {
             SPacketExplosion explosion = (SPacketExplosion) packet;
@@ -84,9 +83,8 @@ public class VelocityCheat extends CheatWrapper {
                     smartVertical = verticalSetting.getMaxValue();
 
                 explosion.motionX = (int) format(motionX, smartHorizontal / 100.0);
-                explosion.motionX = (int) format(motionY, smartVertical / 100.0);
-                explosion.motionX = (int) format(motionZ, smartHorizontal / 100.0);
-                event.setPacket(explosion);
+                explosion.motionY = (int) format(motionY, smartVertical / 100.0);
+                explosion.motionZ = (int) format(motionZ, smartHorizontal / 100.0);
             }
         }
     }

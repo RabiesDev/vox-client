@@ -36,6 +36,8 @@ public class VoxInitializer implements Initializer {
     private FriendManager friendManager;
     @Getter @Setter
     private boolean debugMode;
+    @Getter @Setter
+    private boolean ignorePacket;
 
     @Override
     public void preInitialize(FMLPreInitializationEvent event) {

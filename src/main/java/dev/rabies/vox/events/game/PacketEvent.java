@@ -8,8 +8,8 @@ import net.minecraft.network.Packet;
 
 public class PacketEvent extends VoxEvent {
 
-    @Getter @Setter
-    private Packet<?> packet;
+    @Getter
+    private final Packet<?> packet;
 
     public PacketEvent(VoxEventTiming timing, Packet<?> packetIn) {
         super(timing);

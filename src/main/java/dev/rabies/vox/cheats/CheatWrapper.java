@@ -1,5 +1,6 @@
 package dev.rabies.vox.cheats;
 
+import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.setting.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -72,6 +73,12 @@ public class CheatWrapper implements Cheat {
 
     protected void sendPacket(Packet<?> packetIn) {
         mc.player.connection.sendPacket(packetIn);
+    }
+
+    protected void sendPacketNoEvent(Packet<?> packetIn) {
+        VoxMod.get().setIgnorePacket(true);
+        mc.player.connection.sendPacket(packetIn);
+        VoxMod.get().setIgnorePacket(false);
     }
 
     @Override
