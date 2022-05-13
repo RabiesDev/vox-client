@@ -34,7 +34,7 @@ public class AutoClickerCheat extends CheatWrapper {
 
     private final ModeSetting<Mode> modeSetting = registerModeSetting("Mode", Mode.Normal);
 
-    private final BoolSetting ignoreFriendsSetting = registerBoolSetting("Ignore Friends", true);
+    private final BoolSetting ignoreFriendsSetting = registerBoolSetting("Ignore friends", true);
     private final BoolSetting ignoreTeamsSetting = registerBoolSetting("Ignore teams", true);
     private final BoolSetting itemInUseSetting = registerBoolSetting("Item in use", false);
 

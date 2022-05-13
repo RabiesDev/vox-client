@@ -92,7 +92,8 @@ public class VoxInitializer implements Initializer {
                 new AimAssistCheat(),
                 new PackSpooferCheat(),
                 new PingSpooferCheat(),
-                new BrightnessCheat()
+                new BrightnessCheat(),
+                new VelocityCheat()
         );
     }
 
