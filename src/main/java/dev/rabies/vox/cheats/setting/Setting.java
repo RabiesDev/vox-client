@@ -1,11 +1,12 @@
 package dev.rabies.vox.cheats.setting;
 
+import com.google.gson.JsonElement;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.function.Supplier;
 
-public class Setting<V> {
+abstract public class Setting<V> {
 
     @Getter protected final String label;
     protected final Supplier<Boolean> dependency;
@@ -21,4 +22,8 @@ public class Setting<V> {
     public boolean isAvailable() {
         return dependency.get();
     }
+
+    abstract public void load(JsonElement obj);
+
+    abstract public JsonElement save();
 }

@@ -1,5 +1,7 @@
 package dev.rabies.vox.cheats.setting;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import lombok.Getter;
 
 import java.util.function.Supplier;
@@ -31,5 +33,15 @@ public class NumberSetting extends Setting<Double> {
             value = maxValue;
         }
         super.setValue(value);
+    }
+
+    @Override
+    public void load(JsonElement obj) {
+        value = obj.getAsDouble();
+    }
+
+    @Override
+    public JsonElement save() {
+        return new JsonPrimitive(value);
     }
 }
