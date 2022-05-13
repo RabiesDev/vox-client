@@ -6,6 +6,7 @@ import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.render.RenderHook;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.render.hud.HudElement;
+import dev.rabies.vox.utils.ColorUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -45,7 +46,8 @@ public class ArrayListHud extends HudElement {
                 label += " \2477" + cheat.getSuffix().toString();
             }
 
-            cheatInfoFont.drawStringWithShadow(label, 5, offsetY, -1);
+            int r = ColorUtil.getRainbowColor(0.5, -offsetY, 360).getRGB();
+            cheatInfoFont.drawStringWithShadow(label, 5, offsetY, r);
             offsetY += cheatInfoFont.getHeight();
         }
     }

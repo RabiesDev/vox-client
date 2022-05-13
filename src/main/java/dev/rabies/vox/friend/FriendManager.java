@@ -43,6 +43,7 @@ public class FriendManager {
 
     public void saveFriends() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        if (friends.isEmpty()) return;
         for (Friend friend : friends) {
             JsonObject friendObject = new JsonObject();
             friendObject.addProperty("Ign", friend.getIgn());

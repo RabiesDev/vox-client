@@ -34,7 +34,7 @@ public class ChamsCheat extends CheatWrapper {
     }
     
     private void setupUniform() {
-        Color rainbow = ColorUtil.getRainbowColor(0, 360);
+        Color rainbow = ColorUtil.getRainbowColor(1, 0, 360);
         float r = rainbow.getRed() / 255.0f;
         float g = rainbow.getGreen() / 255.0f;
         float b = rainbow.getBlue() / 255.0f;

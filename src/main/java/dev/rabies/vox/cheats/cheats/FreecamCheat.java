@@ -49,6 +49,10 @@ public class FreecamCheat extends CheatWrapper {
     @SubscribeEvent
     public void onUpdate(UpdateEvent event) {
         double motion = 0.6d;
+        if (mc.gameSettings.keyBindSprint.isKeyDown()) {
+        	motion *= 2;
+        }
+        
         PlayerUtils.setMotion(motion);
         mc.player.motionY = 0.0D;
         if (!mc.inGameHasFocus) return;
@@ -67,7 +71,8 @@ public class FreecamCheat extends CheatWrapper {
     @SubscribeEvent
     public void onPacket(PacketEvent event) {
     	if (!(event.getPacket() instanceof CPacketPlayer)) return;
-    	event.setPacket(new CPacketPlayer.PositionRotation(posX, posY, posZ, yaw, pitch, onGround));
+    	sendPacketNoEvent(new CPacketPlayer.PositionRotation(posX, posY, posZ, yaw, pitch, onGround));
+    	event.setCanceled(true);
     }
 
     private void spawn() {

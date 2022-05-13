@@ -29,6 +29,7 @@ public class VelocityCheat extends CheatWrapper {
 
     @SubscribeEvent
     public void onPacket(PacketEvent event) {
+    	if (mc.player == null) return;
         if (waterSetting.getValue() && mc.player.isInWater()) return;
         if (lavaSetting.getValue() && mc.player.isInLava()) return;
         if (ladderSetting.getValue() && mc.player.isOnLadder()) return;

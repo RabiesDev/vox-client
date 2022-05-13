@@ -162,10 +162,10 @@ public class EspCheat extends CheatWrapper {
 
     private void renderSuperCoolBox(EntityLivingBase livingBase, double posX, double posY, double endPosX, double endPosY) {
         int backgroundColor = new Color(0, 0, 0, 200).getRGB();
-        Color first = ColorUtil.getSuperCoolColor(0, 270);
-        Color second = ColorUtil.getSuperCoolColor(90, 270);
-        Color third = ColorUtil.getSuperCoolColor(180, 270);
-        Color fourth = ColorUtil.getSuperCoolColor(270, 270);
+        Color first = ColorUtil.getSuperCoolColor(1, 0, 270);
+        Color second = ColorUtil.getSuperCoolColor(1, 90, 270);
+        Color third = ColorUtil.getSuperCoolColor(1, 180, 270);
+        Color fourth = ColorUtil.getSuperCoolColor(1, 270, 270);
         if (livingBase.hurtTime > 0) {
             first = new Color(255, 80, 80);
             second = new Color(255, 80, 80);
