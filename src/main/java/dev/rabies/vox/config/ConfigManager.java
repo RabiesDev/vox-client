@@ -1,11 +1,12 @@
 package dev.rabies.vox.config;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.CheatWrapper;
-import dev.rabies.vox.cheats.setting.BoolSetting;
-import dev.rabies.vox.cheats.setting.ModeSetting;
-import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.cheats.setting.Setting;
 import dev.rabies.vox.utils.misc.ChatUtil;
 import dev.rabies.vox.utils.misc.ModFile;
@@ -66,15 +67,14 @@ public class ConfigManager {
             for (Map.Entry<String, JsonElement> settingEntry : settingsObject.entrySet()) {
                 Setting<?> setting = cheat.getSettingByName(settingEntry.getKey());
                 if (setting == null) continue;
-                if (setting instanceof ModeSetting) {
-                    ModeSetting<?> modeSetting = (ModeSetting<?>) setting;
-                    modeSetting.setEnumValue(settingEntry.getValue().getAsString());
-                } else if (setting instanceof BoolSetting) {
-                    Setting<Boolean> boolSetting = (Setting<Boolean>) setting;
-                    boolSetting.setValue(settingEntry.getValue().getAsBoolean());
-                } else if (setting instanceof NumberSetting) {
-                    Setting<Double> numberSetting = (Setting<Double>) setting;
-                    numberSetting.setValue(settingEntry.getValue().getAsDouble());
+
+                try {
+                    setting.load(settingEntry.getValue());
+                } catch (Exception e) {
+                    // remove broken configuration
+                    settingsObject.remove(settingEntry.getKey());
+                    System.out.println("Broken config has been removed: " + cheat.getName() + " " + setting.getLabel());
+                    e.printStackTrace();
                 }
             }
         }
@@ -96,16 +96,7 @@ public class ConfigManager {
         for (CheatWrapper cheat : VoxMod.get().getCheats()) {
             JsonObject settingsObject = new JsonObject();
             for (Setting<?> setting : cheat.getSettings()) {
-                if (setting instanceof ModeSetting) {
-                    ModeSetting<?> modeSetting = (ModeSetting<?>) setting;
-                    settingsObject.addProperty(setting.getLabel(), modeSetting.getValue().name());
-                } else if (setting instanceof BoolSetting) {
-                    Setting<Boolean> boolSetting = (Setting<Boolean>) setting;
-                    settingsObject.addProperty(setting.getLabel(), boolSetting.getValue());
-                } else if (setting instanceof NumberSetting) {
-                    Setting<Double> numberSetting = (Setting<Double>) setting;
-                    settingsObject.addProperty(setting.getLabel(), numberSetting.getValue());
-                }
+                settingsObject.add(setting.getLabel(), setting.save());
             }
 
             JsonObject keyBindObject = new JsonObject();
@@ -128,7 +119,7 @@ public class ConfigManager {
             e.printStackTrace();
             result = e.getMessage();
         }
-        
+
         if (Minecraft.getMinecraft().world != null) {
             ChatUtil.info(result);
         }
