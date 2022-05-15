@@ -39,7 +39,7 @@ public class PingSpooferCheat extends CheatWrapper {
     public void onUpdate(UpdateEvent event) {
         if (modeSetting.is(Mode.Normal)) {
             int interval = lagInterval.getValue().intValue();
-            int randomized = (int) MathHelper.clamp(RandomUtils.nextInt(interval - 100, interval + 100),
+            int randomized = (int) MathHelper.clamp(RandomUtils.nextInt(interval - 400, interval + 100),
                     lagInterval.getMinValue(), lagInterval.getMaxValue());
             if (!timerUtil.delay(randomized)) return;
             while (!packetBuffer.isEmpty()) {

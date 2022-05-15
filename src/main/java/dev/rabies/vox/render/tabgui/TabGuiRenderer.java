@@ -19,7 +19,7 @@ import java.util.List;
 
 public class TabGuiRenderer implements TabActionListener {
 
-    private final SystemFontRenderer labelFont = VoxMod.get().newSystemFont("Mukta-Regular", 20);
+    private final SystemFontRenderer labelFont = VoxMod.get().newSystemFont("NotoSansJP-Medium", 19);
     @Getter
     private final List<TabCategoryComponent> categoryTabs = new ArrayList<>();
     @Getter
@@ -39,7 +39,7 @@ public class TabGuiRenderer implements TabActionListener {
 
     public void render(RenderHook hook) {
         int offset = 6;
-        double height = ((labelFont.getHeight() / 1.3) + offset - 1) * categoryTabs.size();
+        double height = ((labelFont.getHeight() / 1.2) + offset - 1) * categoryTabs.size() + 2;
         double width = 0;
         for (TabCategoryComponent tab : categoryTabs) {
             if (labelFont.getStringWidth(tab.getLabel()) > width) {
@@ -71,7 +71,7 @@ public class TabGuiRenderer implements TabActionListener {
             }
 
             labelFont.drawStringWithShadow(tab.getLabel(), subOffset, offsetY - 2, col.getRGB());
-            offsetY += labelFont.getHeight() / 1.3;
+            offsetY += labelFont.getHeight() / 1.2;
             offsetY += subOffset;
         }
 

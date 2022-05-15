@@ -182,8 +182,8 @@ public class AutoClickerCheat extends CheatWrapper {
     }
     
     private float getNextDelay(float middleCps) {
-        float minCps = middleCps - 2;
-        float maxCps = middleCps + 2;
+        float minCps = middleCps - 4;
+        float maxCps = middleCps + 4;
         float cps = RandomUtils.nextFloat(minCps, maxCps);
         if (cps < 1) cps = 1;
         setSuffix("CPS - " + ((int) cps));

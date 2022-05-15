@@ -14,7 +14,7 @@ import java.util.List;
 
 public class TabCategoryComponent {
 
-    private final SystemFontRenderer labelFont = VoxMod.get().newSystemFont("Mukta-Regular", 20);
+    private final SystemFontRenderer labelFont = VoxMod.get().newSystemFont("NotoSansJP-Medium", 19);
     @Getter
     private final List<TabCheatComponent> cheatTabs = new ArrayList<>();
     @Getter
@@ -33,7 +33,7 @@ public class TabCategoryComponent {
 
     public void renderCheatsTab(double parentOffsetX, double parentOffsetY, int selectedIndex) {
         int offset = 6;
-        double height = ((labelFont.getHeight() / 1.3) + offset - 1) * cheatTabs.size();
+        double height = ((labelFont.getHeight() / 1.2) + offset - 1) * cheatTabs.size() + 2;
         double width = 0;
         for (TabCheatComponent tab : cheatTabs) {
             if (labelFont.getStringWidth(tab.getLabel()) > width) {
@@ -64,7 +64,7 @@ public class TabCategoryComponent {
             }
 
             labelFont.drawStringWithShadow(tab.getLabel(), subOffset, offsetY - 2, col.getRGB());
-            offsetY += labelFont.getHeight() / 1.3;
+            offsetY += labelFont.getHeight() / 1.2;
             offsetY += subOffset;
         }
 

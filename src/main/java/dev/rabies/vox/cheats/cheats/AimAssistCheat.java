@@ -58,10 +58,10 @@ public class AimAssistCheat extends CheatWrapper {
         float improvedSpeed = (float) MathHelper.clamp(RandomUtils.nextFloat(speed - 0.2f, speed + 1.8f),
                 speedSetting.getMinValue(), speedSetting.getMaxValue());
         improvedSpeed -= improvedSpeed % getGcd();
-        if (yawChange < -3.5) {
+        if (yawChange < -6) {
         	improvedSpeed -= yawChange / 12f;
             mc.player.rotationYaw -= improvedSpeed;
-        } else if (yawChange > 3.5) {
+        } else if (yawChange > 6) {
         	improvedSpeed += yawChange / 12f;
             mc.player.rotationYaw += improvedSpeed;
         }

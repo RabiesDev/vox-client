@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class WatermarkHud extends HudElement {
 
-    private final SystemFontRenderer watermarkFont = VoxMod.get().newSystemFont("Mukta-Bold", 28);
+    private final SystemFontRenderer watermarkFont = VoxMod.get().newSystemFont("NotoSansJP-Bold", 28);
 
     public WatermarkHud() {
         super("Watermark");

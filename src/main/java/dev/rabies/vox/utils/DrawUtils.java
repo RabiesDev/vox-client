@@ -1,5 +1,7 @@
 package dev.rabies.vox.utils;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
@@ -8,6 +10,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.AxisAlignedBB;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.glu.GLU;
 
 import javax.vecmath.Vector3d;
@@ -18,8 +21,10 @@ import java.text.NumberFormat;
 
 public class DrawUtils {
 
+    private static final ShaderUtil roundShader = new ShaderUtil("round_shader.frag");
+
     private static final IntBuffer viewport = GLAllocation.createDirectIntBuffer(16);
-    private static final FloatBuffer modelview = GLAllocation.createDirectFloatBuffer(16);
+    private static final FloatBuffer modelView = GLAllocation.createDirectFloatBuffer(16);
     private static final FloatBuffer projection = GLAllocation.createDirectFloatBuffer(16);
     private static final FloatBuffer vector = GLAllocation.createDirectFloatBuffer(4);
 
@@ -102,10 +107,10 @@ public class DrawUtils {
     }
 
     public static Vector3d project2D(int scaleFactor, double x, double y, double z) {
-        GL11.glGetFloat(2982, modelview);
+        GL11.glGetFloat(2982, modelView);
         GL11.glGetFloat(2983, projection);
         GL11.glGetInteger(2978, viewport);
-        if (GLU.gluProject((float) x, (float) y, (float) z, modelview, projection, viewport, vector)) {
+        if (GLU.gluProject((float) x, (float) y, (float) z, modelView, projection, viewport, vector)) {
             return new Vector3d((vector.get(0) / scaleFactor), ((Display.getHeight() - vector.get(1)) / scaleFactor), vector.get(2));
         }
         return null;
@@ -203,6 +208,28 @@ public class DrawUtils {
         tessellator.draw();
         GlStateManager.enableTexture2D();
         GlStateManager.resetColor();
+    }
+
+    public static void drawRoundRect(float x, float y, float width, float height, float radius, boolean blur, int color) {
+        float alpha = (color >> 24 & 0xFF) / 255.0F;
+        float red = (color >> 16 & 0xFF) / 255.0F;
+        float green = (color >> 8 & 0xFF) / 255.0F;
+        float blue = (color & 0xFF) / 255.0F;
+
+        Minecraft mc = Minecraft.getMinecraft();
+        ScaledResolution resolution = new ScaledResolution(mc);
+        GlStateManager.resetColor();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL20.glUseProgram(roundShader.getProgramId());
+        GL20.glUniform2f(roundShader.getUniformByName("location"), x * resolution.getScaleFactor(),
+                mc.displayHeight - (height * resolution.getScaleFactor()) - (y * resolution.getScaleFactor()));
+        GL20.glUniform2f(roundShader.getUniformByName("rectSize"),  width * resolution.getScaleFactor(),
+                height * resolution.getScaleFactor());
+        GL20.glUniform1f(roundShader.getUniformByName("radius"), radius * resolution.getScaleFactor());
+        GL20.glUniform1i(roundShader.getUniformByName("blur"), blur ? 1 : 0);
+        GL20.glUniform4f(roundShader.getUniformByName("color"), red, green, blue, alpha);
+        roundShader.renderShader(x - 1, y - 1, width + 2, height + 2);
     }
 
     public static void drawBB(AxisAlignedBB aabb, int color) {

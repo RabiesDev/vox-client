@@ -53,6 +53,25 @@ public class ShaderUtil {
 		binded = false;
 	}
 
+	public void renderShader(float x, float y, float width, float height) {
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glBegin(GL11.GL_QUADS);
+		GL11.glTexCoord2f(0, 0);
+		GL11.glVertex2f(x, y);
+		GL11.glTexCoord2f(0, 1);
+		GL11.glVertex2f(x, y + height);
+		GL11.glTexCoord2f(1, 1);
+		GL11.glVertex2f(x + width, y + height);
+		GL11.glTexCoord2f(1, 0);
+		GL11.glVertex2f(x + width, y);
+		GL11.glEnd();
+		GL20.glUseProgram(0);
+		GlStateManager.disableBlend();
+		GlStateManager.resetColor();
+		binded = false;
+	}
+
 	public int getUniformByName(String name) {
 		return GL20.glGetUniformLocation(programId, name);
 	}

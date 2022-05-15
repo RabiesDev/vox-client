@@ -7,6 +7,7 @@ import dev.rabies.vox.render.RenderHook;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.render.hud.HudElement;
 import dev.rabies.vox.utils.ColorUtil;
+import net.minecraft.client.gui.ScaledResolution;
 
 import java.util.Comparator;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class ArrayListHud extends HudElement {
 
-    private final SystemFontRenderer cheatInfoFont = VoxMod.get().newSystemFont("Mukta-SemiBold", 20);
+    private final SystemFontRenderer cheatInfoFont = VoxMod.get().newSystemFont("NotoSansJP-Medium", 19);
 
     public ArrayListHud() {
         super("ArrayList");
@@ -38,7 +39,8 @@ public class ArrayListHud extends HudElement {
                     return -cheatInfoFont.getStringWidth(label);
                 })).collect(Collectors.toList());
 
-        double offsetY = hook.getTabGuiCheat().isEnabled() ? 68 : cheatInfoFont.getHeight() + 5;
+        ScaledResolution sr = event.getResolution();
+        double offsetY = sr.getScaledHeight() - 15;
         for (CheatWrapper cheat : sorted) {
             String label = cheat.getName();
             if (cheat.getSuffix() != null && cheat.getSuffix().toString().length() > 0 &&
@@ -46,9 +48,10 @@ public class ArrayListHud extends HudElement {
                 label += " \2477" + cheat.getSuffix().toString();
             }
 
-            int r = ColorUtil.getRainbowColor(0.5, -offsetY, 360).getRGB();
-            cheatInfoFont.drawStringWithShadow(label, 5, offsetY, r);
-            offsetY += cheatInfoFont.getHeight();
+            int r = ColorUtil.getRainbowColor(0.5, offsetY, 360).getRGB();
+            double x = sr.getScaledWidth() - cheatInfoFont.getStringWidth(label);
+            cheatInfoFont.drawStringWithShadow(label, x - 5, offsetY, r);
+            offsetY -= cheatInfoFont.getHeight() + 1;
         }
     }
 }

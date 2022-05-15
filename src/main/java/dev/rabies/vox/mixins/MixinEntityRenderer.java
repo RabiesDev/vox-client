@@ -2,6 +2,7 @@ package dev.rabies.vox.mixins;
 
 import com.google.common.base.Predicates;
 import dev.rabies.vox.VoxMod;
+import dev.rabies.vox.cheats.cheats.HitBoxCheat;
 import dev.rabies.vox.cheats.cheats.ReachCheat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -39,6 +40,14 @@ public class MixinEntityRenderer {
         double reach = reachCheat.likeLegitSetting.getValue() ?
                 RandomUtils.nextDouble(3.08, 3.655) :
                 reachCheat.reachSetting.getValue();
+
+        HitBoxCheat hitBoxCheat = (HitBoxCheat) VoxMod.get().getCheatByName("Hitbox");
+        if (hitBoxCheat != null && hitBoxCheat.isEnabled()) {
+            reach -= hitBoxCheat.sizeSetting.getValue();
+            if (reach < 3.1)
+                reach = 3.1;
+        }
+
         ci.cancel();
 
         Entity entity = mc.getRenderViewEntity();
