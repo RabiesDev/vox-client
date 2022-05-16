@@ -2,12 +2,12 @@ package dev.rabies.vox.render.tabgui;
 
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
-import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.render.RenderHook;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.utils.DrawUtils;
-import dev.rabies.vox.utils.misc.ChatUtil;
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -19,7 +19,8 @@ import java.util.List;
 
 public class TabGuiRenderer implements TabActionListener {
 
-    private final SystemFontRenderer labelFont = VoxMod.get().newSystemFont("NotoSansJP-Medium", 19);
+    private final SystemFontRenderer customLabelFont = VoxMod.get().newSystemFont("NotoSansJP-Medium", 19);
+    private final FontRenderer defaultLabelFont = Minecraft.getMinecraft().fontRenderer;
     @Getter
     private final List<TabCategoryComponent> categoryTabs = new ArrayList<>();
     @Getter
@@ -39,11 +40,11 @@ public class TabGuiRenderer implements TabActionListener {
 
     public void render(RenderHook hook) {
         int offset = 6;
-        double height = ((labelFont.getHeight() / 1.2) + offset - 1) * categoryTabs.size() + 2;
+        double height = ((defaultLabelFont.FONT_HEIGHT / 1.2) + offset - 1) * categoryTabs.size() + 2;
         double width = 0;
         for (TabCategoryComponent tab : categoryTabs) {
-            if (labelFont.getStringWidth(tab.getLabel()) > width) {
-                width = labelFont.getStringWidth(tab.getLabel());
+            if (defaultLabelFont.getStringWidth(tab.getLabel()) > width) {
+                width = defaultLabelFont.getStringWidth(tab.getLabel());
             }
         }
         width += offset * 3;
@@ -70,8 +71,8 @@ public class TabGuiRenderer implements TabActionListener {
                 }
             }
 
-            labelFont.drawStringWithShadow(tab.getLabel(), subOffset, offsetY - 2, col.getRGB());
-            offsetY += labelFont.getHeight() / 1.2;
+            defaultLabelFont.drawStringWithShadow(tab.getLabel(), subOffset, offsetY, col.getRGB());
+            offsetY += defaultLabelFont.FONT_HEIGHT / 1.2;
             offsetY += subOffset;
         }
 

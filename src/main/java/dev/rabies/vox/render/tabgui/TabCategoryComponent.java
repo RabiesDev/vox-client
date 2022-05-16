@@ -5,6 +5,8 @@ import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.utils.DrawUtils;
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
@@ -14,7 +16,9 @@ import java.util.List;
 
 public class TabCategoryComponent {
 
-    private final SystemFontRenderer labelFont = VoxMod.get().newSystemFont("NotoSansJP-Medium", 19);
+    private final SystemFontRenderer customLabelFont = VoxMod.get().newSystemFont("NotoSansJP-Medium", 19);
+    private final FontRenderer defaultLabelFont = Minecraft.getMinecraft().fontRenderer;
+    
     @Getter
     private final List<TabCheatComponent> cheatTabs = new ArrayList<>();
     @Getter
@@ -33,11 +37,11 @@ public class TabCategoryComponent {
 
     public void renderCheatsTab(double parentOffsetX, double parentOffsetY, int selectedIndex) {
         int offset = 6;
-        double height = ((labelFont.getHeight() / 1.2) + offset - 1) * cheatTabs.size() + 2;
+        double height = ((defaultLabelFont.FONT_HEIGHT / 1.2) + offset - 1) * cheatTabs.size() + 2;
         double width = 0;
         for (TabCheatComponent tab : cheatTabs) {
-            if (labelFont.getStringWidth(tab.getLabel()) > width) {
-                width = labelFont.getStringWidth(tab.getLabel());
+            if (defaultLabelFont.getStringWidth(tab.getLabel()) > width) {
+                width = defaultLabelFont.getStringWidth(tab.getLabel());
             }
         }
         width += offset * 3;
@@ -63,8 +67,8 @@ public class TabCategoryComponent {
                 col = col.brighter();
             }
 
-            labelFont.drawStringWithShadow(tab.getLabel(), subOffset, offsetY - 2, col.getRGB());
-            offsetY += labelFont.getHeight() / 1.2;
+            defaultLabelFont.drawStringWithShadow(tab.getLabel(), subOffset, offsetY, col.getRGB());
+            offsetY += defaultLabelFont.FONT_HEIGHT / 1.2;
             offsetY += subOffset;
         }
 

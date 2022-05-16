@@ -51,6 +51,7 @@ public class PingSpooferCheat extends CheatWrapper {
 
     @SubscribeEvent
     public void onPacket(PacketEvent event) {
+        if (mc.isSingleplayer()) return;
         if (modeSetting.is(Mode.Normal)) {
             Packet<?> packet = event.getPacket();
             if (packet instanceof CPacketKeepAlive || packet instanceof CPacketConfirmTransaction ||

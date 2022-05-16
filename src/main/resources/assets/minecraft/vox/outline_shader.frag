@@ -13,10 +13,8 @@ void main() {
     for (float r = 1.0; r <= u_radius; r++) {
         float alphaCurrent1 = texture2D(u_texture, gl_TexCoord[0].xy + offset * r).a;
         float alphaCurrent2 = texture2D(u_texture, gl_TexCoord[0].xy - offset * r).a;
-
-       innerAlpha += alphaCurrent1 + alphaCurrent2;
+        innerAlpha += alphaCurrent1 + alphaCurrent2;
     }
 
     gl_FragColor = vec4(u_color, innerAlpha) * step(0.0, -centerAlpha);
 }
-
