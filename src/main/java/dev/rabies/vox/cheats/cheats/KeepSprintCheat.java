@@ -15,7 +15,7 @@ public class KeepSprintCheat extends CheatWrapper {
 
     @SubscribeEvent
     public void onPacket(PacketEvent event) {
-        if (event.isOut() || event.getPacket() instanceof CPacketEntityAction) return;
+        if (event.isOut() || !(event.getPacket() instanceof CPacketEntityAction)) return;
         CPacketEntityAction entityAction = (CPacketEntityAction) event.getPacket();
         if (entityAction.getAction() != CPacketEntityAction.Action.STOP_SPRINTING) return;
         if (!PlayerUtils.isMoving()) return;

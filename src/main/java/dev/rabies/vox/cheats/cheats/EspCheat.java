@@ -38,8 +38,8 @@ public class EspCheat extends CheatWrapper {
     private final BoolSetting ignoreSelfSetting = registerBoolSetting("Ignore self", false);
     private final BoolSetting invisSetting = registerBoolSetting("Invisible entity", true);
 
-    private final SystemFontRenderer tagFont = VoxMod.get().newSystemFont("NotoSansJP-Bold", 13);
-    private final SystemFontRenderer hpFont = VoxMod.get().newSystemFont("NotoSansJP-Regular", 11);
+    private final SystemFontRenderer tagFont = VoxMod.get().newSystemFont("Inter-SemiBold", 12);
+    private final SystemFontRenderer hpFont = VoxMod.get().newSystemFont("Inter-Regular", 10);
     private final Frustum frustum = new Frustum();
 
     public EspCheat() {
@@ -155,7 +155,7 @@ public class EspCheat extends CheatWrapper {
                 tagFont.drawCenteredStringWithShadow(
                         tagString,
                         (posX + endPosX) / 2,
-                        posY - ((hpFont.getHeight() + 3) + tagFont.getHeight()),
+                        posY - ((hpFont.getHeight() + 4) + tagFont.getHeight()),
                         ServerUtil.getTeamColor(livingBase).getRGB());
             }
         }

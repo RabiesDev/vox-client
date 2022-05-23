@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class ArrayListHud extends HudElement {
 
-    private final SystemFontRenderer cheatInfoFont = VoxMod.get().newSystemFont("NotoSansJP-Medium", 19);
+    private final SystemFontRenderer cheatInfoFont = VoxMod.get().newSystemFont("Inter-Regular", 19);
     private final FontRenderer defaultCheatInfoFont = Minecraft.getMinecraft().fontRenderer;
 
     public ArrayListHud() {

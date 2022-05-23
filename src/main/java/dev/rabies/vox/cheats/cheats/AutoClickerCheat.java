@@ -49,7 +49,7 @@ public class AutoClickerCheat extends CheatWrapper {
     private final BoolSetting renderSetting = registerBoolSetting("Show info", true,
             leftClickSetting::getValue);
 
-    private final SystemFontRenderer infoFont = VoxMod.get().newSystemFont("Mukta-Bold", 18);
+    private final SystemFontRenderer infoFont = VoxMod.get().newSystemFont("Inter-SemiBold", 16);
     private final TimerUtil leftTimerUtil = new TimerUtil();
     private final TimerUtil rightTimerUtil = new TimerUtil();
     private float leftClickNextDelay;
