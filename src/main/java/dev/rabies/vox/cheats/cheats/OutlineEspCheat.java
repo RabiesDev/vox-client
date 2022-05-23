@@ -6,10 +6,10 @@ import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.events.render.Render3DEvent;
-import dev.rabies.vox.utils.ColorUtil;
-import dev.rabies.vox.utils.ShaderUtil;
+import dev.rabies.vox.utils.render.ColorUtil;
+import dev.rabies.vox.utils.render.RefreshFramebuffer;
+import dev.rabies.vox.utils.render.ShaderUtil;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -25,7 +25,9 @@ public class OutlineEspCheat extends CheatWrapper {
     private final NumberSetting radiusSetting = registerNumberSetting("Radius", 1.0f, 1.0f, 5.0f, 0.5f);
 
     private final ShaderUtil outlineShader = new ShaderUtil("outline_shader.frag");
-    private Framebuffer framebuffer;
+    private final RefreshFramebuffer framebuffer = new RefreshFramebuffer(
+            mc.displayWidth, mc.displayHeight, true
+    );
 
     public OutlineEspCheat() {
         super("Outline ESP", Category.OTHER);
@@ -46,7 +48,7 @@ public class OutlineEspCheat extends CheatWrapper {
 
     @SubscribeEvent
     public void onRender2d(Render2DEvent event) {
-        if (framebuffer == null || !outlineShader.isBinded()) return;
+        if (!outlineShader.isBinded()) return;
         mc.getFramebuffer().bindFramebuffer(true);
         GL20.glUseProgram(outlineShader.getProgramId());
         setupUniform(0, 1);
@@ -61,7 +63,6 @@ public class OutlineEspCheat extends CheatWrapper {
 
     @SubscribeEvent
     public void onRender3d(Render3DEvent event) {
-        framebuffer = ShaderUtil.createFramebuffer(framebuffer);
         framebuffer.framebufferClear();
         framebuffer.bindFramebuffer(true);
         renderEntities(event.getPartialTicks());

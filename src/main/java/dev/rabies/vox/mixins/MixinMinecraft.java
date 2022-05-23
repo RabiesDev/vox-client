@@ -1,8 +1,10 @@
 package dev.rabies.vox.mixins;
 
 import dev.rabies.vox.cheats.cheats.FakeFpsCheat;
+import dev.rabies.vox.events.game.WindowResizeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraftforge.common.MinecraftForge;
 import org.apache.commons.lang3.RandomUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,5 +27,11 @@ public class MixinMinecraft {
         if (!FakeFpsCheat.getInstance().isEnabled()) return;
         if (world == null) return;
         debugFPS *= RandomUtils.nextInt(20, 35);
+    }
+
+    @Inject(method = "resize", at = @At("HEAD"))
+    public void resize(int width, int height, CallbackInfo ci) {
+        WindowResizeEvent windowResizeEvent = new WindowResizeEvent(width, height);
+        MinecraftForge.EVENT_BUS.post(windowResizeEvent);
     }
 }

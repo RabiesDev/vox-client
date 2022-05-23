@@ -25,23 +25,27 @@ public class ClientEvents {
         boolean state = Keyboard.getEventKeyState();
         int key = Keyboard.getEventKey();
         if (key == 0) return;
-        for (CheatWrapper cheat : VoxMod.get().getCheats()) {
-        	if (key != cheat.getBind().getKeyCode()) continue;
-        	switch (cheat.getBind().getType()) {
-        		case TOGGLE:
-        			if (!state) return;
-        			cheat.toggle();
-        			break;
-        		
-        		case HOLD:
-					// ~^-^~
-					if (state && !cheat.isEnabled()) {
+		if (key == Keyboard.KEY_RSHIFT) {
+//			Minecraft.getMinecraft().displayGuiScreen(new ClickGuiScreen());
+		} else {
+			for (CheatWrapper cheat : VoxMod.get().getCheats()) {
+				if (key != cheat.getBind().getKeyCode()) continue;
+				switch (cheat.getBind().getType()) {
+					case TOGGLE:
+						if (!state) return;
 						cheat.toggle();
-					} else if (!state && cheat.isEnabled()) {
-						cheat.toggle();
-					}
-        			break;
-        	}
-        }
+						break;
+
+					case HOLD:
+						// ~^-^~
+						if (state && !cheat.isEnabled()) {
+							cheat.toggle();
+						} else if (!state && cheat.isEnabled()) {
+							cheat.toggle();
+						}
+						break;
+				}
+			}
+		}
     }
 }

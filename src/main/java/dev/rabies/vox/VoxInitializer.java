@@ -27,13 +27,17 @@ import java.util.stream.Collectors;
 
 public class VoxInitializer implements Initializer {
 
-    @Getter private final ArrayList<FontData> fontCaches = new ArrayList<>();
-    @Getter private final ArrayList<CheatWrapper> cheats = new ArrayList<>();
-    @Getter private final ArrayList<Command> commands = new ArrayList<>();
+    @Getter
+    private final List<FontData> fontCaches = new ArrayList<>();
+    @Getter
+    private final List<CheatWrapper> cheats = new ArrayList<>();
+    @Getter
+    private final List<Command> commands = new ArrayList<>();
     @Getter
     private ConfigManager configManager;
     @Getter
     private FriendManager friendManager;
+
     @Getter @Setter
     private boolean debugMode;
     @Getter @Setter
@@ -95,7 +99,9 @@ public class VoxInitializer implements Initializer {
                 new PackSpooferCheat(),
                 new PingSpooferCheat(),
                 new BrightnessCheat(),
-                new VelocityCheat()
+                new VelocityCheat(),
+                new FlightCheat(),
+                new KeepSprintCheat()
         );
     }
 

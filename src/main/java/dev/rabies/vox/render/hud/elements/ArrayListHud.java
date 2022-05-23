@@ -6,7 +6,7 @@ import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.render.RenderHook;
 import dev.rabies.vox.render.font.SystemFontRenderer;
 import dev.rabies.vox.render.hud.HudElement;
-import dev.rabies.vox.utils.ColorUtil;
+import dev.rabies.vox.utils.render.ColorUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;

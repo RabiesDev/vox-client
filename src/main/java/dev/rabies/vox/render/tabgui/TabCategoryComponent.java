@@ -3,7 +3,7 @@ package dev.rabies.vox.render.tabgui;
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.render.font.SystemFontRenderer;
-import dev.rabies.vox.utils.DrawUtils;
+import dev.rabies.vox.utils.render.DrawUtils;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

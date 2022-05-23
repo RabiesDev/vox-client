@@ -17,17 +17,14 @@ public class AutoSprintCheat extends CheatWrapper {
 
     @SubscribeEvent
     public void onUpdate(UpdateEvent event) {
-        if (event.isPost()) return;
-        if (!canSprint()) return;
+        if (event.isPost() || !canSprint()) return;
         mc.player.setSprinting(true);
     }
 
     private boolean canSprint() {
-        if (!PlayerUtils.isMoving()) return false;
-        if (mc.player.isSprinting() || mc.player.isSneaking()) return false;
+        if (!PlayerUtils.isMoving() || mc.player.isSprinting() || mc.player.isSneaking()) return false;
         if (!omniSetting.getValue() && !mc.gameSettings.keyBindForward.isKeyDown()) return false;
-        if (mc.player.isCreative()) return true;
         if (WTapCheat.INSTANCE.isTap()) return false;
-        return mc.player.getFoodStats().getFoodLevel() > 6;
+        return mc.player.isCreative() || mc.player.getFoodStats().getFoodLevel() > 6;
     }
 }

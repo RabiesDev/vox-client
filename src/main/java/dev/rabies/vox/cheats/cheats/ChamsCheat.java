@@ -6,8 +6,9 @@ import dev.rabies.vox.cheats.setting.BoolSetting;
 import dev.rabies.vox.cheats.setting.NumberSetting;
 import dev.rabies.vox.events.render.Render2DEvent;
 import dev.rabies.vox.events.render.Render3DEvent;
-import dev.rabies.vox.utils.ColorUtil;
-import dev.rabies.vox.utils.ShaderUtil;
+import dev.rabies.vox.utils.render.ColorUtil;
+import dev.rabies.vox.utils.render.RefreshFramebuffer;
+import dev.rabies.vox.utils.render.ShaderUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
@@ -25,7 +26,9 @@ public class ChamsCheat extends CheatWrapper {
     private final NumberSetting alphaSetting = registerNumberSetting("Alpha", 0.42f, 0.1f, 1.0f, 0.1f);
 
     private final ShaderUtil chamsShader = new ShaderUtil("chams_shader.frag");
-    private Framebuffer framebuffer;
+    private final RefreshFramebuffer framebuffer = new RefreshFramebuffer(
+            mc.displayWidth, mc.displayHeight, true
+    );
 
     public ChamsCheat() {
         super("Chams", Category.OTHER);
@@ -46,7 +49,7 @@ public class ChamsCheat extends CheatWrapper {
 
     @SubscribeEvent
     public void onRender2d(Render2DEvent event) {
-        if (framebuffer == null || !chamsShader.isBinded()) return;
+        if (!chamsShader.isBinded()) return;
         mc.getFramebuffer().bindFramebuffer(true);
         GL20.glUseProgram(chamsShader.getProgramId());
         setupUniform();
@@ -56,7 +59,6 @@ public class ChamsCheat extends CheatWrapper {
 
     @SubscribeEvent
     public void onRender3d(Render3DEvent event) {
-        framebuffer = ShaderUtil.createFramebuffer(framebuffer);
         framebuffer.framebufferClear();
         framebuffer.bindFramebuffer(true);
         renderEntities(event.getPartialTicks());

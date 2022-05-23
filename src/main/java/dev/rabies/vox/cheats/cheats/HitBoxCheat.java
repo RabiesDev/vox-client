@@ -6,7 +6,7 @@ import dev.rabies.vox.cheats.setting.NumberSetting;
 
 public class HitBoxCheat extends CheatWrapper {
 
-    public final NumberSetting sizeSetting = registerNumberSetting("Size", 0.2f, 0.0f, 3.0f, 0.1f);
+    public final NumberSetting sizeSetting = registerNumberSetting("Size", 0.08f, 0.0f, 3.0f, 0.01f);
 
     public HitBoxCheat() {
         super("HitBox", Category.LEGIT);
