@@ -1,6 +1,7 @@
-package dev.rabies.vox.commands;
+package dev.rabies.vox.commands.commands;
 
 import dev.rabies.vox.VoxMod;
+import dev.rabies.vox.commands.Command;
 import dev.rabies.vox.config.Config;
 import dev.rabies.vox.config.ConfigManager;
 import dev.rabies.vox.utils.misc.ChatUtil;
@@ -26,6 +27,7 @@ public class ConfigCommand extends Command {
 
             switch (first.toLowerCase().trim()) {
                 case "load":
+                	VoxMod.get().setLastLoadConfig(configName);
                     cfm.loadConfig(configName);
                     break;
 

@@ -1,7 +1,8 @@
-package dev.rabies.vox.commands;
+package dev.rabies.vox.commands.commands;
 
 import dev.rabies.vox.VoxMod;
 import dev.rabies.vox.cheats.CheatWrapper;
+import dev.rabies.vox.commands.Command;
 import dev.rabies.vox.utils.misc.ChatUtil;
 
 public class ToggleCommand extends Command {

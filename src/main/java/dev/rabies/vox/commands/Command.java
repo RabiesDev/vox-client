@@ -5,15 +5,11 @@ import net.minecraft.client.Minecraft;
 
 public abstract class Command {
 
-    protected final Minecraft mc;
-
-    @Getter private final String name;
+    protected final Minecraft mc = Minecraft.getMinecraft();
     @Getter private final String[] aliases;
 
-    public Command(String name, String... aliases) {
-        this.name = name;
+    public Command(String... aliases) {
         this.aliases = aliases;
-        this.mc = Minecraft.getMinecraft();
     }
 
     public abstract void execute(String[] args);

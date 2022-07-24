@@ -4,6 +4,11 @@ import dev.rabies.vox.cheats.Category;
 import dev.rabies.vox.cheats.CheatWrapper;
 import dev.rabies.vox.cheats.cheats.*;
 import dev.rabies.vox.commands.*;
+import dev.rabies.vox.commands.commands.BindCommand;
+import dev.rabies.vox.commands.commands.ConfigCommand;
+import dev.rabies.vox.commands.commands.HelpCommand;
+import dev.rabies.vox.commands.commands.RefreshCommand;
+import dev.rabies.vox.commands.commands.ToggleCommand;
 import dev.rabies.vox.config.ConfigManager;
 import dev.rabies.vox.friend.FriendManager;
 import dev.rabies.vox.render.RenderHook;
@@ -39,19 +44,18 @@ public class VoxInitializer implements Initializer {
     private FriendManager friendManager;
 
     @Getter @Setter
+    private String lastLoadConfig = "default";
+    @Getter @Setter
     private boolean debugMode;
     @Getter @Setter
     private boolean ignorePacket;
 
     @Override
-    public void preInitialize(FMLPreInitializationEvent event) {
-        if (System.getProperty("vox") != null) {
+    public void initialize(FMLInitializationEvent event) {
+    	if (System.getProperty("vox") != null) {
             debugMode = System.getProperty("vox").equalsIgnoreCase("debug");
         }
-    }
-
-    @Override
-    public void initialize(FMLInitializationEvent event) {
+    	
         registerCheats();
         registerCommands();
     }
@@ -59,7 +63,7 @@ public class VoxInitializer implements Initializer {
     @Override
     public void postInitialize(FMLPostInitializationEvent event) {
         configManager = new ConfigManager();
-        configManager.loadConfig("default");
+        configManager.loadConfig(lastLoadConfig);
         friendManager = new FriendManager();
         friendManager.loadFriends();
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
@@ -110,7 +114,8 @@ public class VoxInitializer implements Initializer {
                 new HelpCommand(),
                 new ToggleCommand(),
                 new BindCommand(),
-                new ConfigCommand()
+                new ConfigCommand(),
+                new RefreshCommand()
         );
     }
 

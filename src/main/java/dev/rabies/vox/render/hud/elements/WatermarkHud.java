@@ -24,7 +24,7 @@ public class WatermarkHud extends HudElement {
 
     @Override
     public void render(RenderHook hook, Render2DEvent event) {
-        watermarkFont.drawStringWithShadow(Constants.MOD_NAME, 6, 0, new Color(120, 255, 70).getRGB());
+        watermarkFont.drawStringWithShadow(Constants.MOD_NAME, 6, 2, new Color(120, 255, 70).getRGB());
         box.setSize(watermarkFont.getStringWidth(Constants.MOD_NAME), watermarkFont.getHeight());
     }
 }

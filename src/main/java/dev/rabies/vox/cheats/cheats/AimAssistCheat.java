@@ -11,6 +11,8 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -26,10 +28,15 @@ public class AimAssistCheat extends CheatWrapper {
 
     private final NumberSetting rangeSetting = registerNumberSetting("Range", 3.8, 3.0, 10.0, 0.1);
     private final NumberSetting speedSetting = registerNumberSetting("Speed", 0.45f, 0.1f, 10.0f, 0.1f);
+    
     private final BoolSetting clickOnlySetting = registerBoolSetting("Click Only", false);
     private final BoolSetting ignoreFriendsSetting = registerBoolSetting("Ignore friends", true);
     private final BoolSetting ignoreTeamsSetting = registerBoolSetting("Ignore teams", true);
     private final BoolSetting itemInUseSetting = registerBoolSetting("Item in use", false);
+    
+    private final BoolSetting targetPlayerSetting = registerBoolSetting("Target Player", true);
+    private final BoolSetting targetMonsterSetting = registerBoolSetting("Target Monster", true);
+    private final BoolSetting targetAnimalsSetting = registerBoolSetting("Target Animals", false);
 
     private final List<EntityLivingBase> targetEntities = new ArrayList<>();
     private EntityLivingBase targetEntity;
@@ -55,8 +62,11 @@ public class AimAssistCheat extends CheatWrapper {
 
         float yawChange = getYawChangeToEntity(targetEntity);
         float speed = speedSetting.getValue().floatValue();
-        float improvedSpeed = (float) MathHelper.clamp(RandomUtils.nextFloat(speed - 0.2f, speed + 1.8f),
-                speedSetting.getMinValue(), speedSetting.getMaxValue());
+        float improvedSpeed = (float) MathHelper.clamp(
+        		RandomUtils.nextFloat(speed - 0.2f, speed + 1.8f),
+                speedSetting.getMinValue(), speedSetting.getMaxValue()
+        );
+        
         improvedSpeed -= improvedSpeed % getGcd();
         if (yawChange < -6) {
         	improvedSpeed -= yawChange / 12f;
@@ -69,7 +79,7 @@ public class AimAssistCheat extends CheatWrapper {
 
     public float getGcd() {
         float sensitivity = mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
-        return sensitivity * sensitivity * sensitivity * RandomUtils.nextFloat(2.0f, 5.0f);
+        return sensitivity * sensitivity * sensitivity * RandomUtils.nextFloat(3.0f, 4.0f);
     }
 
     private boolean canAssist() {
@@ -104,13 +114,17 @@ public class AimAssistCheat extends CheatWrapper {
             if (entity.ticksExisted < 15) continue;
             double focusRange = mc.player.canEntityBeSeen(entity) ? rangeSetting.getValue() : 3.5f;
             if (mc.player.getDistance(entity) > focusRange) continue;
-            if (entity instanceof EntityPlayer) {
+            if (entity instanceof EntityPlayer && targetPlayerSetting.getValue()) {
                 if (entity == mc.player) continue;
                 if (ignoreFriendsSetting.getValue() && ServerUtil.isFriend((EntityPlayer) entity))
                     continue;
                 if (ignoreTeamsSetting.getValue() && ServerUtil.isTeam((EntityPlayer) entity))
                     continue;
                 targetEntities.add((EntityLivingBase) entity);
+            } else if (entity instanceof EntityAnimal && targetAnimalsSetting.getValue()) {
+            	targetEntities.add((EntityLivingBase) entity);
+            } else if (entity instanceof EntityMob && targetMonsterSetting.getValue()) {
+            	targetEntities.add((EntityLivingBase) entity);
             }
         }
 
