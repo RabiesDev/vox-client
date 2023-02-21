@@ -17,11 +17,11 @@ public class ClientEvents {
 		MinecraftForge.EVENT_BUS.post(renderWorldEvent);
 	}
 
-    @SubscribeEvent
-    public void onKeyInput(InputEvent.KeyInputEvent event) {
-        boolean active = Keyboard.getEventKeyState();
-        int keyCode = Keyboard.getEventKey();
-        if (keyCode == Keyboard.KEY_NONE) return;
+	@SubscribeEvent
+	public void onKeyInput(InputEvent.KeyInputEvent event) {
+		boolean active = Keyboard.getEventKeyState();
+		int keyCode = Keyboard.getEventKey();
+		if (keyCode == Keyboard.KEY_NONE) return;
 		for (Module module : ModuleRegistry.getModules()) {
 			if (keyCode == module.getBind().getKeyCode()) {
 				if (active && module.getBind().getType() == KeyBinding.BindType.TOGGLE) {
@@ -35,5 +35,5 @@ public class ClientEvents {
 				}
 			}
 		}
-    }
+	}
 }
