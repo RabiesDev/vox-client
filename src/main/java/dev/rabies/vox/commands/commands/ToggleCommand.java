@@ -1,35 +1,24 @@
 package dev.rabies.vox.commands.commands;
 
-import dev.rabies.vox.VoxMod;
-import dev.rabies.vox.cheats.CheatWrapper;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.rabies.vox.commands.Command;
-import dev.rabies.vox.utils.misc.ChatUtil;
+import dev.rabies.vox.commands.arguments.ModuleArgumentType;
+import dev.rabies.vox.modules.Module;
+import dev.rabies.vox.utils.misc.ChatHelper;
+import net.minecraft.command.ICommandSender;
 
 public class ToggleCommand extends Command {
-
     public ToggleCommand() {
         super("toggle", "t");
     }
 
     @Override
-    public void execute(String[] args) {
-        if (args == null || args.length <= 0) {
-            ChatUtil.info("\2477 - Usage");
-            ChatUtil.info(" :toggle \2477<\247eCheat\2477>");
-            return;
-        }
-
-        String first = args[0];
-        CheatWrapper cheat = VoxMod.get().getCheatByName(first);
-        if (cheat == null) {
-            ChatUtil.error(String.format("%s was not found", first));
-            return;
-        }
-
-        cheat.toggle();
-        ChatUtil.info(String.format("\2479%s\247f has been %s",
-                cheat.getName(),
-                cheat.isEnabled() ? "\247aenabled" : "\247cdisabled"
-        ));
+    public void build(LiteralArgumentBuilder<ICommandSender> builder) {
+        builder.then(argument("module", new ModuleArgumentType()).executes(context -> {
+            Module module = context.getArgument("module", Module.class);
+            module.toggle();
+            ChatHelper.info(String.format("%s has been %s", module.getName(), module.isToggled() ? "\247aenabled" : "\247cdisabled"));
+            return 1;
+        }));
     }
 }

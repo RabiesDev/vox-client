@@ -1,6 +1,6 @@
 package dev.rabies.vox.render.font;
 
-import dev.rabies.vox.events.VoxEventTiming;
+import dev.rabies.vox.events.EventTiming;
 import dev.rabies.vox.events.render.RenderTextEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -41,7 +41,7 @@ public class SystemFontRenderer extends SystemFont {
 
     public void drawString(String text, double x, double y, Color color, boolean shadow) {
         if (text == null) return;
-        RenderTextEvent renderTextEvent = new RenderTextEvent(VoxEventTiming.POST, text);
+        RenderTextEvent renderTextEvent = new RenderTextEvent(EventTiming.POST, text);
         MinecraftForge.EVENT_BUS.post(renderTextEvent);
         text = renderTextEvent.getString();
 
@@ -126,7 +126,7 @@ public class SystemFontRenderer extends SystemFont {
     @Override
     public double getStringWidth(String text) {
         if (text == null) return 0;
-        RenderTextEvent renderTextEvent = new RenderTextEvent(VoxEventTiming.POST, text);
+        RenderTextEvent renderTextEvent = new RenderTextEvent(EventTiming.POST, text);
         MinecraftForge.EVENT_BUS.post(renderTextEvent);
         text = renderTextEvent.getString();
 

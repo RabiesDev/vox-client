@@ -15,23 +15,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class ShaderUtil {
-	
 	@Getter
 	private final int programId = GL20.glCreateProgram();
 	@Getter @Setter
-	private boolean binded;
+	private boolean bounded;
 
 	public ShaderUtil(String frag) {
 		GL20.glValidateProgram(programId);
-		GL20.glAttachShader(programId, compile(
-				this.getClass().getResourceAsStream("/assets/minecraft/vox/vertex.vsh"),
-				GL20.GL_VERTEX_SHADER));
-		GL20.glAttachShader(programId, compile(
-				this.getClass().getResourceAsStream(String.format("/assets/minecraft/vox/%s", frag)),
-				GL20.GL_FRAGMENT_SHADER));
+		GL20.glAttachShader(programId, compile(this.getClass().getResourceAsStream("/assets/minecraft/vox/shader/default.vert"), GL20.GL_VERTEX_SHADER));
+		GL20.glAttachShader(programId, compile(this.getClass().getResourceAsStream(String.format("/assets/minecraft/vox/shader/%s", frag)), GL20.GL_FRAGMENT_SHADER));
 		GL20.glLinkProgram(programId);
-		if (GL20.glGetShaderi(programId, GL20.GL_LINK_STATUS) == 0)
+
+		if (GL20.glGetShaderi(programId, GL20.GL_LINK_STATUS) == 0) {
 			throw new RuntimeException("shader error 1");
+		}
 	}
 
 	public void renderShader(ScaledResolution resolution) {
@@ -50,7 +47,7 @@ public class ShaderUtil {
 		GL20.glUseProgram(0);
 		GlStateManager.disableBlend();
 		GlStateManager.resetColor();
-		binded = false;
+		bounded = false;
 	}
 
 	public void renderShader(float x, float y, float width, float height) {
@@ -69,7 +66,7 @@ public class ShaderUtil {
 		GL20.glUseProgram(0);
 		GlStateManager.disableBlend();
 		GlStateManager.resetColor();
-		binded = false;
+		bounded = false;
 	}
 
 	public int getUniformByName(String name) {
@@ -85,24 +82,27 @@ public class ShaderUtil {
 			e.printStackTrace();
 		}
 
-		if (GL20.glGetShaderi(shader, GL20.GL_LINK_STATUS) == 0)
+		if (GL20.glGetShaderi(shader, GL20.GL_LINK_STATUS) == 0) {
 			throw new RuntimeException("shader error 2");
+		}
 		return shader;
 	}
-	
+
 	public String readInputStream(InputStream inputStream) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        String line;
-        while ((line = reader.readLine()) != null)
-            sb.append(line).append('\n');
-        return sb.toString();
-    }
+		StringBuilder builder = new StringBuilder();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+		String line;
+		while ((line = reader.readLine()) != null) {
+			builder.append(line).append('\n');
+		}
+		return builder.toString();
+	}
 
 	public static Framebuffer createFramebuffer(Framebuffer framebuffer) {
-		if (framebuffer == null || framebuffer.framebufferWidth != Minecraft.getMinecraft().displayWidth ||
-				framebuffer.framebufferHeight != Minecraft.getMinecraft().displayHeight) {
-			if (framebuffer != null) framebuffer.deleteFramebuffer();
+		if (framebuffer == null || framebuffer.framebufferWidth != Minecraft.getMinecraft().displayWidth || framebuffer.framebufferHeight != Minecraft.getMinecraft().displayHeight) {
+			if (framebuffer != null) {
+				framebuffer.deleteFramebuffer();
+			}
 			return new Framebuffer(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, true);
 		}
 		return framebuffer;

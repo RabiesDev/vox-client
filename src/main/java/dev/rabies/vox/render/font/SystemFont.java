@@ -27,8 +27,6 @@ public class SystemFont {
     private float fontHeight = -1;
 
     public SystemFont(Font font) {
-//        super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"),
-//                Minecraft.getMinecraft().getTextureManager(), Minecraft.getMinecraft().isUnicode());
         this.font = font;
         this.paddingWidth = 8;
         this.paddingHeight = 0;

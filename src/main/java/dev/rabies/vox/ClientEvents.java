@@ -1,8 +1,9 @@
 package dev.rabies.vox;
 
-import dev.rabies.vox.cheats.CheatWrapper;
-import dev.rabies.vox.events.render.Render3DEvent;
-import net.minecraft.client.Minecraft;
+import dev.rabies.vox.modules.Module;
+import dev.rabies.vox.events.render.RenderWorldEvent;
+import dev.rabies.vox.modules.ModuleRegistry;
+import dev.rabies.vox.settings.KeyBinding;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -10,40 +11,27 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.lwjgl.input.Keyboard;
 
 public class ClientEvents {
-
 	@SubscribeEvent
 	public void onRenderWorldLast(RenderWorldLastEvent event) {
-		Render3DEvent render3DEvent = new Render3DEvent(event.getPartialTicks());
-		MinecraftForge.EVENT_BUS.post(render3DEvent);
+		RenderWorldEvent renderWorldEvent = new RenderWorldEvent(event.getPartialTicks());
+		MinecraftForge.EVENT_BUS.post(renderWorldEvent);
 	}
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
-    	if (Minecraft.getMinecraft().world == null) return;
-    	if (!Keyboard.isCreated()) return;
-
-        boolean state = Keyboard.getEventKeyState();
-        int key = Keyboard.getEventKey();
-        if (key == 0) return;
-		if (key == Keyboard.KEY_RSHIFT) {
-//			Minecraft.getMinecraft().displayGuiScreen(new ClickGuiScreen());
-		} else {
-			for (CheatWrapper cheat : VoxMod.get().getCheats()) {
-				if (key != cheat.getBind().getKeyCode()) continue;
-				switch (cheat.getBind().getType()) {
-					case TOGGLE:
-						if (!state) return;
-						cheat.toggle();
-						break;
-
-					case HOLD:
-						// ~^-^~
-						if (state && !cheat.isEnabled()) {
-							cheat.toggle();
-						} else if (!state && cheat.isEnabled()) {
-							cheat.toggle();
-						}
-						break;
+        boolean active = Keyboard.getEventKeyState();
+        int keyCode = Keyboard.getEventKey();
+        if (keyCode == Keyboard.KEY_NONE) return;
+		for (Module module : ModuleRegistry.getModules()) {
+			if (keyCode == module.getBind().getKeyCode()) {
+				if (active && module.getBind().getType() == KeyBinding.BindType.TOGGLE) {
+					module.toggle();
+				} else if (module.getBind().getType() == KeyBinding.BindType.HOLD) {
+					if (active && !module.isToggled()) {
+						module.toggle();
+					} else if (!active && module.isToggled()) {
+						module.toggle();
+					}
 				}
 			}
 		}

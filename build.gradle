@@ -1,8 +1,9 @@
 buildscript {
     repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
-        jcenter()
+        maven {
+            url = 'https://maven.minecraftforge.net'
+        }
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
@@ -34,7 +35,7 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
-            property 'fml.coreMods.load', 'dev.rabies.vox.VoxMixinLoader'
+            property 'fml.coreMods.load', 'dev.rabies.vox.MixinLoader'
             property 'mixin.env.disableRefMap', 'true'
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
@@ -57,14 +58,21 @@ configurations {
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
-    maven { url = "https://jitpack.io/" }
+    maven {
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+    }
+    maven {
+        url = 'https://jitpack.io/'
+    }
+    maven {
+        url = 'https://libraries.minecraft.net'
+    }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
     include 'org.apache.commons:commons-lang3:3.12.0'
-    include 'com.thealtening.auth:auth:3.0.2'
+    include 'com.mojang:brigadier:1.0.18'
 
     include('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
         exclude module: 'gson'
@@ -110,7 +118,7 @@ jar {
             'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
             'TweakOrder': 0,
             'FMLCorePluginContainsFMLMod': 'true',
-            'FMLCorePlugin': 'dev.rabies.vox.VoxMixinLoader',
+            'FMLCorePlugin': 'dev.rabies.vox.MixinLoader',
             'ForceLoadAsMod': 'true'
     )
 

@@ -4,14 +4,14 @@ import lombok.Getter;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 public class VoxEvent extends Event {
-
-    @Getter private final VoxEventTiming timing;
+    @Getter
+    private final EventTiming timing;
 
     public VoxEvent() {
-        this.timing = VoxEventTiming.PRE;
+        this.timing = EventTiming.PRE;
     }
 
-    public VoxEvent(VoxEventTiming timing) {
+    public VoxEvent(EventTiming timing) {
         this.timing = timing;
     }
 
@@ -21,10 +21,10 @@ public class VoxEvent extends Event {
     }
 
     public boolean isPre() {
-        return timing == VoxEventTiming.PRE;
+        return timing == EventTiming.PRE;
     }
 
     public boolean isPost() {
-        return timing == VoxEventTiming.POST;
+        return timing == EventTiming.POST;
     }
 }

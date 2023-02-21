@@ -1,16 +1,18 @@
 package dev.rabies.vox.events.render;
 
 import dev.rabies.vox.events.VoxEvent;
-import dev.rabies.vox.events.VoxEventTiming;
+import dev.rabies.vox.events.EventTiming;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.entity.EntityLivingBase;
 
 public class RenderModelEvent extends VoxEvent {
-
-    @Getter private final RenderCallback<RenderModelEvent> modelRenderCallback;
-    @Getter private final RenderCallback<RenderModelEvent> layerRenderCallback;
-    @Getter private final EntityLivingBase livingBase;
+    @Getter
+    private final RenderCallback<RenderModelEvent> modelRenderCallback;
+    @Getter
+    private final RenderCallback<RenderModelEvent> layerRenderCallback;
+    @Getter
+    private final EntityLivingBase livingBase;
 
     @Getter @Setter
     private float limbSwing;
@@ -25,10 +27,7 @@ public class RenderModelEvent extends VoxEvent {
     @Getter @Setter
     private float scaleFactor;
 
-    public RenderModelEvent(VoxEventTiming timing, EntityLivingBase livingBase, float limbSwing, float limbSwingAmount, float ageInTicks,
-                            float netHeadYaw, float headPitch, float scaleFactor,
-                            RenderCallback<RenderModelEvent> modelRenderCallback,
-                            RenderCallback<RenderModelEvent> layerRenderCallback) {
+    public RenderModelEvent(EventTiming timing, EntityLivingBase livingBase, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, RenderCallback<RenderModelEvent> modelRenderCallback, RenderCallback<RenderModelEvent> layerRenderCallback) {
         super(timing);
         this.livingBase = livingBase;
         this.limbSwing = limbSwing;
